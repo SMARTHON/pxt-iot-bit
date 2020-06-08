@@ -93,6 +93,8 @@ namespace WiFiIoT {
             } else {
 				if (temp_cmd.substr(0, 11) == "HTTP client")
 					temp_cmd = "Keep listen"
+				if (temp_cmd == "ifttt" || temp_cmd =="thingspeak")
+                    basic.pause(1000);
 				OLED.showStringWithNewLine(temp_cmd.substr(0,20))
             }
 
