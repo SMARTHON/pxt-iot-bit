@@ -1,12 +1,11 @@
 {
     "name": "WiFi-IoT-bit",
-    "version": "0.3.10",
+    "version": "0.3.11",
     "description": "This is the Wifi extension for SMARTHON IoT:bit in PXT",
     "license": "MIT",
     "dependencies": {
         "core": "*",
 		"SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.7",
-		"smartcity" : "github:SMARTHON/pxt-smartcity#v0.1.2",
         "neopixel": "github:microsoft/pxt-neopixel#v0.6.12"
     },
     "files": [
