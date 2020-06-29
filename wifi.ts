@@ -37,7 +37,7 @@ namespace WiFiIoT {
     //% weight=140
     //% blockGap=7	
     export function initializeWifi(): void {
-        serial.redirect(SerialPin.P15, SerialPin.P14, BaudRate.BaudRate115200);
+        serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
         OLED.init(64, 128)
