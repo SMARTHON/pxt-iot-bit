@@ -8,7 +8,7 @@ namespace WiFiIoT {
     let Lan_connected = false
     let Wan_connected = false
 	let Wifi_remote = false
-	let Wifi_connected = false
+	let Wifi_connected = 0
 	let myChannel = ""
 	
 	type EvtAct =(WiFiMessage:string) => void;
@@ -90,7 +90,12 @@ namespace WiFiIoT {
             } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
                 wifi_cmd = temp_cmd.substr(1, 20)
                 if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
-            } else {
+            } else if (temp_cmd.charAt(0).compare("%") == 0)
+			{
+				Wifi_connected = parseInt(temp_cmd.charAt(1))
+				if(Wifi_Conn && Wifi_connected == 2) Wifi_Conn()
+		
+			} else {
 				if (temp_cmd.substr(0, 11) == "HTTP client")
 					temp_cmd = "Keep listen"
 				OLED.showStringWithNewLine(temp_cmd.substr(0,20))
@@ -124,7 +129,9 @@ namespace WiFiIoT {
     //% weight=131
 	//% blockGap=7	
     export function is_wifi_connect(): boolean {
-        return Wifi_connected
+        if(Wifi_connected == 2) 
+		return true
+		else return false
 		
     }
     // -------------- 3. Cloud ----------------
