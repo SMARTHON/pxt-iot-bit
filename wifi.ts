@@ -8,12 +8,13 @@ namespace WiFiIoT {
     let Lan_connected = false
     let Wan_connected = false
 	let Wifi_remote = false
-	let Wifi_connected = 0
+	let Wifi_connected = "0"
 	let myChannel = ""
 	
 	type EvtAct =(WiFiMessage:string) => void;
     let Wifi_Remote_Conn: EvtAct = null;
 	let Wifi_Conn: () => void = null;
+	let Wifi_DisConn: () => void = null;
 	let LAN_Remote_Conn: (LAN_Command:string) => void = null;
 	let WAN_Remote_Conn: (WAN_Command:string) => void = null;
   
@@ -95,9 +96,17 @@ namespace WiFiIoT {
                 if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
             } else if (temp_cmd.charAt(0).compare("%") == 0)
 			{
-				Wifi_connected = parseInt(temp_cmd.charAt(1))
-				// 0:Not connected, 1:connecting, 2:connected
-				if(Wifi_Conn && Wifi_connected == 2) Wifi_Conn()
+				// wifi status change
+				if (Wifi_connected != temp_cmd.charAt(1))
+				{
+					Wifi_connected = temp_cmd.charAt(1)
+					
+					// 0:Not connected, 1:connecting, 2:connected
+					if(Wifi_Conn && Wifi_connected == "2") Wifi_Conn()
+						
+					if(Wifi_DisConn && Wifi_connected == "0") Wifi_DisConn()
+					
+				}
 		
 			} else {
 				if (temp_cmd.substr(0, 11) == "HTTP client")
@@ -127,13 +136,22 @@ namespace WiFiIoT {
         Wifi_Conn = handler;
     
     }
+	
+	//% blockId=wifi_ext_board_on_wifi_disconnect
+    //% block="On WiFi disconnected"   
+    //% weight=132
+	//% blockGap=7	
+    export function on_wifi_disconnect(handler: () => void): void {
+        Wifi_DisConn = handler;
+    
+    }
 
 	//% blockId=wifi_ext_board_is_wifi_connect
     //% block="WiFi connected?"   
     //% weight=131
 	//% blockGap=7	
     export function is_wifi_connect(): boolean {
-        if(Wifi_connected == 2) 
+        if(Wifi_connected == "2") 
 		return true
 		else return false
 		
