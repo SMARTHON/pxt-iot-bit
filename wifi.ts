@@ -83,16 +83,20 @@ namespace WiFiIoT {
 
             } else if (Lan_connected && temp_cmd.charAt(0).compare(",") == 0) {
                 lan_cmd = temp_cmd.substr(1, 20)
+				OLED.showStringWithNewLine("LAN cmd: " && lan_cmd)
                 if (LAN_Remote_Conn) LAN_Remote_Conn(lan_cmd)
             } else if (Wan_connected && temp_cmd.charAt(0).compare(":") == 0) {
                 wan_cmd = temp_cmd.substr(1, 20)
+				OLED.showStringWithNewLine("WAN cmd: " && wan_cmd)
                 if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
             } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
                 wifi_cmd = temp_cmd.substr(1, 20)
+				OLED.showStringWithNewLine("WIFI msg: " && wifi_cmd)
                 if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
             } else if (temp_cmd.charAt(0).compare("%") == 0)
 			{
 				Wifi_connected = parseInt(temp_cmd.charAt(1))
+				// 0:Not connected, 1:connecting, 2:connected
 				if(Wifi_Conn && Wifi_connected == 2) Wifi_Conn()
 		
 			} else {
