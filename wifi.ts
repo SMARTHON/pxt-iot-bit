@@ -34,7 +34,7 @@ namespace WiFiIoT {
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize Wifi Extension Board and OLED"
+    //%block="Initialize WiFi IoT:bit and OLED"
     //% weight=140
     //% blockGap=7	
     export function initializeWifi(): void {
@@ -121,7 +121,7 @@ namespace WiFiIoT {
 
     // -------------- 2. WiFi ----------------
     //% blockId=wifi_ext_board_set_wifi
-    //% block="Set wifi to ssid %ssid| pwd %pwd"   
+    //% block="Set WiFi to ssid %ssid| pwd %pwd"   
     //% weight=135
 	//% blockGap=7	
     export function setWifi(ssid: string, pwd: string): void {
