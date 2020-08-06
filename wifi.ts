@@ -51,6 +51,37 @@ namespace WiFiIoT {
             if (temp_cmd.charAt(0).compare("#") == 0) {
                 tempDeleteFirstCharacter = temp_cmd.substr(1, 20)
                 httpReturnArray.push(tempDeleteFirstCharacter)
+            } else if (temp_cmd.charAt(0).compare("*") == 0) {
+
+                // For digital, pwm, servo
+                let mode = temp_cmd.substr(1, 1)
+                let intensity = 0
+                let pin = 0
+
+                if (mode == "0") {	//digital
+                    pin = parseInt(temp_cmd.substr(3, 2))
+                    intensity = parseInt(temp_cmd.substr(2, 1))
+
+                    pins.digitalWritePin(pin, intensity)
+
+                } else if (mode == "1") { //pwm
+                    pin = parseInt(temp_cmd.substr(5, 2))
+                    intensity = pins.map(parseInt(temp_cmd.substr(2, 3)), 100, 900, 0, 1023)
+
+                    pins.analogWritePin(pin, intensity)
+
+                } else if (mode == "2") { //servo
+                    pin = parseInt(temp_cmd.substr(5, 2))
+                    intensity = pins.map(parseInt(temp_cmd.substr(2, 3)), 100, 900, 0, 180)
+
+                    pins.servoWritePin(pin, intensity)
+
+                }
+
+            } else if (temp_cmd.charAt(0).compare("$") == 0) {
+                let no = parseInt(temp_cmd.substr(1, 1))
+                //let string_word = temp_cmd.substr(2, 20)
+
             } else if (Lan_connected && temp_cmd.charAt(0).compare(",") == 0) {
                 lan_cmd = temp_cmd.substr(1, 20)
 				OLED.showStringWithNewLine("LAN cmd: " + lan_cmd)
