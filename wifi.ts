@@ -4,6 +4,7 @@ namespace WiFiIoT {
     let temp_cmd = ""
     let lan_cmd = ""
     let wan_cmd = ""
+	let wan_cmd_value = ""
 	let wifi_cmd = ""
     let Lan_connected = false
     let Wan_connected = false
@@ -17,7 +18,7 @@ namespace WiFiIoT {
 	let Wifi_DisConn: () => void = null;
 	let LAN_Remote_Conn: (LAN_Command:string) => void = null;
 	let WAN_Remote_Conn: (WAN_Command:string) => void = null;
-  
+	let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void = null;
 	
 
     export enum httpMethod {
@@ -57,8 +58,18 @@ namespace WiFiIoT {
                 if (LAN_Remote_Conn) LAN_Remote_Conn(lan_cmd)
             } else if (Wan_connected && temp_cmd.charAt(0).compare(":") == 0) {
                 wan_cmd = temp_cmd.substr(1, 20)
+				if (wan_cmd.includes("$")) {
+                    let pos = wan_cmd.indexOf("$");
+                    let temp = wan_cmd.substr(0, pos);
+                    wan_cmd_value = wan_cmd.substr(pos + 1, wan_cmd.length);
+                    wan_cmd = temp;
+                }
 				OLED.showStringWithNewLine("WAN cmd: " + wan_cmd)
-                if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
+				if (temp_cmd.includes("$") && WAN_Remote_Conn_value) {
+                    OLED.showStringWithNewLine("WAN cmd value: " + wan_cmd_value);
+                    WAN_Remote_Conn_value(wan_cmd, parseInt(wan_cmd_value));
+                }
+                else if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
             } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
                 wifi_cmd = temp_cmd.substr(1, 20)
 				OLED.showStringWithNewLine("WIFI msg: " + wifi_cmd)
@@ -230,8 +241,14 @@ namespace WiFiIoT {
     export function on_WAN_remote(handler: (WAN_Command:string) => void): void {
         WAN_Remote_Conn = handler;
     }
-
-	
+	//%subcategory=Control
+    //%blockId=wifi_ext_board_on_WAN_connect_value
+    //%block="On WAN command received with value"
+    //% weight=70
+    //% blockGap=7	draggableParameters=reporter
+    export function on_WAN_remote_value(handler: (WAN_Command: string, Value: number) => void): void {
+        WAN_Remote_Conn_value = handler;
+    }
 
    
 
