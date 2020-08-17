@@ -198,6 +198,7 @@ namespace WiFiIoT {
     //%block="Start WiFi remote control (LAN)"
     //% weight=85
     //% blockGap=7		
+	//% blockHidden=true
     export function startWebServer_LAN(): void {
         flag = true
         serial.writeLine("(AT+startWebServer)")
@@ -229,6 +230,7 @@ namespace WiFiIoT {
     //%block="On LAN command received"
     //% weight=75
 	//% blockGap=7	draggableParameters=reporter
+	//% blockHidden=true
     export function on_LAN_remote(handler: (LAN_Command:string) => void): void {
         LAN_Remote_Conn = handler;
     }
@@ -244,7 +246,7 @@ namespace WiFiIoT {
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
     //%block="On WAN command received with value"
-    //% weight=70
+    //% weight=65
     //% blockGap=7	draggableParameters=reporter
     export function on_WAN_remote_value(handler: (WAN_Command: string, Value: number) => void): void {
         WAN_Remote_Conn_value = handler;
