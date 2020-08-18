@@ -31,7 +31,21 @@ namespace WiFiIoT {
         //% block="DELETE"
         DELETE
     }
-
+	
+	export enum ESP_SERVO_PORT {
+        //% block="S1"
+        S1,
+        //% block="S2"
+        S2,
+        //% block="S3"
+        S3
+    }
+    export enum ESP_360_SERVO_DIR {
+        //% block="Clockwise"
+        clockwise,
+        //% block="Antilockwise"
+        anticlockwise
+    }
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
@@ -304,7 +318,37 @@ namespace WiFiIoT {
     export function on_wifi_received(handler: (WiFiMessage: string) => void): void {
         Wifi_Remote_Conn = handler;
     }
-
+	
+	// -------------- 8.ESP Control ----------------
+    //%subcategory=ESP Servo
+    //%blockId=ESP_Servo_180
+    //%block="Turn ESP 180deg Servo to %deg degree at %pin"
+    //% weight=90
+    //% deg.min=0 deg.max=180
+    export function ESP_Servo_180(deg:number,pin:ESP_SERVO_PORT): void {
+        let port
+        if(pin==0){port="S1"}
+        if(pin==1){port="S2"}
+        if(pin==2){port="S3"}
+        let cmd = "(AT+servo_180?pin="+port+"&degree="+deg.toString()+")"
+        serial.writeLine(cmd)
+    }
+    //%subcategory=ESP Servo
+    //%blockId=ESP_Servo_360
+    //%block="Turn ESP 360deg Servo in %dir with %speed speed at %pin"
+    //% weight=90
+    //% speed.min=0 speed.max=100
+    export function ESP_Servo_360(dir: ESP_360_SERVO_DIR, speed:number ,pin: ESP_SERVO_PORT): void {
+        let port
+        if (pin == 0) { port = "S1" }
+        if (pin == 1) { port = "S2" }
+        if (pin == 2) { port = "S3" }
+        let direction
+        if(dir==0){direction="clockwise"}
+        if(dir==1){direction="anticlockwise"}
+        let cmd = "(AT+servo_360?pin=" + port + "&direction=" +direction  + "&speed="+speed.toString()+")"
+        serial.writeLine(cmd)
+    }
 
 }
 
