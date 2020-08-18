@@ -322,7 +322,7 @@ namespace WiFiIoT {
 	// -------------- 8.ESP Control ----------------
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_180
-    //%block="Turn ESP 180deg Servo to %deg degree at %pin"
+    //%block="Turn ESP 180° Servo to %deg ° at %pin"
     //% weight=90
     //% deg.min=0 deg.max=180
     export function ESP_Servo_180(deg:number,pin:ESP_SERVO_PORT): void {
@@ -335,7 +335,7 @@ namespace WiFiIoT {
     }
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_360
-    //%block="Turn ESP 360deg Servo in %dir with %speed speed at %pin"
+    //%block="Turn ESP 360° Servo in %dir with %speed speed at %pin"
     //% weight=90
     //% speed.min=0 speed.max=100
     export function ESP_Servo_360(dir: ESP_360_SERVO_DIR, speed:number ,pin: ESP_SERVO_PORT): void {
