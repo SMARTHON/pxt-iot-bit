@@ -1,6 +1,6 @@
 /**
  * Sensors blocks
  */
-//% weight=101 color=#8636d6 icon="\uf1eb" block="WiFi IoT:bit"
+//% weight=101 color=#000000 icon="\uf1eb" block="WiFi IoT:bit"
 namespace WiFiIoT {
 }
