@@ -152,12 +152,14 @@ namespace WiFiIoT {
     }
     // -------------- 3. Cloud ----------------
     //% blockId=wifi_ext_board_set_thingspeak
-    //% block="Send Thingspeak key* %key|field1 %field1|field2 %field2|field3 %field3"
+    //% block="Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130
+    //% expandableArgumentMode="enabled"
     //% blockGap=7	
-    export function sendThingspeak(key: string, field1: number, field2: number, field3: number): void {
-        serial.writeLine("(AT+thingspeak?key=" + key + "&field1=" + field1 + "&field2=" + field2 + "&field3=" + field3 + ")");
+    export function sendThingspeak(key: string, field1: number = 0, field2: number = 0, field3: number = 0, field4: number = 0, field5: number = 0, field6: number = 0, field7: number = 0, field8: number = 0): void {
+        serial.writeLine("(AT+thingspeak?key=" + key + "&field1=" + field1 + "&field2=" + field2 + "&field3=" + field3 + "&field4=" + field4 + "&field5=" + field5 + "&field6=" + field6 + "&field7=" + field7 + "&field8=" + field8 + ")");
     }
+
 
 
     //% blockId=wifi_ext_board_set_ifttt
