@@ -266,27 +266,6 @@ namespace WiFiIoT {
         WAN_Remote_Conn_value = handler;
     }
 
-   
-
-    // -------------- 6. General ----------------		
-
-    //%subcategory=Control
-    //%blockId=wifi_ext_board_version
-    //%block="Get firmware version"
-    //% weight=30
-    //% blockGap=7	
-    export function sendVersion(): void {
-        serial.writeLine("(AT+version)");
-    }
-
-    //%subcategory=Control
-    //%blockId=wifi_ext_board_at
-    //%block="Send AT command %command"
-    //% weight=25
-    export function sendAT(command: string): void {
-        serial.writeLine(command);
-        flag = false
-    }
 	
 // -------------- 7. Wifi Channel ----------------
     //%subcategory=Channel
@@ -323,7 +302,7 @@ namespace WiFiIoT {
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_180
     //%block="Turn ESP 180° Servo to %deg ° at %pin"
-    //% weight=90
+    //% weight=36
     //% deg.min=0 deg.max=180
     export function ESP_Servo_180(deg:number,pin:ESP_SERVO_PORT): void {
         let port
@@ -336,7 +315,7 @@ namespace WiFiIoT {
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_360
     //%block="Turn ESP 360° Servo in %dir with %speed speed at %pin"
-    //% weight=90
+    //% weight=35
     //% speed.min=0 speed.max=100
     export function ESP_Servo_360(dir: ESP_360_SERVO_DIR, speed:number ,pin: ESP_SERVO_PORT): void {
         let port
@@ -349,6 +328,24 @@ namespace WiFiIoT {
         let cmd = "(AT+servo_360?pin=" + port + "&direction=" +direction  + "&speed="+speed.toString()+")"
         serial.writeLine(cmd)
     }
+	// -------------- 6. General ----------------		
 
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_version
+    //%block="Get firmware version"
+    //% weight=30
+    //% blockGap=7	
+    export function sendVersion(): void {
+        serial.writeLine("(AT+version)");
+    }
+
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_at
+    //%block="Send AT command %command"
+    //% weight=25
+    export function sendAT(command: string): void {
+        serial.writeLine(command);
+        flag = false
+    }
 }
 
