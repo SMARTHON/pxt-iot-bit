@@ -156,8 +156,20 @@ namespace WiFiIoT {
     //% weight=130
     //% expandableArgumentMode="enabled"
     //% blockGap=7	
-    export function sendThingspeak(key: string, field1: number = 0, field2: number = 0, field3: number = 0, field4: number = 0, field5: number = 0, field6: number = 0, field7: number = 0, field8: number = 0): void {
-        serial.writeLine("(AT+thingspeak?key=" + key + "&field1=" + field1 + "&field2=" + field2 + "&field3=" + field3 + "&field4=" + field4 + "&field5=" + field5 + "&field6=" + field6 + "&field7=" + field7 + "&field8=" + field8 + ")");
+    export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
+        let command = "(AT+thingspeak?key=";
+        if (key == "") { return }
+        else { command = command + key }
+        if (field1 != null) { command = command + "&field1=" + field1 }
+        if (field2 != null) { command = command + "&field2=" + field2 }
+        if (field3 != null) { command = command + "&field3=" + field3 }
+        if (field4 != null) { command = command + "&field4=" + field4 }
+        if (field5 != null) { command = command + "&field5=" + field5 }
+        if (field6 != null) { command = command + "&field6=" + field6 }
+        if (field7 != null) { command = command + "&field7=" + field7 }
+        if (field8 != null) { command = command + "&field8=" + field8 }
+        command = command + ")"
+        serial.writeLine(command);
     }
 
 
