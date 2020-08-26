@@ -1,6 +1,7 @@
 namespace WiFiIoT {
     let flag = true;
     let httpReturnArray: string[] = []
+	let OLED_FLAG=false;
     let temp_cmd = ""
     let lan_cmd = ""
     let wan_cmd = ""
@@ -31,7 +32,22 @@ namespace WiFiIoT {
         //% block="DELETE"
         DELETE
     }
-	
+	export enum mode {
+        //% block="WEB"
+        Web,
+        //% block="APP"
+        App,
+        //% block="IFTTT"
+        ifttt,
+        //% block="ALL"
+        all
+    }
+	 export enum Init_mode {
+        //% block="with"
+        With_Wifi_Info,
+        //% block="without"
+        Without_Wifi_Info
+    }
 	export enum ESP_SERVO_PORT {
         //% block="S1"
         S1,
@@ -49,14 +65,17 @@ namespace WiFiIoT {
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize WiFi IoT:bit and OLED"
+    //%block="Initialize WiFi IoT:bit and OLED %init_mode Wifi Info"
     //% weight=140
     //% blockGap=7	
-    export function initializeWifi(): void {
+    export function initializeWifi(init_mode: Init_mode): void {
         serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
         OLED.init(64, 128)
+		if (init_mode == Init_mode.With_Wifi_Info) {
+            OLED_FLAG = true
+        }
 
         serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
             temp_cmd = serial.readLine()
@@ -68,7 +87,7 @@ namespace WiFiIoT {
                 httpReturnArray.push(tempDeleteFirstCharacter)
             } else if (Lan_connected && temp_cmd.charAt(0).compare(",") == 0) {
                 lan_cmd = temp_cmd.substr(1, 20)
-				OLED.showStringWithNewLine("LAN cmd: " + lan_cmd)
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("LAN cmd: " + lan_cmd)}
                 if (LAN_Remote_Conn) LAN_Remote_Conn(lan_cmd)
             } else if (Wan_connected && temp_cmd.charAt(0).compare(":") == 0) {
                 wan_cmd = temp_cmd.substr(1, 20)
@@ -78,15 +97,15 @@ namespace WiFiIoT {
                     wan_cmd_value = wan_cmd.substr(pos + 1, wan_cmd.length);
                     wan_cmd = temp;
                 }
-				OLED.showStringWithNewLine("WAN cmd: " + wan_cmd)
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd: " + wan_cmd)}
 				if (temp_cmd.includes("$") && WAN_Remote_Conn_value) {
-                    OLED.showStringWithNewLine("WAN cmd value: " + wan_cmd_value);
+                    if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd value: " + wan_cmd_value)};
                     WAN_Remote_Conn_value(wan_cmd, parseInt(wan_cmd_value));
                 }
                 else if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
             } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
                 wifi_cmd = temp_cmd.substr(1, 20)
-				OLED.showStringWithNewLine("WIFI msg: " + wifi_cmd)
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WIFI msg: " + wifi_cmd)}
                 if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
             } else if (temp_cmd.charAt(0).compare("%") == 0)
 			{
@@ -105,7 +124,7 @@ namespace WiFiIoT {
 			} else {
 				if (temp_cmd.substr(0, 11) == "HTTP client")
 					temp_cmd = "Keep listen"
-				OLED.showStringWithNewLine(temp_cmd.substr(0,20))
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine(temp_cmd.substr(0,20))}
             }
 		
         })
@@ -265,18 +284,18 @@ namespace WiFiIoT {
 
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect
-    //%block="On WAN command received"
+    //%block="On %Mode Control WAN command received"
     //% weight=70
 	//% blockGap=7	draggableParameters=reporter
-    export function on_WAN_remote(handler: (WAN_Command:string) => void): void {
+    export function on_WAN_remote(Mode: mode,handler: (WAN_Command:string) => void): void {
         WAN_Remote_Conn = handler;
     }
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
-    //%block="On WAN command received with value"
+    //%block="On %Mode Control WAN command received with value"
     //% weight=65
     //% blockGap=7	draggableParameters=reporter
-    export function on_WAN_remote_value(handler: (WAN_Command: string, Value: number) => void): void {
+    export function on_WAN_remote_value(Mode:mode,handler: (WAN_Command: string, Value: number) => void): void {
         WAN_Remote_Conn_value = handler;
     }
 
