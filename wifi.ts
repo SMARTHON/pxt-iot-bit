@@ -284,18 +284,18 @@ namespace WiFiIoT {
 
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect
-    //%block="On %Mode Control WAN command received"
+    //%block="On WAN command received"
     //% weight=70
 	//% blockGap=7	draggableParameters=reporter
-    export function on_WAN_remote(Mode: mode,handler: (WAN_Command:string) => void): void {
+    export function on_WAN_remote(handler: (WAN_Command:string) => void): void {
         WAN_Remote_Conn = handler;
     }
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
-    //%block="On %Mode Control WAN command received with value"
+    //%block="On WAN command received with value"
     //% weight=65
     //% blockGap=7	draggableParameters=reporter
-    export function on_WAN_remote_value(Mode:mode,handler: (WAN_Command: string, Value: number) => void): void {
+    export function on_WAN_remote_value(handler: (WAN_Command: string, Value: number) => void): void {
         WAN_Remote_Conn_value = handler;
     }
 
