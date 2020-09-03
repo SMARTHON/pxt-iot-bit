@@ -42,12 +42,6 @@ namespace WiFiIoT {
         //% block="ALL"
         all
     }
-	 export enum Init_mode {
-        //% block="with"
-        With_Wifi_Info,
-        //% block="without"
-        Without_Wifi_Info
-    }
 	export enum ESP_SERVO_PORT {
         //% block="S1"
         S1,
@@ -65,15 +59,18 @@ namespace WiFiIoT {
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize WiFi IoT:bit and OLED %init_mode Wifi Info"
-    //% weight=140
-    //% blockGap=7	
-    export function initializeWifi(init_mode: Init_mode): void {
+    //%block="Initialize WiFi IoT:bit|at OLED|width%width|height%height|Wifi info shown:%init_mode"
+   //% weight=140
+    //% blockGap=7
+	//% width.defl=128, height.defl=64
+    //% init_mode.defl=true
+	//% inlineInputMode=external
+    export function initializeWifi(width: number, height: number, init_mode: boolean = true): void {
         serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
-        OLED.init(64, 128)
-		if (init_mode == Init_mode.With_Wifi_Info) {
+        OLED.init(height, width)
+        if (init_mode == true) {
             OLED_FLAG = true
         }
 
@@ -170,6 +167,7 @@ namespace WiFiIoT {
 		
     }
     // -------------- 3. Cloud ----------------
+	//%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_thingspeak
     //% block="Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130
@@ -203,7 +201,7 @@ namespace WiFiIoT {
 
 	// -------------- 4. Others ----------------
 
-
+	//%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
     //% block="Send generic HTTP method %method| http://%url| header %header| body %body"
     //% weight=115
