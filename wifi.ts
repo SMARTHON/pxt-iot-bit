@@ -59,13 +59,13 @@ namespace WiFiIoT {
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize WiFi IoT:bit|at OLED|width%width|height%height|Wifi info shown:%init_mode"
+    //%block="Initialize WiFi IoT:bit|at OLED|height%height|width%width|Wifi info shown:%init_mode"
    //% weight=140
     //% blockGap=7
 	//% width.defl=128, height.defl=64
     //% init_mode.defl=true
 	//% inlineInputMode=external
-    export function initializeWifi(width: number, height: number, init_mode: boolean = true): void {
+    export function initializeWifi( height: number,width: number, init_mode: boolean = true): void {
         serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
@@ -191,6 +191,7 @@ namespace WiFiIoT {
 
 
 
+	//%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_ifttt
     //% block="Send IFTTT key* %key|event_name* %event|value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
@@ -227,6 +228,7 @@ namespace WiFiIoT {
     }
 
     
+	//%subcategory="IoT Services"
     //% blockId="wifi_ext_board_generic_http_return" 
     //% block="HTTP response (string array)"
     //% weight=110
