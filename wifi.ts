@@ -69,7 +69,7 @@ namespace WiFiIoT {
         serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
-        MuseOLED.init(height, width)
+        OLED.init(height, width)
         if (init_mode == true) {
             OLED_FLAG = true
         }
@@ -84,7 +84,7 @@ namespace WiFiIoT {
                 httpReturnArray.push(tempDeleteFirstCharacter)
             } else if (Lan_connected && temp_cmd.charAt(0).compare(",") == 0) {
                 lan_cmd = temp_cmd.substr(1, 20)
-				if (OLED_FLAG == true) {MuseOLED.showString("LAN cmd: " + lan_cmd)}
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("LAN cmd: " + lan_cmd)}
                 if (LAN_Remote_Conn) LAN_Remote_Conn(lan_cmd)
             } else if (Wan_connected && temp_cmd.charAt(0).compare(":") == 0) {
                 wan_cmd = temp_cmd.substr(1, 20)
@@ -94,15 +94,15 @@ namespace WiFiIoT {
                     wan_cmd_value = wan_cmd.substr(pos + 1, wan_cmd.length);
                     wan_cmd = temp;
                 }
-				if (OLED_FLAG == true) {MuseOLED.showString("WAN cmd: " + wan_cmd)}
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd: " + wan_cmd)}
 				if (temp_cmd.includes("$") && WAN_Remote_Conn_value) {
-                    if (OLED_FLAG == true) {MuseOLED.showString("WAN cmd value: " + wan_cmd_value)};
+                    if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd value: " + wan_cmd_value)};
                     WAN_Remote_Conn_value(wan_cmd, parseInt(wan_cmd_value));
                 }
                 else if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
             } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
                 wifi_cmd = temp_cmd.substr(1, 20)
-				if (OLED_FLAG == true) {MuseOLED.showString("WIFI msg: " + wifi_cmd)}
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WIFI msg: " + wifi_cmd)}
                 if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
             } else if (temp_cmd.charAt(0).compare("%") == 0)
 			{
@@ -121,7 +121,7 @@ namespace WiFiIoT {
 			} else {
 				if (temp_cmd.substr(0, 11) == "HTTP client")
 					temp_cmd = "Keep listen"
-				if (OLED_FLAG == true) {MuseOLED.showString(temp_cmd.substr(0,20))}
+				if (OLED_FLAG == true) {OLED.showStringWithNewLine(temp_cmd.substr(0,20))}
             }
 		
         })
