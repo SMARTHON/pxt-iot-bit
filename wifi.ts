@@ -59,7 +59,7 @@ namespace WiFiIoT {
 
     // -------------- 1. Initialization ----------------
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize WiFi IoT:bit|at OLED|height%height|width%width|Wifi info shown:%init_mode"
+    //%block="Initialize IoT:bit|at OLED|height%height|width%width|Wifi info shown:%init_mode"
    //% weight=140
     //% blockGap=7
 	//% width.defl=128, height.defl=64
