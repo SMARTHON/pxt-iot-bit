@@ -334,31 +334,46 @@ namespace WiFiIoT {
 	// -------------- 8.ESP Control ----------------
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_180
-    //%block="Turn ESP 180° Servo to %deg ° at %pin"
+    //%block="Turn ESP 180° |Servo1 to %deg1 ° ||Servo2 to %deg2 ° |Servo3 to %deg3 °|"
+    //% expandableArgumentMode="enabled"
     //% weight=36
     //% deg.min=0 deg.max=180
-    export function ESP_Servo_180(deg:number,pin:ESP_SERVO_PORT): void {
-        let port
-        if(pin==0){port="S1"}
-        if(pin==1){port="S2"}
-        if(pin==2){port="S3"}
-        let cmd = "(AT+servo_180?pin="+port+"&degree="+deg.toString()+")"
+    export function ESP_Servo_180(deg1:number=null,deg2:number=null,deg3:number=null): void {
+        let cmd = "(AT+servo_180?";
+        if(deg1!=null){cmd=cmd+"degree1="+deg1.toString()+"&"}
+        if(deg2!=null){cmd=cmd+"degree2="+deg2.toString()+"&"}
+        if(deg3!=null){cmd=cmd+"degree3="+deg3.toString()+"&"}
+        cmd = cmd+")"
         serial.writeLine(cmd)
     }
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_360
-    //%block="Turn ESP 360° Servo in %dir with %speed speed at %pin"
+    //%block="Turn ESP 360° Servo|Servo1 in %dir1 with speed %speed1||Servo2 in %dir2 with speed %speed2|Servo3 in %dir3 with speed %speed3|"
     //% weight=35
     //% speed.min=0 speed.max=100
-    export function ESP_Servo_360(dir: ESP_360_SERVO_DIR, speed:number ,pin: ESP_SERVO_PORT): void {
-        let port
-        if (pin == 0) { port = "S1" }
-        if (pin == 1) { port = "S2" }
-        if (pin == 2) { port = "S3" }
-        let direction
-        if(dir==0){direction="clockwise"}
-        if(dir==1){direction="anticlockwise"}
-        let cmd = "(AT+servo_360?pin=" + port + "&direction=" +direction  + "&speed="+speed.toString()+")"
+    //% expandableArgumentMode="enabled"
+   
+    export function ESP_Servo_360(dir1: ESP_360_SERVO_DIR=0, speed1:number=null,dir2: ESP_360_SERVO_DIR=0, speed2:number=null,dir3: ESP_360_SERVO_DIR=0, speed3:number=null,): void {
+        let cmd = "(AT+servo_360?";
+        if(speed1!=null){
+            let direction1;
+            if(dir1==0){direction1="clockwise";}
+            if(dir1==1){direction1="anticlockwise"}
+            cmd=cmd+"direction1="+direction1+"&speed1="+speed1.toString()+"&";
+        }
+         if(speed2!=null){
+            let direction2;
+            if(dir2==0){direction2="clockwise";}
+            if(dir2==1){direction2="anticlockwise"}
+            cmd=cmd+"direction2="+direction2+"&speed2="+speed2.toString()+"&";
+        }
+         if(speed1!=null){
+            let direction3;
+            if(dir3==0){direction3="clockwise";}
+            if(dir3==1){direction3="anticlockwise"}
+            cmd=cmd+"direction3="+direction3+"&speed3="+speed3.toString()+"&";
+        }
+        cmd=cmd+")";
         serial.writeLine(cmd)
     }
 	// -------------- 6. General ----------------		
