@@ -337,7 +337,9 @@ namespace WiFiIoT {
     //%block="Turn ESP 180° |Servo1 to %deg1 ° ||Servo2 to %deg2 ° |Servo3 to %deg3 °|"
     //% expandableArgumentMode="enabled"
     //% weight=36
-    //% deg.min=0 deg.max=180
+    //% deg1.min=0 deg1.max=180
+    //% deg2.min=0 deg2.max=180
+    //% deg3.min=0 deg3.max=180
     export function ESP_Servo_180(deg1:number=null,deg2:number=null,deg3:number=null): void {
         let cmd = "(AT+servo_180?";
         if(deg1!=null){cmd=cmd+"degree1="+deg1.toString()+"&"}
@@ -350,7 +352,9 @@ namespace WiFiIoT {
     //%blockId=ESP_Servo_360
     //%block="Turn ESP 360° Servo|Servo1 in %dir1 with speed %speed1||Servo2 in %dir2 with speed %speed2|Servo3 in %dir3 with speed %speed3|"
     //% weight=35
-    //% speed.min=0 speed.max=100
+    //% speed1.min=0 speed1.max=100
+    //% speed2.min=0 speed2.max=100
+    //% speed3.min=0 speed3.max=100
     //% expandableArgumentMode="enabled"
    
     export function ESP_Servo_360(dir1: ESP_360_SERVO_DIR=0, speed1:number=null,dir2: ESP_360_SERVO_DIR=0, speed2:number=null,dir3: ESP_360_SERVO_DIR=0, speed3:number=null,): void {
