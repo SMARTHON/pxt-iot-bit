@@ -340,6 +340,7 @@ namespace WiFiIoT {
     //% deg1.min=0 deg1.max=180
     //% deg2.min=0 deg2.max=180
     //% deg3.min=0 deg3.max=180
+	//% blockGap=7
     export function ESP_Servo_180(deg1:number=null,deg2:number=null,deg3:number=null): void {
         let cmd = "(AT+servo_180?";
         if(deg1!=null){cmd=cmd+"degree1="+deg1.toString()+"&"}
