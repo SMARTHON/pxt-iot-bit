@@ -2,6 +2,7 @@ namespace WiFiIoT {
     let flag = true;
     let httpReturnArray: string[] = []
 	let OLED_FLAG=false;
+    let OLED_row_count=0;
     let temp_cmd = ""
     let lan_cmd = ""
     let wan_cmd = ""
@@ -11,16 +12,25 @@ namespace WiFiIoT {
     let Wan_connected = false
 	let Wifi_remote = false
 	let Wifi_connected = "0"
+    let IP=false
+    let Error=false
 	let myChannel = ""
-	
+	let version=""
+    let device_id=""
+    let wifi_tried_num=0
+    let ip=""
+    let connecting_flag=false
+    let disconnect_error_code=""
+    let thingspeak_error=""
 	type EvtAct =(WiFiMessage:string) => void;
     let Wifi_Remote_Conn: EvtAct = null;
-	let Wifi_Conn: () => void = null;
-	let Wifi_DisConn: () => void = null;
+	let Wifi_Conn: (IP:string) => void = null;
+	let Wifi_DisConn: (Error:string) => void = null;
 	let LAN_Remote_Conn: (LAN_Command:string) => void = null;
 	let WAN_Remote_Conn: (WAN_Command:string) => void = null;
 	let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void = null;
-	
+	let Thingspeak_conn: (Status:string,Error_code:string) => void = null;
+    let IFTTT_conn: (Status:string,Error_code:string) => void = null;
 
     export enum httpMethod {
         //% block="GET"
@@ -69,7 +79,7 @@ namespace WiFiIoT {
         serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
-        OLED.init(height, width)
+        OLED.init(width, height)
         if (init_mode == true) {
             OLED_FLAG = true
         }
@@ -77,56 +87,104 @@ namespace WiFiIoT {
         serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
             temp_cmd = serial.readLine()
             //OLED.showStringWithNewLine(temp_cmd)
-            let tempDeleteFirstCharacter = ""
+            let tempDeleteFirstCharacter = ""  
 
-            if (temp_cmd.charAt(0).compare("#") == 0) {
-                tempDeleteFirstCharacter = temp_cmd.substr(1, 20)
-                httpReturnArray.push(tempDeleteFirstCharacter)
-            } else if (Lan_connected && temp_cmd.charAt(0).compare(",") == 0) {
-                lan_cmd = temp_cmd.substr(1, 20)
-				if (OLED_FLAG == true) {OLED.showStringWithNewLine("LAN cmd: " + lan_cmd)}
-                if (LAN_Remote_Conn) LAN_Remote_Conn(lan_cmd)
-            } else if (Wan_connected && temp_cmd.charAt(0).compare(":") == 0) {
-                wan_cmd = temp_cmd.substr(1, 20)
-				if (wan_cmd.includes("$")) {
-                    let pos = wan_cmd.indexOf("$");
-                    let temp = wan_cmd.substr(0, pos);
-                    wan_cmd_value = wan_cmd.substr(pos + 1, wan_cmd.length);
-                    wan_cmd = temp;
+            if(temp_cmd.charAt(0).compare("W")==0){ //start with W
+                let space_pos=temp_cmd.indexOf(" ")
+                let label=temp_cmd.substr(1,space_pos-1)
+                if(label=="0"){ //W0 - Initialize
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    version=respone[1]
+                    device_id=respone[2]
+                    if(OLED_FLAG==true&&connecting_flag==false){
+                    OLED.clear()
+                    OLED.writeStringNewLine("Initialize OK")
+                    OLED.writeStringNewLine("Smarthon IoT:Bit")
+                    OLED.writeStringNewLine("Version:"+version)
+                    }
                 }
-				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd: " + wan_cmd)}
-				if (temp_cmd.includes("$") && WAN_Remote_Conn_value) {
-                    if (OLED_FLAG == true) {OLED.showStringWithNewLine("WAN cmd value: " + wan_cmd_value)};
-                    WAN_Remote_Conn_value(wan_cmd, parseInt(wan_cmd_value));
+                else if(label=="1"){ //W1 - Connect WIFI
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){
+                        Wifi_connected="0"
+                        //Wifi_DisConn()
+                        if(respone[2]!=null){
+                            if(OLED_FLAG==true){
+                                connecting_flag=false
+                                //OLED.newLine()
+                                //OLED.writeStringNewLine("Timeout")
+                            }
+                        }
+                    }
+                    else if(respone[1]=="1"){
+                      Wifi_connected="1"
+                      if(OLED_FLAG==true&&connecting_flag==false){
+                          connecting_flag=true
+                        //OLED.writeString("Connecting.")
+                      }else if(OLED_FLAG==true&&connecting_flag==true){
+                          //OLED.writeString(".")
+                      }
+                    }
+                    else if (respone[1]=="2"){
+                       Wifi_connected="2"
+                       if(respone[2]!=null){
+                           ip=respone[2]
+                           //Wifi_Conn()
+                           if(OLED_FLAG==true){
+                           connecting_flag=false
+                           //OLED.newLine()
+                           //OLED.writeStringNewLine("IP:"+ip)
+                           }
+                           if(Wifi_Conn && Wifi_connected == "2") Wifi_Conn(ip)
+                         
+                       } 
+                    }
+                    else if (respone[1]=="3"){
+                        Wifi_connected="3"
+                        if(respone[2]!=null){
+                            disconnect_error_code=respone[2]
+					        if(Wifi_DisConn && Wifi_connected == "3") Wifi_DisConn(disconnect_error_code)
+                          if(OLED_FLAG==true&&connecting_flag==false) {
+                              //OLED.writeStringNewLine("error:"+disconnect_error_code)
+                          }
+                        }
+                    }
                 }
-                else if (WAN_Remote_Conn) WAN_Remote_Conn(wan_cmd)
-            } else if (Wifi_remote && temp_cmd.charAt(0).compare(":") == 0) {
-                wifi_cmd = temp_cmd.substr(1, 20)
-				if (OLED_FLAG == true) {OLED.showStringWithNewLine("WIFI msg: " + wifi_cmd)}
-                if (Wifi_Remote_Conn) Wifi_Remote_Conn(wifi_cmd)
-            } else if (temp_cmd.charAt(0).compare("%") == 0)
-			{
-				// wifi status change
-				if (Wifi_connected != temp_cmd.charAt(1))
-				{
-					Wifi_connected = temp_cmd.charAt(1)
-					
-					// 0:Not connected, 1:connecting, 2:connected
-					if(Wifi_Conn && Wifi_connected == "2") Wifi_Conn()
-						
-					if(Wifi_DisConn && Wifi_connected == "0") Wifi_DisConn()
-					
-				}
-		
-			} else {
-				if (temp_cmd.substr(0, 11) == "HTTP client")
-					temp_cmd = "Keep listen"
-				if (OLED_FLAG == true) {OLED.showStringWithNewLine(temp_cmd.substr(0,20))}
+                else if (label=="2"){ //W2 Thingspeak
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){
+                        if(OLED_FLAG==true){
+                            //OLED.writeStringNewLine("Thingspeak uploaded")
+                        }
+                        Thingspeak_conn("OK","")
+                    }
+                    else if (respone[1]=="1"){
+                        if(respone[2]!=null){
+                            thingspeak_error=respone[2]
+                            Thingspeak_conn("FAIL",thingspeak_error)
+                        }
+                        if(OLED_FLAG==true){
+                            //OLED.writeStringNewLine("Thingspeak upload")
+                            //OLED.writeStringNewLine("fail code:"+thingspeak_error)
+                        }
+                    }
+                }
+                else if(label=="3"){ //W3 IFTTT
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){
+                        IFTTT_conn("OK","")
+                    }
+                    else if(respone[1]=="1"){
+                        if(respone[2]!=null){
+                            IFTTT_conn("FAIL",respone[2])
+                        }
+                    }
+                }
             }
-		
         })
-
-        basic.pause(5000)
+        basic.pause(500)
+        serial.writeLine("(AT+W0)")
+        basic.pause(2000)
     }
 
     // -------------- 2. WiFi ----------------
@@ -136,13 +194,19 @@ namespace WiFiIoT {
 	//% blockGap=7	
     export function setWifi(ssid: string, pwd: string): void {
         serial.writeLine("(AT+wifi?ssid=" + ssid + "&pwd=" + pwd + ")");
+        if(OLED_FLAG==true&&connecting_flag==false){
+        //OLED.clear()
+        //OLED.writeStringNewLine("WIFI Connecting...")
+        //OLED.writeStringNewLine("SSID:"+ssid)
+        //OLED.writeStringNewLine("PWD:"+pwd)
+        }
     }
 	
     //% blockId=wifi_ext_board_on_wifi_connect
     //% block="On WiFi connected"   
     //% weight=133
-	//% blockGap=7	
-    export function on_wifi_connect(handler: () => void): void {
+	//% blockGap=7	draggableParameters=reporter
+    export function on_wifi_connect(handler: (IP:string) => void): void {
         Wifi_Conn = handler;
     
     }
@@ -150,8 +214,8 @@ namespace WiFiIoT {
 	//% blockId=wifi_ext_board_on_wifi_disconnect
     //% block="On WiFi disconnected"   
     //% weight=132
-	//% blockGap=7	
-    export function on_wifi_disconnect(handler: () => void): void {
+	//% blockGap=7	draggableParameters=reporter
+    export function on_wifi_disconnect(handler: (Error:string) => void): void {
         Wifi_DisConn = handler;
     
     }
@@ -189,6 +253,14 @@ namespace WiFiIoT {
         serial.writeLine(command);
     }
 
+    //%subcategory="IoT Services"
+    //%blockId=Thingspeak_connect
+    //%block="On Thingspeak Uploaded"
+    //% weight=129
+	//% blockGap=7	draggableParameters=reporter
+    export function on_thingspeak_conn(handler: (Status:string,Error_code:string) => void): void {
+        Thingspeak_conn = handler;
+    }
 
 
 	//%subcategory="IoT Services"
@@ -211,6 +283,14 @@ namespace WiFiIoT {
               serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + ")");
         }
       }
+    //%subcategory="IoT Services"
+    //%blockId=IFTTT_connect
+    //%block="On IFTTT Uploaded"
+    //% weight=124
+	//% blockGap=7	draggableParameters=reporter
+    export function on_IFTTT_conn(handler: (Status:string,Error_code:string) => void): void {
+        IFTTT_conn = handler;
+    }
 
 	// -------------- 4. Others ----------------
 
