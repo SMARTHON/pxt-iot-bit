@@ -22,15 +22,19 @@ namespace WiFiIoT {
     let connecting_flag=false
     let disconnect_error_code=""
     let thingspeak_error=""
-	type EvtAct =(WiFiMessage:string) => void;
-    let Wifi_Remote_Conn: EvtAct = null;
+    let NTP_Receive: (Year:number, Month:number,Day:number,Hour:number,Minute:number,Second:number) => void = null;
+    let Wifi_Remote_Conn: (channel:string,WifiMessage:string)=>void= null;
+    let Wifi_Remote_Conn_value:(channel:string,WifiMessage:string,Value:number)=>void=null;
 	let Wifi_Conn: (IP:string) => void = null;
 	let Wifi_DisConn: (Error:string) => void = null;
 	let LAN_Remote_Conn: (LAN_Command:string) => void = null;
+    let WAN_Control_Conn: (Device_ID:string,Error_code:string) => void = null;
 	let WAN_Remote_Conn: (WAN_Command:string) => void = null;
-	let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void = null;
+	let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
 	let Thingspeak_conn: (Status:string,Error_code:string) => void = null;
     let IFTTT_conn: (Status:string,Error_code:string) => void = null;
+    let Wifi_Remote_create:(channel:string,Error_code:string)=>void=null;
+    let Wifi_sender:(status:string,Error_code:string)=>void=null;
 
     export enum httpMethod {
         //% block="GET"
@@ -68,25 +72,27 @@ namespace WiFiIoT {
     }
 
     // -------------- 1. Initialization ----------------
+    /**
+     * Init the iotbit
+     * @param tx_pin describe parameter here, eg: SerialPin.P16
+     * @param rx_pin describe parameter here, eg: SerialPin.P8
+     */ 
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize IoT:bit|at OLED|height%height|width%width|Wifi info shown:%init_mode"
-   //% weight=140
-    //% blockGap=7
-	//% width.defl=128, height.defl=64
-    //% init_mode.defl=true
-	//% inlineInputMode=external
-    export function initializeWifi( height: number,width: number, init_mode: boolean = true): void {
-        serial.redirect(SerialPin.P16, SerialPin.P8, BaudRate.BaudRate115200);
+    //%block="Initialize IoT:bit TX %tx_pin RX %rx_pin"
+    //% weight=140
+
+    export function initializeWifi( tx_pin:SerialPin,rx_pin:SerialPin): void {
+        serial.redirect(tx_pin,rx_pin, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
-        OLED.init(width, height)
+        /*OLED.init(width, height)
         if (init_mode == true) {
             OLED_FLAG = true
         }
-
+        */
         serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
             temp_cmd = serial.readLine()
-            //OLED.showStringWithNewLine(temp_cmd)
+            //OLED.writeStringNewLine(temp_cmd)
             let tempDeleteFirstCharacter = ""  
 
             if(temp_cmd.charAt(0).compare("W")==0){ //start with W
@@ -96,12 +102,14 @@ namespace WiFiIoT {
                     let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
                     version=respone[1]
                     device_id=respone[2]
+                    /*
                     if(OLED_FLAG==true&&connecting_flag==false){
                     OLED.clear()
                     OLED.writeStringNewLine("Initialize OK")
                     OLED.writeStringNewLine("Smarthon IoT:Bit")
                     OLED.writeStringNewLine("Version:"+version)
                     }
+                    */
                 }
                 else if(label=="1"){ //W1 - Connect WIFI
                     let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
@@ -156,7 +164,7 @@ namespace WiFiIoT {
                         if(OLED_FLAG==true){
                             //OLED.writeStringNewLine("Thingspeak uploaded")
                         }
-                        Thingspeak_conn("OK","")
+                        Thingspeak_conn("OK","0")
                     }
                     else if (respone[1]=="1"){
                         if(respone[2]!=null){
@@ -172,13 +180,82 @@ namespace WiFiIoT {
                 else if(label=="3"){ //W3 IFTTT
                     let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if(respone[1]=="0"){
-                        IFTTT_conn("OK","")
+                        IFTTT_conn("OK","0")
                     }
                     else if(respone[1]=="1"){
                         if(respone[2]!=null){
                             IFTTT_conn("FAIL",respone[2])
                         }
                     }
+                }
+                else if (label=="4"){ //W4 WAN
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){    //WAN start listen
+                        if(WAN_Control_Conn!=null){
+                        WAN_Control_Conn(respone[2],"0")    //return the channel ID
+                        }
+                    }
+                    else if (respone[1]=="1"){
+                        if(WAN_Control_Conn!=null){
+                         WAN_Control_Conn(respone[2],respone[3])    //return the error code
+                        }
+                    }
+                    else if(respone[1]=="2"){//return message  
+                        
+                        if(respone[2].includes("$")){       //with value
+                            let pos=respone[2].indexOf("$")
+                            if(WAN_Remote_Conn_value!=null){
+                             WAN_Remote_Conn_value(respone[2].substr(0,pos),parseInt(respone[2].substr(pos+1,respone[2].length)))
+                            }
+                        }
+                        else{           //without value
+                            if(WAN_Remote_Conn!=null){
+                                WAN_Remote_Conn(respone[2])
+                                }
+                        }
+                    }
+                }
+                else if(label=="5"){  //W5 WIFI control
+                     let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){    //WIFI control start listen
+                        if(respone[2]!=null){
+                            Wifi_Remote_create(respone[2],"0")
+                        }
+                    }else if (respone[1]=="1"){ //WIFI control listen fail
+                        if(respone[2]!=null&&respone[3]!=null){ //W5 1 ID ERROR
+                        Wifi_Remote_create(respone[2],respone[3])   
+                        }
+                    }else if (respone[1]=="2"){ //WIFI control get Message
+                        if(respone[3].includes("$")){       //with value
+                            let pos=respone[3].indexOf("$")
+                            if(Wifi_Remote_Conn_value!=null){
+                            Wifi_Remote_Conn_value(respone[2],respone[3].substr(0,pos),parseInt(respone[3].substr(pos+1,respone[3].length)))
+                            }
+                        }
+                        else{           //without value
+                            if(Wifi_Remote_Conn!=null){
+                            Wifi_Remote_Conn(respone[2],respone[3])
+                            }
+                        }
+                    }
+                }
+                else if(label=="6"){        //W6 Wifi sender
+                         let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[1]=="0"){
+                        if(Wifi_sender!=null){
+                        Wifi_sender("OK","0")
+                        }
+                    }else if(respone[1]=="1"){
+                        if(Wifi_sender!=null){
+                        Wifi_sender("Fail",respone[2])
+                        }
+                    }
+                }
+                else if(label=="7"){        //W7 NTP
+                    let respone= temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if(respone[3]!=null){
+                    NTP_Receive(parseInt(respone[1]),parseInt(respone[2]),parseInt(respone[3]),parseInt(respone[4]),parseInt(respone[5]),parseInt(respone[6]))
+                }
                 }
             }
         })
@@ -191,7 +268,6 @@ namespace WiFiIoT {
     //% blockId=wifi_ext_board_set_wifi
     //% block="Set WiFi to ssid %ssid| pwd %pwd"   
     //% weight=135
-	//% blockGap=7	
     export function setWifi(ssid: string, pwd: string): void {
         serial.writeLine("(AT+wifi?ssid=" + ssid + "&pwd=" + pwd + ")");
         if(OLED_FLAG==true&&connecting_flag==false){
@@ -205,8 +281,8 @@ namespace WiFiIoT {
     //% blockId=wifi_ext_board_on_wifi_connect
     //% block="On WiFi connected"   
     //% weight=133
-	//% blockGap=7	draggableParameters=reporter
-    export function on_wifi_connect(handler: (IP:string) => void): void {
+	//% draggableParameters=reporter
+    export function on_wifi_connect(handler: (IP_Address:string) => void): void {
         Wifi_Conn = handler;
     
     }
@@ -214,8 +290,8 @@ namespace WiFiIoT {
 	//% blockId=wifi_ext_board_on_wifi_disconnect
     //% block="On WiFi disconnected"   
     //% weight=132
-	//% blockGap=7	draggableParameters=reporter
-    export function on_wifi_disconnect(handler: (Error:string) => void): void {
+	//% draggableParameters=reporter
+    export function on_wifi_disconnect(handler: (Error_code:string) => void): void {
         Wifi_DisConn = handler;
     
     }
@@ -223,7 +299,6 @@ namespace WiFiIoT {
 	//% blockId=wifi_ext_board_is_wifi_connect
     //% block="WiFi connected?"   
     //% weight=131
-	//% blockGap=7	
     export function is_wifi_connect(): boolean {
         if(Wifi_connected == "2") 
 		return true
@@ -234,9 +309,8 @@ namespace WiFiIoT {
 	//%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_thingspeak
     //% block="Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
-    //% weight=130
+    //% weight=130 group="Thingspeak"
     //% expandableArgumentMode="enabled"
-    //% blockGap=7	
     export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
         let command = "(AT+thingspeak?key=";
         if (key == "") { return }
@@ -256,8 +330,9 @@ namespace WiFiIoT {
     //%subcategory="IoT Services"
     //%blockId=Thingspeak_connect
     //%block="On Thingspeak Uploaded"
-    //% weight=129
-	//% blockGap=7	draggableParameters=reporter
+    //% weight=129 group="Thingspeak"
+	//% draggableParameters=reporter
+    //% blockGap=7
     export function on_thingspeak_conn(handler: (Status:string,Error_code:string) => void): void {
         Thingspeak_conn = handler;
     }
@@ -267,7 +342,7 @@ namespace WiFiIoT {
     //% blockId=wifi_ext_board_set_ifttt
     //% block="Send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
-    //% blockGap=7	
+    //% group="IFTTT"
 	//% expandableArgumentMode="enabled"	
    export function sendIFTTT(key: string, eventname: string, value1: number=null, value2: number=null, value3: number=null): void {
         if(value1!=null&&value2!=null&&value3!=null){
@@ -286,8 +361,9 @@ namespace WiFiIoT {
     //%subcategory="IoT Services"
     //%blockId=IFTTT_connect
     //%block="On IFTTT Uploaded"
-    //% weight=124
-	//% blockGap=7	draggableParameters=reporter
+    //% weight=124	 group="IFTTT"
+	//% draggableParameters=reporter
+    //% blockGap=7
     export function on_IFTTT_conn(handler: (Status:string,Error_code:string) => void): void {
         IFTTT_conn = handler;
     }
@@ -297,8 +373,7 @@ namespace WiFiIoT {
 	//%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
     //% block="Send generic HTTP method %method| http://%url| header %header| body %body"
-    //% weight=115
-    //% blockGap=7	
+    //% weight=115	 group="HTTP"
     export function sendGenericHttp(method: httpMethod, url: string, header: string, body: string): void {
         httpReturnArray = []
         let temp = ""
@@ -323,69 +398,69 @@ namespace WiFiIoT {
 	//%subcategory="IoT Services"
     //% blockId="wifi_ext_board_generic_http_return" 
     //% block="HTTP response (string array)"
-    //% weight=110
+    //% weight=110	 group="HTTP"
+    //% blockGap=7
     export function getGenericHttpReturn(): Array<string> {
         return httpReturnArray;
     }
+    
+    //%subcategory="IoT Services"
+    //% blockId=wifi_ext_board_Call_NTP
+    //% block="Get NTP Current Time"   
+    //% weight=109
+	//% group="NTP"
+    export function getNTP(): void {
+        serial.writeLine("(AT+ntp)");
+    }
 
-
+	//%subcategory="IoT Services"
+    //% blockId="wifi_ext_board_receive_ntp" 
+    //% block="On NTP received"	 group="NTP"
+    //% weight=108 draggableParameters=reporter
+    //% blockGap=7
+    
+   export function on_NTP_Received(handler: (Year:number,Month:number,Day:number,Hour:number,Minute:number,Second:number) => void): void {
+        NTP_Receive = handler;
+    }
+    
 	
 
 	// -------------- 5. LAN/WAN Repmote ----------------
+    
     //%subcategory=Control
-	//%blockId=wifi_ext_board_start_server_LAN
-    //%block="Start WiFi remote control (LAN)"
-    //% weight=85
-    //% blockGap=7		
-	//% blockHidden=true
-    export function startWebServer_LAN(): void {
-        flag = true
-        serial.writeLine("(AT+startWebServer)")
-        Lan_connected = true
-        while (flag) {
-
-            serial.writeLine("(AT+write_sensor_data?p0=" + pins.analogReadPin(AnalogPin.P0) + "&p1=" + pins.analogReadPin(AnalogPin.P1) + "&p2=" + pins.analogReadPin(AnalogPin.P2) + ")")
-            basic.pause(500)
-            if (!flag)
-                break;
-        }
-
-    }
-	
-	//%subcategory=Control
     //%blockId=wifi_ext_board_start_server_WAN
     //%block="Start WiFi remote control (WAN)"
-    //% weight=80
-    //% blockGap=7		
+    //% weight=80  group="Start the control"
     export function startWebServer_WAN(): void {
         flag = true
         serial.writeLine("(AT+pubnub)")
         Wan_connected = true
         
     }
-
-	//%subcategory=Control
-    //%blockId=wifi_ext_board_on_LAN_connect
-    //%block="On LAN command received"
-    //% weight=75
+    //%subcategory=Control
+    //%blockId=wifi_ext_board_on_WAN_connected
+    //%block="On WAN control Connected" 
+    //% weight=75 group="Start the control"
 	//% blockGap=7	draggableParameters=reporter
-	//% blockHidden=true
-    export function on_LAN_remote(handler: (LAN_Command:string) => void): void {
-        LAN_Remote_Conn = handler;
+
+    export function on_WAN_Control_Connected(handler: (Device_ID:string,Error_code:string) => void): void {
+        WAN_Control_Conn = handler;
     }
+
+	
 
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect
-    //%block="On WAN command received"
-    //% weight=70
-	//% blockGap=7	draggableParameters=reporter
+    //%block="On WiFi received" 
+    //% weight=70 group="Get controlled"
+	//% draggableParameters=reporter
     export function on_WAN_remote(handler: (WAN_Command:string) => void): void {
         WAN_Remote_Conn = handler;
     }
 	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
-    //%block="On WAN command received with value"
-    //% weight=65
+    //%block="On WiFi received" 
+    //% weight=65 group="Get controlled"
     //% blockGap=7	draggableParameters=reporter
     export function on_WAN_remote_value(handler: (WAN_Command: string, Value: number) => void): void {
         WAN_Remote_Conn_value = handler;
@@ -395,32 +470,68 @@ namespace WiFiIoT {
 // -------------- 7. Wifi Channel ----------------
     //%subcategory=Channel
     //%blockId=wifi_listen_channel
-    //%block="WiFi start listening in channel %channel"
-    //% weight=20
-    //% blockGap=7
+    //%block="WiFi Receiver join channel %channel"
+    //% weight=20 group="Receiver"
     export function wifi_listen_channel(channel: string): void {
         Wifi_remote = true
 		myChannel = channel
         serial.writeLine("(AT+pubnubreceiver?channel=" + myChannel + ")")
     }
+    //%subcategory=Channel
+    //%blockId=wifi_ext_board_on_wifi_receieved
+    //%block="On WiFi Receiver received"
+    //% weight=18 group="Receiver"
+    //% draggableParameters=reporter
+    export function on_wifi_received(handler: (Channel:string,receivedMessage: string) => void): void {
+        Wifi_Remote_Conn = handler;
+    }
+    //%subcategory=Channel
+    //%blockId=wifi_ext_board_on_wifi_receieved_value
+    //%block="On WiFi Receiver received"
+    //% weight=17 draggableParameters=reporter group="Receiver"
+    export function on_wifi_received_value(handler: (Channel:string,receivedMessage: string,Value:number) => void): void {
+         Wifi_Remote_Conn_value = handler;
+    }
 
     //%subcategory=Channel
     //%blockId=wifi_send_message
-    //%block="WiFi send message %message in channel %channel"
+    //%block="WiFi Sender send message %message to channel %channel"
     //% weight=15
-    //% blockGap=7
-    export function wifi_send_message(message: string, channel: string): void {
-        myChannel = channel
+    //% group="Sender"
+    export function wifi_send_message(message: string, Channel: string): void {
+        myChannel = Channel
 		serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + ")")
     }
 
     //%subcategory=Channel
-    //%blockId=wifi_ext_board_on_wifi_receieved
-    //%block="On WiFi received"
-    //% weight=10
-    //% blockGap=7	draggableParameters=reporter
-    export function on_wifi_received(handler: (WiFiMessage: string) => void): void {
-        Wifi_Remote_Conn = handler;
+    //%blockId=wifi_send_message_value
+    //%block="WiFi Sender send message %message value %value to channel %channel"
+    //% weight=14
+    //% group="Sender"
+    export function wifi_send_message_value(message: string,value:number, channel: string): void {
+        myChannel = channel
+		serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + "&value="+value+")");
+    }
+
+    //%subcategory=Channel
+    //%blockId=wifi_ext_board_on_wifi_sent
+    //%block="On Wifi message sent"
+    //% weight=13 draggableParameters=reporter group="Advanced"
+
+    export function on_wifi_sender_sent(handler: (Status:string,Error_code: string) => void): void {
+        Wifi_sender = handler;
+    }
+
+    
+
+      //%subcategory=Channel
+    //%blockId=wifi_ext_board_on_wifi_channel_create
+    //%block="On WiFi channel joined" group="Receiver"
+    //% weight=19 draggableParameters=reporter group="Advanced"
+
+
+    export function on_wifi_create_channel(handler: (Channel: string,Error_code:string) => void): void {
+        Wifi_Remote_create = handler;
     }
 	
 	// -------------- 8.ESP Control ----------------
@@ -432,7 +543,7 @@ namespace WiFiIoT {
     //% deg1.min=0 deg1.max=180
     //% deg2.min=0 deg2.max=180
     //% deg3.min=0 deg3.max=180
-	//% blockGap=7
+	//% group="Servo"
     export function ESP_Servo_180(deg1:number=null,deg2:number=null,deg3:number=null): void {
         let cmd = "(AT+servo_180?";
         if(deg1!=null){cmd=cmd+"degree1="+deg1.toString()+"&"}
@@ -448,7 +559,8 @@ namespace WiFiIoT {
     //% speed1.min=0 speed1.max=100
     //% speed2.min=0 speed2.max=100
     //% speed3.min=0 speed3.max=100
-    //% expandableArgumentMode="enabled"
+    //% expandableArgumentMode="enabled" group="Servo"
+    //% blockGap=7	
    
     export function ESP_Servo_360(dir1: ESP_360_SERVO_DIR=0, speed1:number=null,dir2: ESP_360_SERVO_DIR=0, speed2:number=null,dir3: ESP_360_SERVO_DIR=0, speed3:number=null,): void {
         let cmd = "(AT+servo_360?";
@@ -479,7 +591,7 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_version
     //%block="Get firmware version"
     //% weight=30
-    //% blockGap=7	
+    //% group="Configuration" 
     export function sendVersion(): void {
         serial.writeLine("(AT+version)");
     }
@@ -487,7 +599,7 @@ namespace WiFiIoT {
     //%subcategory=ESP
     //%blockId=wifi_ext_board_at
     //%block="Send AT command %command"
-    //% weight=25
+    //% weight=25 group="Configuration" 
     export function sendAT(command: string): void {
         serial.writeLine(command);
         flag = false
