@@ -407,14 +407,14 @@ namespace WiFiIoT {
     //% blockId=wifi_ext_board_Call_NTP
     //% block="Get NTP Current Time"   
     //% weight=109
-	//% group="NTP"
+	//% group="Current Time"
     export function getNTP(): void {
         serial.writeLine("(AT+ntp)");
     }
 
 	//%subcategory="IoT Services"
     //% blockId="wifi_ext_board_receive_ntp" 
-    //% block="On NTP received"	 group="NTP"
+    //% block="On NTP received"	 group="Current Time"
     //% weight=108 draggableParameters=reporter
     //% blockGap=7
     
@@ -436,6 +436,13 @@ namespace WiFiIoT {
         serial.writeLine("(AT+pubnub)")
         Wan_connected = true
         
+    }
+     //%subcategory=Control
+    //%blockId=wifi_ext_board_get_id
+    //%block="Device ID"
+    //% weight=80
+    export function getDeviceID(): string {
+        return device_id
     }
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connected
@@ -590,11 +597,11 @@ namespace WiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_version
-    //%block="Get firmware version"
+    //%block="firmware version"
     //% weight=30
     //% group="Configuration" 
-    export function sendVersion(): void {
-        serial.writeLine("(AT+version)");
+    export function sendVersion(): string {
+        return version
     }
 
     //%subcategory=ESP
