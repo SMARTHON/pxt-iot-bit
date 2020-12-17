@@ -70,6 +70,65 @@ namespace WiFiIoT {
         //% block="Antilockwise"
         anticlockwise
     }
+    export enum CityList{
+        //% block="Amsterdam (UTC+1)"
+        Amsterdam="1",
+        //% block="Bangkok (UTC+7)"
+        Bangkok="7",
+        //% block="Beijing (UTC+8)"
+        Beijing="8",
+        //% block="Chicago (UTC-6)"
+        Chicago="-6",
+        //% block="City of Brussels (UTC+1)"
+        City_of_Brussels="1",
+        //% block="Dubai (UTC+4)"
+        Dubai="4",
+        //% block="Frankfurt (UTC+1)"
+        Frankfurt="1",
+        //% block="HongKong (UTC+8)"
+        HongKong="8",
+         //% block="Jakarta (UTC+7)"
+        Jakarta="7",
+        //% block="Johannesburg (UTC+2)"
+        Johannesburg="2",
+        //% block="Kuala Lumpur (UTC+8)"
+        Kuala_Lumpur="8",
+        //% block="London (UTC+0)"
+        London="0",
+        //% block="Los Angeles (UTC-8)"
+        Los_Angeles="-8",
+        //% block="Madrid (UTC+1)"
+        Madrid="1",
+        //% block="Mexico City (UTC-6)"
+        Mexico_City="-6",
+        //% block="Milano (UTC+1)"
+        Milano="1",
+        //% block="Moscow (UTC+3)"
+        Moscow="3",
+        //% block="Mumbai (UTC+5:30)"
+        Mumbai="5.5",
+        //% block="Paris (UTC+1)"
+        Paris="1",
+        //% block="São Paulo (UTC-3)"
+        Sao_Paulo="-3",
+        //% block="Seoul (UTC+9)"
+        Seoul="9",
+        //% block="Shanghai (UTC+8)"
+        Shanghai="8",
+        //% block="Singapore (UTC+8)"
+        Singapore="8",
+        //% block="Sydney (UTC+10)"
+        Sydney="10",
+        //% block="Taipei (UTC+8)"
+        Taipei="8",
+        //% block="Tokyo (UTC+9)"
+        Tokyo="9",
+        //% block="Toronto (UTC-5)"
+        Toronto="-5",
+        //% block="Warsaw (UTC+1)"
+        Warsaw="1",
+          
+    }
 
     // -------------- 1. Initialization ----------------
     /**
@@ -402,14 +461,35 @@ namespace WiFiIoT {
     export function getGenericHttpReturn(): Array<string> {
         return httpReturnArray;
     }
-    
+    /** 
+    Select the city in the list to get the locale Time 
+    */
     //%subcategory="IoT Services"
-    //% blockId=wifi_ext_board_Call_NTP
-    //% block="Get NTP Current Time"   
+    //% blockId=wifi_ext_board_Call_NTP_city
+    //% block="Get NTP Current Time at city %city"   
     //% weight=109
 	//% group="Current Time"
-    export function getNTP(): void {
-        serial.writeLine("(AT+ntp)");
+    export function getNTP(city:CityList): void {
+        //serial.writeLine(city);
+        serial.writeLine("(AT+ntp?zone="+city+")");
+    }
+     /** 
+    Input the UTC time zone number to get the locale time. 
+    You ONLY need to fill in the SIGN and NUMBER part.
+    For example, when your time zone is UTC+8, you just need to fill "+8".
+    If your location using contain minutes time zone, e.g. +3:30, please convert the minutes to decimal number with base 60. 
+    Example case1, "-3:30" convert to "-3.5", since 30min/60min=0.5.
+    Example case2, "+5:45" convert to "+5.75", since 45min/60min=0.75
+    @param zone is the string contain SIGN and NUMBER, eg: "+0"
+    */
+    //%subcategory="IoT Services"
+    //% blockId=wifi_ext_board_Call_NTP_number
+    //% block="Get NTP Current Time at Time Zone UTC%zone"   
+    //% weight=109
+	//% group="Current Time"
+    export function getNTP_number(zone:string): void {
+      
+        serial.writeLine("(AT+ntp?zone="+zone+")");
     }
 
 	//%subcategory="IoT Services"
