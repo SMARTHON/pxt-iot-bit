@@ -71,6 +71,8 @@ namespace WiFiIoT {
         anticlockwise
     }
     export enum CityList{
+		//% block="HongKong (UTC+8)"
+        HongKong="8",
         //% block="Amsterdam (UTC+1)"
         Amsterdam="1",
         //% block="Bangkok (UTC+7)"
@@ -85,8 +87,6 @@ namespace WiFiIoT {
         Dubai="4",
         //% block="Frankfurt (UTC+1)"
         Frankfurt="1",
-        //% block="HongKong (UTC+8)"
-        HongKong="8",
          //% block="Jakarta (UTC+7)"
         Jakarta="7",
         //% block="Johannesburg (UTC+2)"
