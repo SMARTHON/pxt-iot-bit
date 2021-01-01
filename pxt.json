@@ -1,7 +1,7 @@
 {
-    "name": "WiFi-IoT-bit",
-    "version": "0.5.3",
-    "description": "This is the Wifi extension for SMARTHON IoT:bit in PXT",
+    "name": "smarthon-iotbit",
+    "version": "0.5.4",
+    "description": "The WiFi Extension for the iot:bit with BBC micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*",
