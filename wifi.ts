@@ -144,11 +144,11 @@ namespace WiFiIoT {
         serial.redirect(tx_pin,rx_pin, BaudRate.BaudRate115200);
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
-        /*OLED.init(width, height)
-        if (init_mode == true) {
-            OLED_FLAG = true
-        }
-        */
+		
+		//add  0.5s for UART ready to support Micro:bit V2
+		basic.pause(500)
+		///////////////////////////////////////////////////
+  
         serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
             temp_cmd = serial.readLine()
             //OLED.writeStringNewLine(temp_cmd)

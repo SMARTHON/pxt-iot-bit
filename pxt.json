@@ -1,6 +1,6 @@
 {
     "name": "smarthon-iotbit",
-    "version": "0.5.4",
+    "version": "0.5.7",
     "description": "The WiFi Extension for the iot:bit with BBC micro:bit",
     "license": "MIT",
     "dependencies": {
