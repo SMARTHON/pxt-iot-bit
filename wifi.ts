@@ -145,8 +145,8 @@ namespace WiFiIoT {
 		serial.setTxBufferSize(64)
 		serial.setRxBufferSize(64)
 		
-		//add  0.5s for UART ready to support Micro:bit V2
-		basic.pause(500)
+		//add  1s for UART ready to support Micro:bit V2
+		basic.pause(1000)
 		///////////////////////////////////////////////////
   
         serial.onDataReceived(serial.delimiters(Delimiters.NewLine), () => {
