@@ -10,6 +10,7 @@ You may check the product information by https://www.smarthon.cc/micro-bit-smart
 ### 1. Initialize the Smarthon IoT:bit
 Configurate the connection between IoT:bit and Micro:bit via Serial protocol<P>
 Default setting for Connection pins on IoT:bit is P16(TX) and P8(RX)<P>
+                                                                       
 ```block
 WiFiIoT.initializeWifi(SerialPin.P16, SerialPin.P8)
 ```
@@ -53,28 +54,52 @@ WiFiIoT.sendIFTTT(
 )
 ```
 
-### 5. channel communication
+### 5. WiFi WAN Control
+The IoT:bit can recevied command via internet<BR>
+Before control the IoT:bit, you need an ID to identify the IoT:bit on the internet.<P>
+Use the getDeviceID to show the ID<BR>
+```block
+basic.showString(WiFiIoT.getDeviceID())
+```
+You are required to set up the callback function to get the command message when the the command was received.<BR>
+The WAN_Command variable can be access and use to make decision.<BR>
+
+```block
+WiFiIoT.on_WAN_remote(function (WAN_Command) {
+	
+})
+```
+
+### 6. Channel communication
 Connect to a specifc channel to prepare for listen other user's message<P>
+  
 ```block
 WiFiIoT.wifi_listen_channel("abc")
 ```
+
 To listen the message, you are required to set up this callback block to get the variable<P>
+  
 ```block
 WiFiIoT.on_wifi_received(function (Channel, receivedMessage) {
 })
 ```
+
 Sending the message to other user in the specific channel<P>
+  
 ```block
 WiFiIoT.wifi_send_message("abc", "hi")
 ```
 
 
-### 6. NTP time
+### 7. NTP time
 Get the NTP time from the internet<P>
+  
 ```block
 WiFiIoT.getNTP(WiFiIoT.CityList.HongKong)
 ```
-To make use of the time, you are required to set up this callback block to get the variable <P> 
+
+To make use of the time, you are required to set up this callback block to get the variable <P>
+  
 ```block
 WiFiIoT.on_NTP_Received(function (Year, Month, Day, Hour, Minute, Second) {
 })
