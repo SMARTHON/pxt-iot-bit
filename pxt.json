@@ -1,11 +1,11 @@
 {
     "name": "smarthon-iotbit",
-    "version": "0.5.8",
+    "version": "0.5.9",
     "description": "The WiFi Extension for the iot:bit with BBC micro:bit",
     "license": "MIT",
     "dependencies": {
         "core": "*",
-		"SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.12"
+		"SSD1306_OLED": "github:tinkertanker/pxt-oled-ssd1306#v2.0.13"
     },
     "files": [
         "README.md",
