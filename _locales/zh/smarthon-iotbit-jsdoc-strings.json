@@ -1,0 +1,9 @@
+{
+  "WiFiIoT": "Sensors blocks",
+  "WiFiIoT.getNTP": "Select the city in the list to get the locale Time",
+  "WiFiIoT.getNTP_number": "Input the UTC time zone number to get the locale time. \r\nYou ONLY need to fill in the SIGN and NUMBER part.\r\nFor example, when your time zone is UTC+8, you just need to fill \"+8\".\r\nIf your location using contain minutes time zone, e.g. +3:30, please convert the minutes to decimal number with base 60. \r\nExample case1, \"-3:30\" convert to \"-3.5\", since 30min/60min=0.5.\r\nExample case2, \"+5:45\" convert to \"+5.75\", since 45min/60min=0.75",
+  "WiFiIoT.getNTP_number|param|zone": "is the string contain SIGN and NUMBER, eg: \"+0\"",
+  "WiFiIoT.initializeWifi": "Init the iotbit",
+  "WiFiIoT.initializeWifi|param|rx_pin": "describe parameter here, eg: SerialPin.P8",
+  "WiFiIoT.initializeWifi|param|tx_pin": "describe parameter here, eg: SerialPin.P16"
+}

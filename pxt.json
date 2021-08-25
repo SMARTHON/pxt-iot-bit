@@ -1,6 +1,6 @@
 {
     "name": "smarthon-iotbit",
-    "version": "0.5.9",
+    "version": "0.5.10",
     "description": "The WiFi Extension for the iot:bit with BBC micro:bit",
     "license": "MIT",
     "dependencies": {
@@ -10,7 +10,13 @@
     "files": [
         "README.md",
         "ns.ts",
-        "wifi.ts"
+        "wifi.ts",
+        "_locales/zh-TW/smarthon-iotbit-jsdoc-strings.json",
+        "_locales/zh-TW/smarthon-iotbit-strings.json",
+        "_locales/zh-CN/smarthon-iotbit-jsdoc-strings.json",
+        "_locales/zh-CN/smarthon-iotbit-strings.json",
+        "_locales/zh/smarthon-iotbit-jsdoc-strings.json",
+        "_locales/zh/smarthon-iotbit-strings.json"
     ],
     "testFiles": [
         "tests.ts"
