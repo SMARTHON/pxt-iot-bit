@@ -86,5 +86,6 @@
   "{id:subcategory}Channel": "频道控制",
   "{id:subcategory}Control": "互联网控制",
   "{id:subcategory}ESP": "ESP",
-  "{id:subcategory}IoT Services": "IoT服务"
+  "{id:subcategory}IoT Services": "IoT服务",
+  "WiFiIoT.on_HTTP_recevid|block": "当接收到HTTP回覆"
 }

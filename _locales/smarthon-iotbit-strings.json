@@ -35,6 +35,7 @@
   "WiFiIoT.ESP_Servo_180|block": "Turn ESP 180° |Servo1 to %deg1 ° ||Servo2 to %deg2 ° |Servo3 to %deg3 °|",
   "WiFiIoT.ESP_Servo_360|block": "Turn ESP 360° Servo|Servo1 in %dir1 with speed %speed1||Servo2 in %dir2 with speed %speed2|Servo3 in %dir3 with speed %speed3|",
   "WiFiIoT.getDeviceID|block": "Device ID",
+  "WiFiIoT.on_HTTP_recevid|block": "On HTTP received",
   "WiFiIoT.getGenericHttpReturn|block": "HTTP response (string array)",
   "WiFiIoT.getNTP_number|block": "Get NTP Current Time at Time Zone UTC%zone",
   "WiFiIoT.getNTP|block": "Get NTP Current Time at city %city",
