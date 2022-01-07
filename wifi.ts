@@ -1,7 +1,8 @@
 namespace WiFiIoT {
     let flag = true;
     //let httpReturnArray: string[] = []
-    let httpReturnString:string = "" 
+    let httpReturnString: string = ""
+    let http_error_code=""
     let OLED_FLAG = false;
     let OLED_row_count = 0;
     let temp_cmd = ""
@@ -37,7 +38,7 @@ namespace WiFiIoT {
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
-    let HTTP_received: (Data: string) => void = null;
+    let HTTP_received: (Error_code:string,Data: string) => void = null;
     let HTTP_receive_end = true;
 
     export enum httpMethod {
@@ -45,7 +46,7 @@ namespace WiFiIoT {
         GET,
         //% block="POST"
         POST
-      
+
 
 
 
@@ -350,25 +351,29 @@ namespace WiFiIoT {
                 }
                 else if (label == "8") {
                     //get the string include end_Indicator and msg char, e.g "0|a" "1|e"
-                    let msg = temp_cmd.slice(temp_cmd.indexOf(" ") + 1, temp_cmd.length) 
+                    let msg = temp_cmd.slice(temp_cmd.indexOf(" ") + 1, temp_cmd.length)
                     //split the end_Indicator and msg char
-                      let respone= msg.split('|')  
+                    let respone = msg.split('|')
                     if (HTTP_received != null && respone[1] != null) { //skip if not use
+                        if (respone[0] == "2") {
+                            http_error_code=respone[1]
+                        }
                         if (respone[0] == "0") { //not the end of msg
                             if (HTTP_receive_end == true) { //if is start of msg, reset the msg string
                                 httpReturnString = ""; //reset msg string
                             }
                             HTTP_receive_end = false; // not the end of receive msg
-                            httpReturnString=httpReturnString+respone[1] //build the msg string
+                            httpReturnString = httpReturnString + respone[1] //build the msg string
                         }
                         if (respone[0] == "1") {   // it is the end of msg
                             httpReturnString = httpReturnString + respone[1] //build the msg string
                             HTTP_receive_end = true;    //indicate it is end
-                            HTTP_received(httpReturnString) //call the handler to return the msg
+                            HTTP_received(http_error_code,httpReturnString) //call the handler to return the msg
                         }
+                        
 
                     }
-                    
+
                 }
 
             }
@@ -522,7 +527,7 @@ namespace WiFiIoT {
     //% weight=108 draggableParameters=reporter
     //% blockGap=7
 
-    export function on_HTTP_recevid(handler: (Data: string) => void): void {
+    export function on_HTTP_recevid(handler: (HTTP_Status_Code:string,Data: string) => void): void {
         HTTP_received = handler;
     }
 
@@ -545,7 +550,7 @@ namespace WiFiIoT {
     //% weight=110	 group="HTTP"
     //% blockGap=7
     //% blockHidden=true
-    export function getHttpReturn():string {
+    export function getHttpReturn(): string {
         return httpReturnString;
 
     }
