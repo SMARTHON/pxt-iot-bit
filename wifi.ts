@@ -2,7 +2,7 @@ namespace WiFiIoT {
     let flag = true;
     //let httpReturnArray: string[] = []
     let httpReturnString: string = ""
-    let http_error_code=""
+    let http_error_code = ""
     let OLED_FLAG = false;
     let OLED_row_count = 0;
     let temp_cmd = ""
@@ -21,6 +21,8 @@ namespace WiFiIoT {
     let device_id = ""
     let wifi_tried_num = 0
     let ip = ""
+    let array_keys: Array<string> = []
+    let array_values: Array<string> = []
 
     let connecting_flag = false
     let disconnect_error_code = ""
@@ -38,7 +40,7 @@ namespace WiFiIoT {
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
-    let HTTP_received: (Error_code:string,Data: string) => void = null;
+    let HTTP_received: (Error_code: string, Data: string) => void = null;
     let HTTP_receive_end = true;
 
     export enum httpMethod {
@@ -176,9 +178,9 @@ namespace WiFiIoT {
                 let space_pos = temp_cmd.indexOf(" ")
                 let label = temp_cmd.substr(1, space_pos - 1)
                 if (label == "0") { //W0 - Initialize
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    version = respone[1]
-                    device_id = respone[2]
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    version = response[1]
+                    device_id = response[2]
                     /*
                     if(OLED_FLAG==true&&connecting_flag==false){
                     OLED.clear()
@@ -189,12 +191,12 @@ namespace WiFiIoT {
                     */
                 }
                 else if (label == "1") { //W1 - Connect WIFI
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (respone[1] == "0") {
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (response[1] == "0") {
 
                         Wifi_connected = "0"
                         //Wifi_DisConn()
-                        if (respone[2] != null) {
+                        if (response[2] != null) {
 
                             if (OLED_FLAG == true) {
                                 connecting_flag = false
@@ -203,7 +205,7 @@ namespace WiFiIoT {
                             }
                         }
                     }
-                    else if (respone[1] == "1") {
+                    else if (response[1] == "1") {
                         Wifi_connected = "1"
                         if (OLED_FLAG == true && connecting_flag == false) {
                             connecting_flag = true
@@ -213,10 +215,10 @@ namespace WiFiIoT {
                         }
 
                     }
-                    else if (respone[1] == "2") {
+                    else if (response[1] == "2") {
                         Wifi_connected = "2"
-                        if (respone[2] != null) {
-                            ip = respone[2]
+                        if (response[2] != null) {
+                            ip = response[2]
                             //Wifi_Conn()
 
 
@@ -237,11 +239,11 @@ namespace WiFiIoT {
 
 
                     }
-                    else if (respone[1] == "3") {
+                    else if (response[1] == "3") {
                         Wifi_connected = "3"
-                        if (respone[2] != null) {
+                        if (response[2] != null) {
 
-                            disconnect_error_code = respone[2]
+                            disconnect_error_code = response[2]
                             if (Wifi_DisConn && Wifi_connected == "3") Wifi_DisConn(disconnect_error_code)
                             if (OLED_FLAG == true && connecting_flag == false) {
                                 //OLED.writeStringNewLine("error:"+disconnect_error_code)
@@ -251,16 +253,16 @@ namespace WiFiIoT {
                     }
                 }
                 else if (label == "2") { //W2 Thingspeak
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (Thingspeak_conn != null && respone[1] == "0") {
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (Thingspeak_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Thingspeak uploaded")
                         }
                         Thingspeak_conn("OK", "0")
                     }
-                    else if (respone[1] == "1") {
-                        if (Thingspeak_conn != null && respone[2] != null) {
-                            thingspeak_error = respone[2]
+                    else if (response[1] == "1") {
+                        if (Thingspeak_conn != null && response[2] != null) {
+                            thingspeak_error = response[2]
                             Thingspeak_conn("FAIL", thingspeak_error)
                         }
                         if (OLED_FLAG == true) {
@@ -270,107 +272,107 @@ namespace WiFiIoT {
                     }
                 }
                 else if (label == "3") { //W3 IFTTT
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (IFTTT_conn != null && respone[1] == "0") {
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (IFTTT_conn != null && response[1] == "0") {
                         IFTTT_conn("OK", "0")
                     }
-                    else if (respone[1] == "1") {
-                        if (IFTTT_conn != null && respone[2] != null) {
-                            IFTTT_conn("FAIL", respone[2])
+                    else if (response[1] == "1") {
+                        if (IFTTT_conn != null && response[2] != null) {
+                            IFTTT_conn("FAIL", response[2])
                         }
                     }
                 }
                 else if (label == "4") { //W4 WAN
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (respone[1] == "0") {    //WAN start listen
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (response[1] == "0") {    //WAN start listen
                         if (WAN_Control_Conn != null) {
-                            //WAN_Control_Conn(respone[2],"0")    //return the channel ID
+                            //WAN_Control_Conn(response[2],"0")    //return the channel ID
                         }
                     }
-                    else if (respone[1] == "1") {
+                    else if (response[1] == "1") {
                         if (WAN_Control_Conn != null) {
-                            //WAN_Control_Conn(respone[2],respone[3])    //return the error code
+                            //WAN_Control_Conn(response[2],response[3])    //return the error code
                         }
                     }
-                    else if (respone[1] == "2") {//return message  
+                    else if (response[1] == "2") {//return message  
 
 
-                        if (respone[2].includes("$")) {       //with value
-                            let pos = respone[2].indexOf("$")
+                        if (response[2].includes("$")) {       //with value
+                            let pos = response[2].indexOf("$")
                             if (WAN_Remote_Conn_value != null) {
-                                WAN_Remote_Conn_value(respone[2].substr(0, pos), parseInt(respone[2].substr(pos + 1, respone[2].length)))
+                                WAN_Remote_Conn_value(response[2].substr(0, pos), parseInt(response[2].substr(pos + 1, response[2].length)))
                             }
                         }
                         else {           //without value
                             if (WAN_Remote_Conn != null) {
-                                WAN_Remote_Conn(respone[2])
+                                WAN_Remote_Conn(response[2])
                             }
 
                         }
                     }
                 }
                 else if (label == "5") {  //W5 WIFI control
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (respone[1] == "0") {    //WIFI control start listen
-                        if (Wifi_Remote_create != null && respone[2] != null) {
-                            Wifi_Remote_create(respone[2], "0")
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (response[1] == "0") {    //WIFI control start listen
+                        if (Wifi_Remote_create != null && response[2] != null) {
+                            Wifi_Remote_create(response[2], "0")
                         }
-                    } else if (respone[1] == "1") { //WIFI control listen fail
-                        if (Wifi_Remote_create != null && respone[2] != null && respone[3] != null) { //W5 1 ID ERROR
-                            Wifi_Remote_create(respone[2], respone[3])
+                    } else if (response[1] == "1") { //WIFI control listen fail
+                        if (Wifi_Remote_create != null && response[2] != null && response[3] != null) { //W5 1 ID ERROR
+                            Wifi_Remote_create(response[2], response[3])
                         }
-                    } else if (respone[1] == "2") { //WIFI control get Message
-                        if (respone[3].includes("$")) {       //with value
-                            let pos = respone[3].indexOf("$")
+                    } else if (response[1] == "2") { //WIFI control get Message
+                        if (response[3].includes("$")) {       //with value
+                            let pos = response[3].indexOf("$")
                             if (Wifi_Remote_Conn_value != null) {
-                                Wifi_Remote_Conn_value(respone[2], respone[3].substr(0, pos), parseInt(respone[3].substr(pos + 1, respone[3].length)))
+                                Wifi_Remote_Conn_value(response[2], response[3].substr(0, pos), parseInt(response[3].substr(pos + 1, response[3].length)))
                             }
                         }
                         else {           //without value
                             if (Wifi_Remote_Conn != null) {
-                                Wifi_Remote_Conn(respone[2], respone[3])
+                                Wifi_Remote_Conn(response[2], response[3])
                             }
                         }
                     }
                 }
                 else if (label == "6") {
 
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (Wifi_sender != null && respone[1] == "0") {
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (Wifi_sender != null && response[1] == "0") {
                         Wifi_sender("OK", "0")
-                    } else if (Wifi_sender != null && respone[1] == "1") {
-                        Wifi_sender("Fail", respone[2])
+                    } else if (Wifi_sender != null && response[1] == "1") {
+                        Wifi_sender("Fail", response[2])
                     }
                 }
                 else if (label == "7") {
 
-                    let respone = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (NTP_Receive != null && respone[3] != null) {
-                        NTP_Receive(parseInt(respone[1]), parseInt(respone[2]), parseInt(respone[3]), parseInt(respone[4]), parseInt(respone[5]), parseInt(respone[6]))
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (NTP_Receive != null && response[3] != null) {
+                        NTP_Receive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
                     }
                 }
                 else if (label == "8") {
                     //get the string include end_Indicator and msg char, e.g "0|a" "1|e"
                     let msg = temp_cmd.slice(temp_cmd.indexOf(" ") + 1, temp_cmd.length)
                     //split the end_Indicator and msg char
-                    let respone = msg.split('|')
-                    if (HTTP_received != null && respone[1] != null) { //skip if not use
-                        if (respone[0] == "2") {
-                            http_error_code=respone[1]
+                    let response = msg.split('|')
+                    if (HTTP_received != null && response[1] != null) { //skip if not use
+                        if (response[0] == "2") {
+                            http_error_code = response[1]
                         }
-                        if (respone[0] == "0") { //not the end of msg
+                        if (response[0] == "0") { //not the end of msg
                             if (HTTP_receive_end == true) { //if is start of msg, reset the msg string
                                 httpReturnString = ""; //reset msg string
                             }
                             HTTP_receive_end = false; // not the end of receive msg
-                            httpReturnString = httpReturnString + respone[1] //build the msg string
+                            httpReturnString = httpReturnString + response[1] //build the msg string
                         }
-                        if (respone[0] == "1") {   // it is the end of msg
-                            httpReturnString = httpReturnString + respone[1] //build the msg string
+                        if (response[0] == "1") {   // it is the end of msg
+                            httpReturnString = httpReturnString + response[1] //build the msg string
                             HTTP_receive_end = true;    //indicate it is end
-                            HTTP_received(http_error_code,httpReturnString) //call the handler to return the msg
+                            HTTP_received(http_error_code, httpReturnString) //call the handler to return the msg
                         }
-                        
+
 
                     }
 
@@ -495,6 +497,11 @@ namespace WiFiIoT {
 
     // -------------- 4. Others ----------------
 
+
+    /**
+     * Use IoT:bit to send the HTTP request, input the URL (WITHOUT http://) of your API
+     * 
+     */
     //%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
     //% block="Send generic HTTP method %method| http://%url| header %header| body %body"
@@ -519,17 +526,68 @@ namespace WiFiIoT {
         serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + header + "&body=" + body + ")");
     }
 
-
+    /**
+     * After sending the HTTP request, the response will be return to this handler, you may access the http stauts code and the return body.
+     */
 
     //%subcategory="IoT Services"
     //% blockId="wifi_ext_board_http_receive" 
     //% block="On HTTP received"	 group="HTTP"
     //% weight=108 draggableParameters=reporter
-    //% blockGap=7
+    //% blockGap=20
 
-    export function on_HTTP_recevid(handler: (HTTP_Status_Code:string,Data: string) => void): void {
+    export function on_HTTP_recevid(handler: (HTTP_Status_Code: string, Data: string) => void): void {
         HTTP_received = handler;
     }
+
+    /**
+     * This function can extract the value of specific key from a JSON format String.
+     * Fill in the Key field that you are searching from json_object, then put the source into the Source placeholder(e.g HTTP return Data).
+     * It will search the key from Source string and return the corresponding value.
+     * When using at the mulit-level JSON, you need to use this function several time to extract the value one by one level.
+     * @param target Key that looking for
+     * @param source Source string that to be extract from
+     */
+    //%subcategory="IoT Services"
+    //% blockId="JSON_extractor"
+    //%block="Get value of Key %target from JSON String %source"
+    //% weight=107 group="HTTP"
+    export function get_value(target: string, source: string): string {
+
+        //clear the keys & values array
+        array_keys = []
+        array_values = []
+        //prase the JSON String to Object
+        let json_object = JSON.parse(source)
+        //Get the count of keys for the For-Loop to run
+        let total_keys = Object.keys(json_object).length
+        // Start work on each keys
+        for (let i = 0; i < total_keys; i++) {
+            //Push each key from JSON Object to keys array
+            array_keys.push(Object.keys(json_object)[i])
+            // Check the corresponding value of the key from Object, 
+            // if it is string or number type, push it to value array as normal
+            if ((typeof (json_object[array_keys[array_keys.length - 1]]) == "string") || (typeof (json_object[array_keys[array_keys.length - 1]]) == "number")) {
+                //push the string or number value to array
+                array_values.push(json_object[array_keys[array_keys.length - 1]])
+
+            }
+            // if the value is a Object type, mostly is next level JSON object
+            else if (typeof (json_object[array_keys[array_keys.length - 1]]) == "object") {
+                //Use stringify to convert it back to string, allow to return the stringify object to user,
+                //User can perform JSON prase function again later, while the source can set as this return string
+                array_values.push(JSON.stringify(json_object[array_keys[array_keys.length - 1]]))
+
+            }
+        }
+        //After input all the data, search the target's key index
+        let target_index = array_keys.indexOf(target)
+        //Return the value of that key
+        return array_values[target_index]
+
+
+    }
+
 
 
 
@@ -800,4 +858,3 @@ namespace WiFiIoT {
         flag = false
     }
 }
-
