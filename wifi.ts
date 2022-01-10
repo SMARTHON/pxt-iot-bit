@@ -499,14 +499,18 @@ namespace WiFiIoT {
 
 
     /**
-     * Use IoT:bit to send the HTTP request, input the URL (WITHOUT http://) of your API
+     * Use IoT:bit to send the HTTP request, input the URL of your API.
+     * The Body content only available for POST method.
+     * The POST Body Content-Type was "application/json",
+     * DO NOT include "&" symbol in the JSON content.
      * 
      */
     //%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
-    //% block="Send generic HTTP method %method| http://%url| header %header| body %body"
-    //% weight=115	 group="HTTP"
-    export function sendGenericHttp(method: httpMethod, url: string, header: string, body: string): void {
+    //% block="Send HTTP Request |Method %method|URL:%url|Body:%body"
+    //% weight=115	 group="HTTP" 
+    //% inlineInputMode=external
+    export function sendGenericHttp(method: httpMethod, url: string, body: string): void {
         //httpReturnArray = []
         let temp = ""
         switch (method) {
@@ -523,7 +527,7 @@ namespace WiFiIoT {
 
 
         }
-        serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + header + "&body=" + body + ")");
+        serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + "&body=" + body + ")");
     }
 
     /**
