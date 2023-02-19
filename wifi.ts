@@ -42,7 +42,9 @@ namespace WiFiIoT {
     let Wifi_sender: (status: string, Error_code: string) => void = null;
     let HTTP_received: (Error_code: string, Data: string) => void = null;
     let HTTP_receive_end = true;
-
+    let OTA_recevied: (PercentageValue:string) => void = null;
+    let OTA_Finished: ()=>void=null;
+    let OTA_Failed: (Message: string) => void = null;
     export enum httpMethod {
         //% block="GET"
         GET,
@@ -335,7 +337,7 @@ namespace WiFiIoT {
                         }
                     }
                 }
-                else if (label == "6") {
+                else if (label == "6") {//WiFi Sender
 
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (Wifi_sender != null && response[1] == "0") {
@@ -344,14 +346,14 @@ namespace WiFiIoT {
                         Wifi_sender("Fail", response[2])
                     }
                 }
-                else if (label == "7") {
+                else if (label == "7") {//NTP
 
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (NTP_Receive != null && response[3] != null) {
                         NTP_Receive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
                     }
                 }
-                else if (label == "8") {
+                else if (label == "8") {//HTTP
                     //get the string include end_Indicator and msg char, e.g "0|a" "1|e"
                     let msg = temp_cmd.slice(temp_cmd.indexOf(" ") + 1, temp_cmd.length)
                     //split the end_Indicator and msg char
@@ -377,6 +379,17 @@ namespace WiFiIoT {
                     }
 
                 }
+				else if (label == "9"){     //OTA
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (OTA_recevied != null && response[1] == "1") {
+                        OTA_recevied(response[2])
+                    } else if (OTA_Finished != null && response[1] == "2") {
+                        OTA_Finished()
+                    }else if (OTA_Failed != null && response[1] == "3")
+                    {
+                        OTA_Failed(response[2])
+                    }
+                }								 
 
             }
         })
@@ -847,7 +860,7 @@ namespace WiFiIoT {
     //%subcategory=ESP
     //%blockId=wifi_ext_board_version
     //%block="firmware version"
-    //% weight=30
+    //% weight=50
     //% group="Configuration" 
     export function sendVersion(): string {
         return version
@@ -860,5 +873,46 @@ namespace WiFiIoT {
     export function sendAT(command: string): void {
         serial.writeLine(command);
         flag = false
+    }
+
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_OTA_Latest
+    //%block="Update Firmware to Latest Version"
+    //% weight=40 group="Configuration" 
+    export function OTA_Latest(): void {
+        serial.writeLine("(AT+ota?ver=latest)");
+    }
+
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_OTA_version
+    //%block="Update Firmware to Version %version"
+    //% weight=35 group="Configuration" blockHidden=true
+    export function OTA_Version(version: string): void {
+        serial.writeLine("(AT+ota?ver="+version+")");
+    }
+
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_OTA_progress
+    //%block="OTA Progress"
+    //% weight=27 draggableParameters=reporter group="Configuration"
+
+    export function on_OTA_progressing(handler: (PercentageValue: string) => void): void {
+        OTA_recevied = handler;
+    }
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_OTA_finish
+    //%block="On OTA Update Finished"
+    //% weight=29 draggableParameters=reporter group="Configuration"
+
+    export function on_OTA_Finish(handler: () => void): void {
+        OTA_Finished = handler;
+    }
+    //%subcategory=ESP
+    //%blockId=wifi_ext_board_OTA_fail
+    //%block="On OTA Update Failed"
+    //% weight=28 draggableParameters=reporter group="Configuration"
+
+    export function on_OTA_Failed(handler: (Message:string) => void): void {
+        OTA_Failed = handler;
     }
 }
