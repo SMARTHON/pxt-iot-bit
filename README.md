@@ -1,5 +1,5 @@
 # Smarthon-iotbit
-A PXT library for Smarthon IoT:bit
+A PXT library for Smarthon IoT:bit2
 
 ## About Smarthon IoT:bit
 Smarthon IoT:bit enables micro:bit to connect Wi-Fi and allows users to record sensor data on cloud platforms like IFTTT and ThingSpeak. Besides, the great feature is supporting WAN control.<BR>The users can connect up to 12 sensors and actuators. Let's upgrade your micro:bit and ready for the IoT world!<P>
