@@ -31,13 +31,13 @@ namespace WiFiIoT {
     let connecting_flag = false
     let disconnect_error_code = ""
     let thingspeak_error = ""
-    let NTP_Receive: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void = null;
+    let ntpReceive: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void = null;
     let Wifi_Remote_Conn: (channel: string, WifiMessage: string) => void = null;
     let Wifi_Remote_Conn_value: (channel: string, WifiMessage: string, Value: number) => void = null;
     let Wifi_Conn: (IP: string, ID: string) => void = null;
     let Wifi_DisConn: (Error: string) => void = null;
     let LAN_Remote_Conn: (LAN_Command: string) => void = null;
-    let WAN_Control_Conn: (deviceID: string, errorCode: string) => void = null;
+    let wanControlConn: (deviceID: string, errorCode: string) => void = null;
     let WAN_Remote_Conn: (WAN_Command: string) => void = null;
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
     let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
