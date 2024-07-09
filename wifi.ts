@@ -22,7 +22,7 @@ namespace WiFiIoT {
     let Error = false
     let myChannel = ""
     let version = ""
-    let deviceID = ""
+    let device_id = ""
     let wifi_tried_num = 0
     let ip = ""
     let array_keys: Array<string> = []
