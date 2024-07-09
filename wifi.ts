@@ -291,13 +291,13 @@ namespace WiFiIoT {
                 else if (label == "4") { //W4 WAN
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (response[1] == "0") {    //WAN start listen
-                        if (WAN_Control_Conn != null) {
-                            //WAN_Control_Conn(response[2],"0")    //return the channel ID
+                        if (wanControlConn != null) {
+                            //wanControlConn(response[2],"0")    //return the channel ID
                         }
                     }
                     else if (response[1] == "1") {
-                        if (WAN_Control_Conn != null) {
-                            //WAN_Control_Conn(response[2],response[3])    //return the error code
+                        if (wanControlConn != null) {
+                            //wanControlConn(response[2],response[3])    //return the error code
                         }
                     }
                     else if (response[1] == "2") {//return message  
@@ -353,8 +353,8 @@ namespace WiFiIoT {
                 else if (label == "7") {//NTP
 
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (NTP_Receive != null && response[3] != null) {
-                        NTP_Receive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
+                    if (ntpReceive != null && response[3] != null) {
+                        ntpReceive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
                     }
                 }
                 else if (label == "8") {//HTTP
@@ -672,7 +672,7 @@ namespace WiFiIoT {
     //% blockGap=7
 
 
-    export function on_NTP_Received(handler: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void): void {
+    export function on_ntpReceived(handler: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void): void {
         ntpReceive = handler;
     }
 
@@ -710,7 +710,7 @@ namespace WiFiIoT {
     //% blockHidden=true
     //% blockGap=7	draggableParameters=reporter
 
-    export function on_WAN_Control_Connected(handler: (deviceID: string, errorCode: string) => void): void {
+    export function on_wanControlConnected(handler: (deviceID: string, errorCode: string) => void): void {
         wanControlConn = handler;
     }
 
