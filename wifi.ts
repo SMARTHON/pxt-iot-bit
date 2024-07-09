@@ -672,7 +672,7 @@ namespace WiFiIoT {
     //% blockGap=7
 
 
-    export function on_ntpReceived(handler: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void): void {
+    export function on_NTP_Received(handler: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void): void {
         ntpReceive = handler;
     }
 
@@ -710,7 +710,7 @@ namespace WiFiIoT {
     //% blockHidden=true
     //% blockGap=7	draggableParameters=reporter
 
-    export function on_wanControlConnected(handler: (deviceID: string, errorCode: string) => void): void {
+    export function on_WAN_Control_Connected(handler: (deviceID: string, errorCode: string) => void): void {
         wanControlConn = handler;
     }
 
