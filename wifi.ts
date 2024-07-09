@@ -186,7 +186,7 @@ namespace WiFiIoT {
                 if (label == "0") { //W0 - Initialize
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     version = response[1]
-                    device_id = response[2]
+                    deviceID = response[2]
                     /*
                     if(OLED_FLAG==true&&connecting_flag==false){
                     OLED.clear()
@@ -238,7 +238,7 @@ namespace WiFiIoT {
 
                             startWebServer_WAN()
                             basic.pause(500)
-                            if (Wifi_Conn && Wifi_connected == "2") Wifi_Conn(ip, device_id)
+                            if (Wifi_Conn && Wifi_connected == "2") Wifi_Conn(ip, deviceID)
 
 
                         }
@@ -701,7 +701,7 @@ namespace WiFiIoT {
     //%block="Device ID"
     //% weight=80
     export function getDeviceID(): string {
-        return device_id
+        return deviceID
     }
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connected
