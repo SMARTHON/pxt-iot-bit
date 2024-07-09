@@ -711,7 +711,7 @@ namespace WiFiIoT {
     //% blockGap=7	draggableParameters=reporter
 
     export function on_WAN_Control_Connected(handler: (deviceID: string, errorCode: string) => void): void {
-        wanlet WAN_Remote_Conn: (WAN_Command: string) => void = null;ControlConn = handler;
+        wanControlConn = handler;
     }
 
 
