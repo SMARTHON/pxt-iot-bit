@@ -405,8 +405,8 @@ namespace WiFiIoT {
     // -------------- 2. WiFi ----------------
 	/**
      * Set wifi with ssid and pwd
-     * @param ssid describe parameter here, eg: smarthon
-     * @param pwd describe parameter here, eg: 12345678
+     * @param ssid describe parameter here,
+     * @param pwd describe parameter here,
      */
 	 
     //% blockId=wifi_ext_board_set_wifi
@@ -425,8 +425,8 @@ namespace WiFiIoT {
 	/**
      * On wifi connected
 	 * @param handler Wifi connected callback
-	 * @param IP_Address IP Address; eg:192.158.1.38
-	 * @param Device_ID device ID; eg:0x773eea89
+	 * @param IP_Address IP Address;
+	 * @param Device_ID device ID; 
      */
 
     //% blockId=wifi_ext_board_on_wifi_connect
@@ -442,7 +442,7 @@ namespace WiFiIoT {
     /**
      * On wifi disconnected
 	 * @param handler Wifi disconnected callback
-	 * @param Error_code error code; eg:404
+	 * @param Error_code error code;
      */
 	 
     //% blockId=wifi_ext_board_on_wifi_disconnect
@@ -474,15 +474,15 @@ namespace WiFiIoT {
 	
 	/**
      * Send ThingSpeak key
-	 * @param key ThingSpeak key; eg:1PRLJW810N7Y9XTM
-	 * @param field1 value of field1; eg:1
-	 * @param field2 value of field2; eg:2
-	 * @param field3 value of field3; eg:3
-	 * @param field4 value of field4; eg:4
-	 * @param field5 value of field5; eg:5
-	 * @param field6 value of field6; eg:6
-	 * @param field7 value of field7; eg:7
-	 * @param field8 value of field8; eg:8
+	 * @param key ThingSpeak key;
+	 * @param field1 value of field1;
+	 * @param field2 value of field2;
+	 * @param field3 value of field3;
+	 * @param field4 value of field4;
+	 * @param field5 value of field5;
+	 * @param field6 value of field6;
+	 * @param field7 value of field7;
+	 * @param field8 value of field8;
      */
 	 
     //% blockId=wifi_ext_board_set_thingspeak
@@ -508,8 +508,8 @@ namespace WiFiIoT {
 	/**
      * Check ThingSpeak status
 	 * @param handler ThingSpeak uploaded callback
-	 * @param Status connecting status; eg:true
-	 * @param Error_code error code; eg:error
+	 * @param Status connecting status;
+	 * @param Error_code error code;
      */
 	 
     //%subcategory="IoT Services"
@@ -524,11 +524,11 @@ namespace WiFiIoT {
 
 	/**
      * Send IFTTT key
-	 * @param key IFTTT key; eg:1PRLJW810N7Y9XTM
-	 * @param eventname name of event; eg:open_curtain
-	 * @param value1 value of the event; eg:1
-	 * @param value2 value of the event; eg:2
-	 * @param value3 value of the event; eg:3
+	 * @param key IFTTT key;
+	 * @param eventname name of event;
+	 * @param value1 value of the event; 
+	 * @param value2 value of the event; 
+	 * @param value3 value of the event; 
      */
 
     //%subcategory="IoT Services"
@@ -555,8 +555,8 @@ namespace WiFiIoT {
     /**
      * Check IFTTT status
 	 * @param handler IFTTT uploaded callback
-	 * @param Status connecting status; eg:true
-	 * @param Error_code error code; eg:error
+	 * @param Status connecting status;
+	 * @param Error_code error code;
      */
 	 
     //%subcategory="IoT Services"
@@ -574,9 +574,9 @@ namespace WiFiIoT {
 
     /**
      * Use IoT:bit to send the HTTP request
-	 * @param method HTTPmethod; eg:GET
-	 * @param url website link; eg:www.smarthon.cc
-	 * @param body string in body; eg:smartcity
+	 * @param method HTTPmethod;
+	 * @param url website link;
+	 * @param body string in body;
      */
 	 
     //%subcategory="IoT Services"
@@ -607,8 +607,8 @@ namespace WiFiIoT {
     /**
      * Check HTTP status
 	 * @param handler HTTP uploaded callback
-	 * @param HTTP_Status_Code connecting status; eg:true
-	 * @param Data data received; eg:GET
+	 * @param HTTP_Status_Code connecting status;
+	 * @param Data data received;
      */
 
     //%subcategory="IoT Services"
@@ -728,12 +728,12 @@ namespace WiFiIoT {
 	
 	/** 
 	* Receive NTP message.
-	* @param Year is the number of year, eg: "+0"
-	* @param Month is the number of month, eg: "+0"
-	* @param Day is the number of day, eg: "+0"
-	* @param Hour is the number of hour, eg: "+0"
-	* @param Minute is the number of minute, eg: "+0"
-	* @param Second is the number of second, eg: "+0"
+	* @param Year is the number of year,
+	* @param Month is the number of month,
+	* @param Day is the number of day,
+	* @param Hour is the number of hour,
+	* @param Minute is the number of minute,
+	* @param Second is the number of second,
 	*/
     //%subcategory="IoT Services"
     //% blockId="wifi_ext_board_receive_ntp" 
@@ -798,7 +798,11 @@ namespace WiFiIoT {
     }
 
 
-
+	/**
+     * Receive WAN command status
+	 * @param handler WAN command received callback
+	 * @param WAN_Command WAN command
+     */
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect
@@ -808,6 +812,13 @@ namespace WiFiIoT {
     export function on_WAN_remote(handler: (WAN_Command: string) => void): void {
         WAN_Remote_Conn = handler;
     }
+	
+    /**
+     * Receive WAN command and value status
+	 * @param handler WAN command received callback
+	 * @param WAN_Command WAN command
+	 * @param Value value of the command
+     */
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
     //%block="On WiFi received" 
