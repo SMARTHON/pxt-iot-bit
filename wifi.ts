@@ -457,7 +457,7 @@ namespace WiFiIoT {
     }
 
 	/**
-     * Is wifi connected
+     * Is the wifi connected
      */
 	 
     //% blockId=wifi_ext_board_is_wifi_connect
@@ -770,7 +770,7 @@ namespace WiFiIoT {
 
     }
     /** 
-	Receive device id
+	Get device id
 	*/
 	//%subcategory=Control
     //%blockId=wifi_ext_board_get_id
@@ -1026,7 +1026,7 @@ namespace WiFiIoT {
     // -------------- 6. General ----------------		
 	
 	/**
-     * Send firmware version
+     * Get firmware version
      */
 	
     //%subcategory=ESP
