@@ -403,6 +403,12 @@ namespace WiFiIoT {
     }
 
     // -------------- 2. WiFi ----------------
+	/**
+     * Setup the wifi
+     * @param ssid describe parameter here, eg: smarthon
+     * @param pwd describe parameter here, eg: 12345678
+     */
+	 
     //% blockId=wifi_ext_board_set_wifi
     //% block="Set WiFi to ssid %ssid| pwd %pwd"   
     //% weight=135
@@ -416,6 +422,10 @@ namespace WiFiIoT {
         }
     }
 
+	/**
+     * On wifi connected
+	 * @param handler Wifi connected callback
+     */
 
     //% blockId=wifi_ext_board_on_wifi_connect
     //% block="On WiFi connected"   
@@ -427,7 +437,10 @@ namespace WiFiIoT {
 
     }
 
-
+    /**
+     * On wifi disconnected
+	 * @param handler Wifi disconnected callback
+     */
     //% blockId=wifi_ext_board_on_wifi_disconnect
     //% block="On WiFi disconnected"   
     //% weight=132
@@ -438,6 +451,10 @@ namespace WiFiIoT {
 
     }
 
+	/**
+     * Is wifi connected
+     */
+	 
     //% blockId=wifi_ext_board_is_wifi_connect
     //% block="WiFi connected?"   
     //% weight=131
