@@ -404,7 +404,7 @@ namespace WiFiIoT {
 
     // -------------- 2. WiFi ----------------
 	/**
-     * Setup the wifi
+     * Set wifi with ssid and pwd
      * @param ssid describe parameter here, eg: smarthon
      * @param pwd describe parameter here, eg: 12345678
      */
@@ -425,6 +425,8 @@ namespace WiFiIoT {
 	/**
      * On wifi connected
 	 * @param handler Wifi connected callback
+	 * @param IP_Address IP Address; eg:192.158.1.38
+	 * @param Device_ID device ID; eg:0x773eea89
      */
 
     //% blockId=wifi_ext_board_on_wifi_connect
@@ -440,7 +442,9 @@ namespace WiFiIoT {
     /**
      * On wifi disconnected
 	 * @param handler Wifi disconnected callback
+	 * @param Error_code error code; eg:404
      */
+	 
     //% blockId=wifi_ext_board_on_wifi_disconnect
     //% block="On WiFi disconnected"   
     //% weight=132
@@ -467,6 +471,20 @@ namespace WiFiIoT {
     }
     // -------------- 3. Cloud ----------------
     //%subcategory="IoT Services"
+	
+	/**
+     * Send ThingSpeak key
+	 * @param key ThingSpeak key; eg:1PRLJW810N7Y9XTM
+	 * @param field1 value of field1; eg:1
+	 * @param field2 value of field2; eg:2
+	 * @param field3 value of field3; eg:3
+	 * @param field4 value of field4; eg:4
+	 * @param field5 value of field5; eg:5
+	 * @param field6 value of field6; eg:6
+	 * @param field7 value of field7; eg:7
+	 * @param field8 value of field8; eg:8
+     */
+	 
     //% blockId=wifi_ext_board_set_thingspeak
     //% block="Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130 group="Thingspeak"
@@ -486,7 +504,14 @@ namespace WiFiIoT {
         command = command + ")"
         serial.writeLine(command);
     }
-
+	
+	/**
+     * Check ThingSpeak status
+	 * @param handler ThingSpeak uploaded callback
+	 * @param Status connecting status; eg:true
+	 * @param Error_code error code; eg:error
+     */
+	 
     //%subcategory="IoT Services"
     //%blockId=Thingspeak_connect
     //%block="On Thingspeak Uploaded"
@@ -497,6 +522,14 @@ namespace WiFiIoT {
         Thingspeak_conn = handler;
     }
 
+	/**
+     * Send IFTTT key
+	 * @param key IFTTT key; eg:1PRLJW810N7Y9XTM
+	 * @param eventname name of event; eg:open_curtain
+	 * @param value1 value of the event; eg:1
+	 * @param value2 value of the event; eg:2
+	 * @param value3 value of the event; eg:3
+     */
 
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_ifttt
@@ -519,6 +552,13 @@ namespace WiFiIoT {
         }
     }
 
+    /**
+     * Check IFTTT status
+	 * @param handler IFTTT uploaded callback
+	 * @param Status connecting status; eg:true
+	 * @param Error_code error code; eg:error
+     */
+	 
     //%subcategory="IoT Services"
     //%blockId=IFTTT_connect
     //%block="On IFTTT Uploaded"
@@ -533,12 +573,12 @@ namespace WiFiIoT {
 
 
     /**
-     * Use IoT:bit to send the HTTP request, input the URL of your API.
-     * The Body content only available for POST method.
-     * The POST Body Content-Type was "application/json",
-     * DO NOT include "&" symbol in the JSON content.
-     * 
+     * Use IoT:bit to send the HTTP request
+	 * @param method HTTPmethod; eg:GET
+	 * @param url website link; eg:www.smarthon.cc
+	 * @param body string in body; eg:smartcity
      */
+	 
     //%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
     //% block="Send HTTP Request |Method %method|URL:%url|Body:%body"
@@ -565,7 +605,10 @@ namespace WiFiIoT {
     }
 
     /**
-     * After sending the HTTP request, the response will be return to this handler, you may access the http stauts code and the return body.
+     * Check HTTP status
+	 * @param handler HTTP uploaded callback
+	 * @param HTTP_Status_Code connecting status; eg:true
+	 * @param Data data received; eg:GET
      */
 
     //%subcategory="IoT Services"
@@ -579,10 +622,7 @@ namespace WiFiIoT {
     }
 
     /**
-     * This function can extract the value of specific key from a JSON format String.
-     * Fill in the Key field that you are searching from json_object, then put the source into the Source placeholder(e.g HTTP return Data).
-     * It will search the key from Source string and return the corresponding value.
-     * When using at the mulit-level JSON, you need to use this function several time to extract the value one by one level.
+     * This function can extract the value of specific key from a JSON format String
      * @param target Key that looking for
      * @param source Source string that to be extract from
      */
@@ -630,9 +670,12 @@ namespace WiFiIoT {
 
 
 
-    //%subcategory="IoT Services"
+    /**
+     * Return generic http array
+     */
+	 
+	//%subcategory="IoT Services"
     //% blockId="wifi_ext_board_generic_http_array_return" 
-
     //% block="HTTP response (string array)"
     //% weight=110	 group="HTTP"
     //% blockGap=7
@@ -640,7 +683,12 @@ namespace WiFiIoT {
     export function getGenericHttpReturn(): Array<string> {
         return [""];
     }
-    //%subcategory="IoT Services"
+	
+    /**
+     * Return generic http string
+     */
+	 
+	//%subcategory="IoT Services"
     //% blockId="wifi_ext_board_generic_http_return" 
     //% block="HTTP response (string)"
     //% weight=110	 group="HTTP"
@@ -651,7 +699,8 @@ namespace WiFiIoT {
 
     }
     /** 
-    Select the city in the list to get the locale Time 
+    * Select the city in the list to get the locale Time 
+	* @param city name of the city; eg:Hong Kong
     */
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_Call_NTP_city
@@ -663,14 +712,9 @@ namespace WiFiIoT {
         serial.writeLine("(AT+ntp?zone=" + city + ")");
     }
     /** 
-   Input the UTC time zone number to get the locale time. 
-   You ONLY need to fill in the SIGN and NUMBER part.
-   For example, when your time zone is UTC+8, you just need to fill "+8".
-   If your location using contain minutes time zone, e.g. +3:30, please convert the minutes to decimal number with base 60. 
-   Example case1, "-3:30" convert to "-3.5", since 30min/60min=0.5.
-   Example case2, "+5:45" convert to "+5.75", since 45min/60min=0.75
-   @param zone is the string contain SIGN and NUMBER, eg: "+0"
-   */
+	Input the UTC time zone number to get the locale time. 
+	@param zone is the string contain SIGN and NUMBER, eg: "+0"
+	*/
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_Call_NTP_number
     //% block="Get NTP Current Time at Time Zone UTC%zone"   
@@ -681,7 +725,16 @@ namespace WiFiIoT {
 
         serial.writeLine("(AT+ntp?zone=" + zone + ")");
     }
-
+	
+	/** 
+	* Receive NTP message.
+	* @param Year is the number of year, eg: "+0"
+	* @param Month is the number of month, eg: "+0"
+	* @param Day is the number of day, eg: "+0"
+	* @param Hour is the number of hour, eg: "+0"
+	* @param Minute is the number of minute, eg: "+0"
+	* @param Second is the number of second, eg: "+0"
+	*/
     //%subcategory="IoT Services"
     //% blockId="wifi_ext_board_receive_ntp" 
     //% block="On NTP received"	 group="Current Time"
@@ -699,7 +752,9 @@ namespace WiFiIoT {
 
 
 
-
+    /** 
+	Start the webserver
+	*/
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_start_server_WAN
@@ -713,14 +768,25 @@ namespace WiFiIoT {
 
 
     }
-    //%subcategory=Control
+    /** 
+	Receive device id
+	*/
+	//%subcategory=Control
     //%blockId=wifi_ext_board_get_id
     //%block="Device ID"
     //% weight=80
     export function getDeviceID(): string {
         return deviceID
     }
-    //%subcategory=Control
+    
+	/**
+     * Check WAN command status
+	 * @param handler WAN command uploaded callback
+	 * @param deviceID device ID 
+	 * @param errorCode code of error
+     */
+	 
+	//%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connected
     //%block="On WAN control Connected" 
     //% weight=75 group="Start the control"
