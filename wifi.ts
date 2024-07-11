@@ -1,5 +1,6 @@
 /**
  * Sensors blocks
+ *  IoT orientated expansion module for Micro:bit.
  */
 //% weight=101 color=#333300  icon="\uf1eb" block="IoT:bit"
 namespace WiFiIoT {
@@ -880,6 +881,13 @@ namespace WiFiIoT {
         Wifi_Remote_Conn_value = handler;
     }
 
+
+    /**
+     * Message sender send message after wifi connected
+	 * @param Channel channel name;
+	 * @param message message to send;
+     */
+	
     //%subcategory=Channel
     //%blockId=wifi_send_message
     //%block="WiFi Sender send channel %channel message %message"
@@ -890,7 +898,14 @@ namespace WiFiIoT {
         serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + ")")
     }
 
-    //%subcategory=Channel
+    /**
+     * Message sender send message and value after wifi connected
+	 * @param Channel channel name;
+	 * @param message message to send;
+	 * @param value value to send;
+     */
+	
+	//%subcategory=Channel
     //%blockId=wifi_send_message_value
     //%block="WiFi Sender send channel %channel message %message value %value"
     //% weight=14
@@ -900,6 +915,13 @@ namespace WiFiIoT {
         serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + "&value=" + value + ")");
     }
 
+    /**
+     * Check sent message status
+	 * @param handler channel sent callback;
+	 * @param Status message status;
+	 * @param Error_code error code;
+     */
+	 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_sent
     //%block="On Wifi message sent"
@@ -910,7 +932,12 @@ namespace WiFiIoT {
     }
 
 
-
+    /**
+     * Check channel create status
+	 * @param handler channel create callback;
+	 * @param Channel created channel name;
+	 * @param Error_code error code;
+     */
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_channel_create
@@ -924,6 +951,14 @@ namespace WiFiIoT {
 
 
     // -------------- 8.ESP Control ----------------
+	
+	/**
+     * Control 180 degree servo
+	 * @param deg1 degree for the first servo;
+	 * @param deg2 degree for the second servo;
+	 * @param deg3 degree for the third servo;
+     */
+	
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_180
     //%block="Turn ESP 180° |Servo1 to %deg1 ° ||Servo2 to %deg2 ° |Servo3 to %deg3 °|"
@@ -942,7 +977,18 @@ namespace WiFiIoT {
 
         serial.writeLine(cmd)
     }
-    //%subcategory=ESP Servo
+    
+	/**
+     * Control 360 degree servo
+	 * @param dir1 direction for the first servo;
+	 * @param speed1 turning speed for the first servo;
+	 * @param dir2 direction for the Second servo;
+	 * @param speed2 turning speed for the second servo;
+	 * @param dir3 direction for the three servo;
+	 * @param speed3 turning speed for the three servo;
+     */
+	
+	//%subcategory=ESP Servo
     //%blockId=ESP_Servo_360
     //%block="Turn ESP 360° Servo|Servo1 in %dir1 with speed %speed1||Servo2 in %dir2 with speed %speed2|Servo3 in %dir3 with speed %speed3|"
     //% weight=35
@@ -978,7 +1024,11 @@ namespace WiFiIoT {
         serial.writeLine(cmd)
     }
     // -------------- 6. General ----------------		
-
+	
+	/**
+     * Send firmware version
+     */
+	
     //%subcategory=ESP
     //%blockId=wifi_ext_board_version
     //%block="firmware version"
@@ -987,7 +1037,12 @@ namespace WiFiIoT {
     export function sendVersion(): string {
         return version
     }
-
+	
+	/**
+     * Send AT command
+	 * @param command command name;
+     */
+	
     //%subcategory=ESP
     //%blockId=wifi_ext_board_at
     //%block="Send AT command %command"
@@ -996,7 +1051,11 @@ namespace WiFiIoT {
         serial.writeLine(command);
         flag = false
     }
-
+	
+	/**
+     * Update Firmware to Latest Version
+     */
+	
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_Latest
     //%block="Update Firmware to Latest Version"
@@ -1005,7 +1064,12 @@ namespace WiFiIoT {
         serial.writeLine("(AT+ota?ver=latest)");
     }
 
-    //%subcategory=ESP
+    /**
+     * Update Firmware to another version
+	 * @param version version name;
+     */
+	
+	//%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_version
     //%block="Update Firmware to Version %version"
     //% weight=35 group="Configuration" blockHidden=true
@@ -1013,7 +1077,12 @@ namespace WiFiIoT {
         serial.writeLine("(AT+ota?ver="+version+")");
     }
 
-    //%subcategory=ESP
+    /**
+     * Check OTA Porgress
+	 * @param PercentageValue OTA progress in percentage;
+     */
+	
+	//%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_progress
     //%block="OTA Progress"
     //% weight=27 draggableParameters=reporter group="Configuration"
@@ -1021,7 +1090,13 @@ namespace WiFiIoT {
     export function on_OTA_progressing(handler: (PercentageValue: string) => void): void {
         OTA_recevied = handler;
     }
-    //%subcategory=ESP
+    
+	/**
+     * When OTA Updated finished 
+	 * @param handler OTA finished callback;
+     */
+	
+	//%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_finish
     //%block="On OTA Update Finished"
     //% weight=29 draggableParameters=reporter group="Configuration"
@@ -1034,7 +1109,13 @@ namespace WiFiIoT {
     //%block="On OTA Update Failed"
     //% weight=28 draggableParameters=reporter group="Configuration"
 
-    export function on_OTA_Failed(handler: (Message:string) => void): void {
+    /**
+     * When OTA Updated failed
+	 * @param handler OTA finished callback;
+	 * @param Messgae error messsage;
+     */
+	
+	export function on_OTA_Failed(handler: (Message:string) => void): void {
         OTA_Failed = handler;
     }
 }
