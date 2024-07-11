@@ -819,6 +819,7 @@ namespace WiFiIoT {
 	 * @param WAN_Command WAN command
 	 * @param Value value of the command
      */
+	 
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
     //%block="On WiFi received" 
@@ -831,6 +832,12 @@ namespace WiFiIoT {
 
 
     // -------------- 7. Wifi Channel ----------------
+	
+	/**
+     * Join channel after received WiFi
+	 * @param channel channel name,
+     */
+	
     //%subcategory=Channel
     //%blockId=wifi_listen_channel
     //%block="WiFi Receiver join channel %channel"
@@ -840,7 +847,15 @@ namespace WiFiIoT {
         myChannel = channel
         serial.writeLine("(AT+pubnubreceiver?channel=" + myChannel + ")")
     }
-    //%subcategory=Channel
+    
+	/**
+     * Check received message and channel status
+	 * @param handler Channel received callback
+	 * @param Channel channel name;
+	 * @param receivedMessage message received;
+     */
+	
+	//%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_receieved
     //%block="On WiFi Receiver received"
     //% weight=18 group="Receiver"
@@ -848,7 +863,16 @@ namespace WiFiIoT {
     export function on_wifi_received(handler: (Channel: string, receivedMessage: string) => void): void {
         Wifi_Remote_Conn = handler;
     }
-    //%subcategory=Channel
+    
+	/**
+     * Check received message, value and channel status
+	 * @param handler Channel received callback
+	 * @param Channel channel name;
+	 * @param receivedMessage message received;
+	 * @param Value value received;
+     */
+	
+	//%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_receieved_value
     //%block="On WiFi Receiver received"
     //% weight=17 draggableParameters=reporter group="Receiver"
