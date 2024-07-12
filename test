@@ -1,5 +1,14 @@
 // tests go here; this will not be compiled when this package is used as a library
 
+/* 
+Test procedure:
+1. Once the micro:bit is connected to WiFi, it will show your device id.
+2. When the micro:bit received a WAN_command, it will display the command received.
+3. Press micro:bit button A. A tick icon should be displayed and value 1 should be sent to ThingSpeak.
+4. Press micro:bit button B. A happy face should be displayed and the command "hi" should be sent to IFTTT.
+5. Press micro:bit button A+B. A string showing the current time at Hong Kong should be displayed.
+*/
+
 // Connect to wifi.
 // Show device id if connected. 
 WiFiIoT.on_wifi_connect(function (IP_Address, Device_ID) {
@@ -36,7 +45,7 @@ WiFiIoT.on_WAN_remote(function (WAN_Command) {
 })
 
 // Connect to ThingSpeak.
-// Show yes icon when it is connected to ThingSpeak.
+// Show tick icon when it is connected to ThingSpeak.
 WiFiIoT.on_thingspeak_conn(function (Status, Error_code) {
     basic.showIcon(IconNames.Yes)
 })
