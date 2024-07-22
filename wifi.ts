@@ -479,22 +479,22 @@ namespace WiFiIoT {
 
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_ifttt
-    //% block="Send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3"
+    //% block="event_name* %event|value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
     //% group="IFTTT"
     //% expandableArgumentMode="enabled"	
-    export function sendIFTTT(key: string, eventname: string, value1: number = null, value2: number = null, value3: number = null): void {
+    export function sendIFTTT(eventname: string, value1: number = null, value2: number = null, value3: number = null): void {
         if (value1 != null && value2 != null && value3 != null) {
-            serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + "&value3=" + value3 + ")");
+            serial.writeLine("(AT+iffff2?event" + eventname + "&value1=" + value1 + "&value2=" + value2 + "&value3=" + value3 + ")");
         }
         else if (value3 == null && value2 != null && value1 != null) {
-            serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + ")");
+            serial.writeLine("(AT+iffff2?event" + eventname + "&value1=" + value1 + "&value2=" + value2 + ")");
         }
         else if (value3 == null && value2 == null && value1 != null) {
-            serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + "&value1=" + value1 + ")");
+            serial.writeLine("(AT+iffff2?event" + eventname + "&value1=" + value1 + ")");
         }
         else if (value3 == null && value2 == null && value1 == null) {
-            serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + ")");
+            serial.writeLine("(AT+iffff2?event" + eventname + ")");
         }
     }
 
