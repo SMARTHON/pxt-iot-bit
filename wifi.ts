@@ -479,7 +479,7 @@ namespace WiFiIoT {
 
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_ifttt
-    //% block="Send IFTTT event_name* %event|value1 %value1|value2 %value2|value3 %value3"
+    //% block="Send IFTTT event_name* %event||value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
     //% group="IFTTT"
     //% expandableArgumentMode="enabled"	
