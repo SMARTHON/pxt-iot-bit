@@ -485,16 +485,16 @@ namespace WiFiIoT {
     //% expandableArgumentMode="enabled"	
     export function sendIFTTT(eventname: string, value1: number = null, value2: number = null, value3: number = null): void {
         if (value1 != null && value2 != null && value3 != null) {
-            serial.writeLine("(AT+iffff2?event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + "&value3=" + value3 + ")");
+            serial.writeLine("(AT+ifttt2?event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + "&value3=" + value3 + ")");
         }
         else if (value3 == null && value2 != null && value1 != null) {
-            serial.writeLine("(AT+iffff2?event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + ")");
+            serial.writeLine("(AT+ifttt2?event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + ")");
         }
         else if (value3 == null && value2 == null && value1 != null) {
-            serial.writeLine("(AT+iffff2?event=" + eventname + "&value1=" + value1 + ")");
+            serial.writeLine("(AT+ifttt2?event=" + eventname + "&value1=" + value1 + ")");
         }
         else if (value3 == null && value2 == null && value1 == null) {
-            serial.writeLine("(AT+iffff2?event=" + eventname + ")");
+            serial.writeLine("(AT+ifttt2?event=" + eventname + ")");
         }
     }
 
