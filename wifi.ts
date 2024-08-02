@@ -533,7 +533,7 @@ namespace WiFiIoT {
 	
 	//%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_blynk
-    //% block="Send Blynk token* %key|v0 value%v0||v1 value%v1|v2 value%v2|v3 value%v3|v4 value%v4|v5 value%v5|v6 value%v6|v7 value%v7|"
+    //% block="Send Blynk token* %key|V0 value%V0||V1 value%V1|V2 value%V2|V3 value%V3|V4 value%V4|V5 value%V5|V6 value%V6|V7 value%V7|"
     //% weight=123 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function sendBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
