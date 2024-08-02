@@ -37,6 +37,7 @@ namespace WiFiIoT {
     let WAN_Remote_Conn: (WAN_Command: string) => void = null;
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
     let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
+	let Blynk_conn: (Status: string, Error_code: string) => void = null;
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
@@ -507,6 +508,38 @@ namespace WiFiIoT {
     export function on_IFTTT_conn(handler: (Status: string, Error_code: string) => void): void {
         IFTTT_conn = handler;
     }
+	
+	//%subcategory="IoT Services"
+    //% blockId=wifi_ext_board_set_blynk
+    //% block="Send Blynk key* %key|v0 value%v0||v1 value%v1|v2 value%v2|v3 value%v3|v4 value%v4|v5 value%v5|v6 value%v6|v7 value%v7|"
+    //% weight=123 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function sendBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
+        let command = "(AT+blynk?key=";
+        if (key == "") { return }
+        else { command = command + key }
+		if (v0 != null) { command = command + "&v0=" + v0 }
+        if (v1 != null) { command = command + "&v1=" + v1 }
+        if (v2 != null) { command = command + "&v2=" + v2 }
+        if (v3 != null) { command = command + "&v3=" + v3 }
+        if (v4 != null) { command = command + "&v4=" + v4 }
+        if (v5 != null) { command = command + "&v5=" + v5 }
+        if (v6 != null) { command = command + "&v6=" + v6 }
+        if (v7 != null) { command = command + "&v7=" + v7 }
+
+        command = command + ")"
+        serial.writeLine(command);
+    }
+	//%subcategory="IoT Services"
+    //%blockId=Blynk_connect
+    //%block="On Blynk Uploaded"
+    //% weight=122 group="Blynk"
+    //% draggableParameters=reporter
+    //% blockGap=7
+    export function on_blynk_conn(handler: (Status: string, Error_code: string) => void): void {
+        Blynk_conn = handler;
+    }
+	
 
     // -------------- 4. Others ----------------
 
