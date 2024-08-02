@@ -398,7 +398,8 @@ namespace WiFiIoT {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk uploaded")
                         }
-                        Thingspeak_conn("OK", "0")				
+                        Blynk_conn("OK", "0")		
+						}}						
 
             }
         })
