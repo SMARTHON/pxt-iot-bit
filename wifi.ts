@@ -390,7 +390,15 @@ namespace WiFiIoT {
                     {
                         OTA_Failed(response[2])
                     }
-                }								 
+                }
+				
+                else if (label == "10") { //W10 Blynk
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (Blynk_conn != null && response[1] == "0") {
+                        if (OLED_FLAG == true) {
+                            //OLED.writeStringNewLine("Blynk uploaded")
+                        }
+                        Thingspeak_conn("OK", "0")				
 
             }
         })
