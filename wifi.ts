@@ -27,6 +27,7 @@ namespace WiFiIoT {
     let connecting_flag = false
     let disconnect_error_code = ""
     let thingspeak_error = ""
+	let blynk_error = ""
     let NTP_Receive: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void = null;
     let Wifi_Remote_Conn: (channel: string, WifiMessage: string) => void = null;
     let Wifi_Remote_Conn_value: (channel: string, WifiMessage: string, Value: number) => void = null;
@@ -398,8 +399,20 @@ namespace WiFiIoT {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk uploaded")
                         }
-                        Blynk_conn("OK", "0")		
-						}}						
+                        Blynk_conn("OK", "0")
+                    }
+                    else if (response[1] == "1") {
+                        if (Blynk_conn != null && response[2] != null) {
+                            blynk_error = response[2]
+                            Blynk_conn("FAIL", blynk_error)
+                        }
+                        if (OLED_FLAG == true) {
+                            //OLED.writeStringNewLine("Blynk_error")
+                            //OLED.writeStringNewLine("fail code:"+blynk_error)
+                        }
+                    }
+                }	
+					
 
             }
         })
@@ -520,7 +533,7 @@ namespace WiFiIoT {
 	
 	//%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_blynk
-    //% block="Send Blynk key* %key|v0 value%v0||v1 value%v1|v2 value%v2|v3 value%v3|v4 value%v4|v5 value%v5|v6 value%v6|v7 value%v7|"
+    //% block="Send Blynk token* %key|v0 value%v0||v1 value%v1|v2 value%v2|v3 value%v3|v4 value%v4|v5 value%v5|v6 value%v6|v7 value%v7|"
     //% weight=123 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function sendBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
