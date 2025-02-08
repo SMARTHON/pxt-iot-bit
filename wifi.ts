@@ -3,7 +3,7 @@
  *  IoT orientated expansion module for Micro:bit.
  */
 //% weight=101 color=#333300  icon="\uf1eb" block="IoT:bit"
-namespace WiFiIoT {
+namespace wiFiIoT {
     let flag = true;
     //let httpReturnArray: string[] = []
     let httpReturnString: string = ""
@@ -50,7 +50,7 @@ namespace WiFiIoT {
     let OTA_recevied: (PercentageValue:string) => void = null;
     let OTA_Finished: ()=>void=null;
     let OTA_Failed: (Message: string) => void = null;
-    export enum httpMethod {
+    export enum HttpMethod {
         //% block="GET"
         GET,
         //% block="POST"
@@ -62,7 +62,7 @@ namespace WiFiIoT {
 
 
     }
-    export enum mode {
+    export enum Mode {
         //% block="WEB"
         Web,
         //% block="APP"
@@ -70,9 +70,9 @@ namespace WiFiIoT {
         //% block="IFTTT"
         ifttt,
         //% block="ALL"
-        all
+        All
     }
-    export enum ESP_SERVO_PORT {
+    export enum EspServoPort {
         //% block="S1"
         S1,
         //% block="S2"
@@ -82,7 +82,7 @@ namespace WiFiIoT {
     }
     export enum ESP_360_SERVO_DIR {
         //% block="Clockwise"
-        clockwise,
+        Clockwise,
         //% block="Antilockwise"
         anticlockwise
     }
@@ -158,8 +158,8 @@ namespace WiFiIoT {
     //%block="Initialize IoT:bit TX %tx_pin RX %rx_pin"
     //% weight=140
 
-    export function initializeWifi(tx_pin: SerialPin, rx_pin: SerialPin): void {
-        serial.redirect(tx_pin, rx_pin, BaudRate.BaudRate115200);
+    export function initializeWifi(txPin: SerialPin, rxPin: SerialPin): void {
+        serial.redirect(txPin, rxPin, BaudRate.BaudRate115200);
         serial.setTxBufferSize(128)
         serial.setRxBufferSize(128)
 
@@ -434,7 +434,7 @@ namespace WiFiIoT {
     //% block="On WiFi connected"   
     //% weight=133
     //% draggableParameters=reporter
-    export function on_wifi_connect(handler: (IP_Address: string, Device_ID: string) => void): void {
+    export function on_wifi_connect(handler: (ipAddress: string, deviceId: string) => void): void {
         Wifi_Conn = handler;
 
 
@@ -514,7 +514,7 @@ namespace WiFiIoT {
      */
 	 
     //%subcategory="IoT Services"
-    //%blockId=Thingspeak_connect
+    //%connectBlockId=Thingspeak_connect
     //%block="On Thingspeak Uploaded"
     //% weight=129 group="Thingspeak"
     //% draggableParameters=reporter
@@ -618,7 +618,7 @@ namespace WiFiIoT {
     //% weight=108 draggableParameters=reporter
     //% blockGap=20
 
-    export function on_HTTP_recevid(handler: (HTTP_Status_Code: string, Data: string) => void): void {
+    export function on_HTTP_recevid(handler: (httpStatusCode: string, data: string) => void): void {
         HTTP_received = handler;
     }
 
@@ -628,7 +628,7 @@ namespace WiFiIoT {
      * @param source Source string that to be extract from
      */
     //%subcategory="IoT Services"
-    //% blockId="JSON_extractor"
+    //%jsonBlockId="JSON_extractor"
     //%block="Get value of Key %target from JSON String %source"
     //% weight=107 group="HTTP"
     export function get_value(target: string, source: string): string {
