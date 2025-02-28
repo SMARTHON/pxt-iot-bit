@@ -50,7 +50,7 @@ namespace wiFiIoT {
     let OTA_recevied: (PercentageValue:string) => void = null;
     let OTA_Finished: ()=>void=null;
     let OTA_Failed: (Message: string) => void = null;
-    export enum HttpMethod {
+    export enum httpMethod {
         //% block="GET"
         GET,
         //% block="POST"
