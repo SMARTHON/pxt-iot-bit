@@ -50,7 +50,7 @@ namespace wiFiIoT {
     let OTA_recevied: (PercentageValue:string) => void = null;
     let OTA_Finished: ()=>void=null;
     let OTA_Failed: (Message: string) => void = null;
-    export enum httpMethod {
+    export enum HttpMethod {
         //% block="GET"
         GET,
         //% block="POST"
@@ -585,14 +585,14 @@ namespace wiFiIoT {
     //% block="Send HTTP Request |Method %method|URL:%url|Body:%body"
     //% weight=115	 group="HTTP" 
     //% inlineInputMode=external
-    export function sendGenericHttp(method: httpMethod, url: string, body: string): void {
+    export function sendGenericHttp(method: HttpMethod, url: string, body: string): void {
         //httpReturnArray = []
         let temp = ""
         switch (method) {
-            case httpMethod.GET:
+            case HttpMethod.GET:
                 temp = "GET"
                 break
-            case httpMethod.POST:
+            case HttpMethod.POST:
                 temp = "POST"
                 break
 
