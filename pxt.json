@@ -18,7 +18,7 @@
         "_locales/zh/smarthon-iotbit-strings.json"
     ],
     "testFiles": [
-        "tests.ts"
+        "test.ts"
     ],
     "public": true
 }
