@@ -503,7 +503,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_ifttt
-    //% block="Send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3"
+    //% block="send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
     //% group="IFTTT"
     //% expandableArgumentMode="enabled"    
@@ -531,7 +531,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //%blockId=IFTTT_connect
-    //%block="On IFTTT Uploaded"
+    //%block="on IFTTT uploaded"
     //% weight=124     group="IFTTT"
     //% draggableParameters=reporter
     //% blockGap=7
@@ -551,7 +551,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
-    //% block="Send HTTP Request |Method %method|URL:%url|Body:%body"
+    //% block="send HTTP request |method %method|URL:%url|body:%body"
     //% weight=115     group="HTTP" 
     //% inlineInputMode=external
     export function sendGenericHttp(method: HttpMethod, url: string, body: string): void {
@@ -577,7 +577,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //% blockId="wifi_ext_board_http_receive" 
-    //% block="On HTTP received"     group="HTTP"
+    //% block="on HTTP received"     group="HTTP"
     //% weight=108 draggableParameters=reporter
     //% blockGap=20
 
@@ -592,7 +592,7 @@ namespace wiFiIoT {
      */
     //%subcategory="IoT Services"
     //%jsonBlockId="JSON_extractor"
-    //%block="Get value of Key %target from JSON String %source"
+    //%block="get value of key %target from JSON string %source"
     //% weight=107 group="HTTP"
     export function getValue(target: string, source: string): string {
 
@@ -662,7 +662,7 @@ namespace wiFiIoT {
     */
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_Call_NTP_city
-    //% block="Get NTP Current Time at city %city"   
+    //% block="get NTP current time at city %city"   
     //% weight=109
     //% group="Current Time"
     export function getNTP(city: CityList): void {
@@ -676,7 +676,7 @@ namespace wiFiIoT {
     */
     //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_Call_NTP_number
-    //% block="Get NTP Current Time at Time Zone UTC%zone"   
+    //% block="get NTP current time at time zone UTC%zone"   
     //% weight=109
     //% group="Current Time"
     export function getNTPNumber(zone: string): void {
@@ -694,7 +694,7 @@ namespace wiFiIoT {
     */
     //%subcategory="IoT Services"
     //% blockId="wifi_ext_board_receive_ntp" 
-    //% block="On NTP received"     group="Current Time"
+    //% block="on NTP received"     group="Current Time"
     //% weight=108 draggableParameters=reporter
     //% blockGap=7
 
@@ -710,7 +710,7 @@ namespace wiFiIoT {
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_start_server_WAN
-    //%block="Start WiFi remote control (WAN)"
+    //%block="start WiFi remote control (WAN)"
     //% weight=80  group="Start the control"
     //% blockHidden=true
     export function startWebServerWan(): void {
@@ -724,7 +724,7 @@ namespace wiFiIoT {
     */
     //%subcategory=Control
     //%blockId=wifi_ext_board_get_id
-    //%block="Device ID"
+    //%block="device ID"
     //% weight=80
     export function getDeviceId(): string {
         return deviceId
@@ -739,7 +739,7 @@ namespace wiFiIoT {
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connected
-    //%block="On WAN control Connected" 
+    //%block="on WAN control connected" 
     //% weight=75 group="Start the control"
     //% blockHidden=true
     //% blockGap=7    draggableParameters=reporter
@@ -756,7 +756,7 @@ namespace wiFiIoT {
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect
-    //%block="On WiFi received" 
+    //%block="on WiFi received" 
     //% weight=70 group="Get controlled"
     //% draggableParameters=reporter
     export function onWANRemote(handler: (wanCommand: string) => void): void {
@@ -772,7 +772,7 @@ namespace wiFiIoT {
 
     //%subcategory=Control
     //%blockId=wifi_ext_board_on_WAN_connect_value
-    //%block="On WiFi received" 
+    //%block="on WiFi received" 
     //% weight=65 group="Get controlled"
     //% blockGap=7    draggableParameters=reporter
     export function onWANRemoteValue(handler: (wanCommand: string, value: number) => void): void {
@@ -788,7 +788,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_listen_channel
-    //%block="WiFi Receiver join channel %channel"
+    //%block="WiFi receiver join channel %channel"
     //% weight=20 group="Receiver"
     export function wifiListenChannel(channel: string): void {
         wifiRemote = true
@@ -805,7 +805,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_receieved
-    //%block="On WiFi Receiver received"
+    //%block="on WiFi receiver received"
     //% weight=18 group="Receiver"
     //% draggableParameters=reporter
     export function onWifiReceived(handler: (channel: string, receivedMessage: string) => void): void {
@@ -822,7 +822,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_receieved_value
-    //%block="On WiFi Receiver received"
+    //%block="on WiFi receiver received"
     //% weight=17 draggableParameters=reporter group="Receiver"
     export function onWifiReceivedValue(handler: (channel: string, receivedMessage: string, value: number) => void): void {
         wifiRemoteConnValue = handler;
@@ -836,7 +836,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_send_message
-    //%block="WiFi Sender send channel %channel message %message"
+    //%block="WiFi sender send channel %channel message %message"
     //% weight=15
     //% group="Sender"
     export function wifiSendMessage(channel: string, message: string): void {
@@ -853,7 +853,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_send_message_value
-    //%block="WiFi Sender send channel %channel message %message value %value"
+    //%block="WiFi sender send channel %channel message %message value %value"
     //% weight=14
     //% group="Sender"
     export function wifiSendMessageValue(channel: string, message: string, value: number): void {
@@ -870,7 +870,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_sent
-    //%block="On Wifi message sent"
+    //%block="on Wifi message sent"
     //% weight=13 draggableParameters=reporter group="Advanced"
 
     export function onWifiSenderSent(handler: (status: string, errorCode: string) => void): void {
@@ -886,7 +886,7 @@ namespace wiFiIoT {
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_channel_create
-    //%block="On WiFi channel joined" group="Receiver"
+    //%block="on WiFi channel joined" group="Receiver"
     //% weight=19 draggableParameters=reporter group="Advanced"
 
     export function onWifiCreateChannel(handler: (channel: string, errorCode: string) => void): void {
@@ -904,7 +904,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_180
-    //%block="Turn ESP 180° |Servo1 to %deg1 ° ||Servo2 to %deg2 ° |Servo3 to %deg3 °|"
+    //%block="turn ESP 180° |servo1 to %deg1 ° ||servo2 to %deg2 ° |servo3 to %deg3 °|"
     //% expandableArgumentMode="enabled"
     //% weight=36
     //% deg1.min=0 deg1.max=180
@@ -933,7 +933,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP Servo
     //%blockId=ESP_Servo_360
-    //%block="Turn ESP 360° Servo|Servo1 in %dir1 with speed %speed1||Servo2 in %dir2 with speed %speed2|Servo3 in %dir3 with speed %speed3|"
+    //%block="turn ESP 360° servo|servo1 in %dir1 with speed %speed1||servo2 in %dir2 with speed %speed2|servo3 in %dir3 with speed %speed3|"
     //% weight=35
     //% speed1.min=0 speed1.max=100
     //% speed2.min=0 speed2.max=100
@@ -988,7 +988,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_at
-    //%block="Send AT command %command"
+    //%block="send AT command %command"
     //% weight=25 group="Configuration" 
     export function sendAT(command: string): void {
         serial.writeLine(command);
@@ -1001,7 +1001,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_Latest
-    //%block="Update Firmware to Latest Version"
+    //%block="update firmware to latest version"
     //% weight=40 group="Configuration" 
     export function OTALatest(): void {
         serial.writeLine("(AT+ota?ver=latest)");
@@ -1014,7 +1014,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_version
-    //%block="Update Firmware to Version %version"
+    //%block="update firmware to version %version"
     //% weight=35 group="Configuration" blockHidden=true
     export function OTAVersion(version: string): void {
         serial.writeLine("(AT+ota?ver=" + version + ")");
@@ -1027,7 +1027,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_progress
-    //%block="OTA Progress"
+    //%block="OTA progress"
     //% weight=27 draggableParameters=reporter group="Configuration"
 
     export function onOTAProgressing(handler: (percentageValue: string) => void): void {
@@ -1041,7 +1041,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_finish
-    //%block="On OTA Update Finished"
+    //%block="on OTA update finished"
     //% weight=29 draggableParameters=reporter group="Configuration"
 
     export function onOTAFinish(handler: () => void): void {
@@ -1050,7 +1050,7 @@ namespace wiFiIoT {
 
     //%subcategory=ESP
     //%blockId=wifi_ext_board_OTA_fail
-    //%block="On OTA Update Failed"
+    //%block="on OTA update failed"
     //% weight=28 draggableParameters=reporter group="Configuration"
 
     /**
