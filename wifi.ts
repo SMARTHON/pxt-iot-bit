@@ -152,7 +152,7 @@ namespace wiFiIoT {
      */
 
     //%blockId=wifi_ext_board_initialize_wifi
-    //%block="Initialize IoT:bit TX %txPin RX %rxPin"
+    //%block="initialize IoT:bit TX %txPin RX %rxPin"
     //% weight=140
 
     export function initializeWifi(txPin: SerialPin, rxPin: SerialPin): void {
@@ -385,7 +385,7 @@ namespace wiFiIoT {
      */
 
     //% blockId=wifi_ext_board_set_wifi
-    //% block="Set WiFi to ssid %ssid| pwd %pwd"   
+    //% block="set WiFi to ssid %ssid| pwd %pwd"   
     //% weight=135
     export function setWifi(ssid: string, pwd: string): void {
         serial.writeLine("(AT+wifi?ssid=" + ssid + "&pwd=" + pwd + ")");
@@ -405,7 +405,7 @@ namespace wiFiIoT {
      */
 
     //% blockId=wifi_ext_board_on_wifi_connect
-    //% block="On WiFi connected"   
+    //% block="on WiFi connected"   
     //% weight=133
     //% draggableParameters=reporter
     export function onWifiConnect(handler: (ipAddress: string, deviceId: string) => void): void {
@@ -419,7 +419,7 @@ namespace wiFiIoT {
      */
 
     //% blockId=wifi_ext_board_on_wifi_disconnect
-    //% block="On WiFi disconnected"   
+    //% block="on WiFi disconnected"   
     //% weight=132
     //% draggableParameters=reporter
     export function onWifiDisconnect(handler: (errorCode: string) => void): void {
@@ -456,7 +456,7 @@ namespace wiFiIoT {
      */
 
     //% blockId=wifi_ext_board_set_thingspeak
-    //% block="Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
+    //% block="send thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130 group="Thingspeak"
     //% expandableArgumentMode="enabled"
     export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
@@ -484,7 +484,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //%connectBlockId=Thingspeak_connect
-    //%block="On Thingspeak Uploaded"
+    //%block="on thingspeak uploaded"
     //% weight=129 group="Thingspeak"
     //% draggableParameters=reporter
     //% blockGap=7
