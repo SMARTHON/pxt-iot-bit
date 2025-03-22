@@ -79,9 +79,9 @@ namespace wiFiIoT {
     }
 
     export enum ESP_360_SERVO_DIR {
-        //% block="Clockwise"
+        //% block="clockwise"
         Clockwise,
-        //% block="Antilockwise"
+        //% block="anti-clockwise"
         Anticlockwise
     }
 
@@ -456,7 +456,7 @@ namespace wiFiIoT {
      */
 
     //% blockId=wifi_ext_board_set_thingspeak
-    //% block="send thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
+    //% block="send ThingSpeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130 group="Thingspeak"
     //% expandableArgumentMode="enabled"
     export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
@@ -484,7 +484,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //%connectBlockId=Thingspeak_connect
-    //%block="on thingspeak uploaded"
+    //%block="on ThingSpeak uploaded"
     //% weight=129 group="Thingspeak"
     //% draggableParameters=reporter
     //% blockGap=7
@@ -551,7 +551,7 @@ namespace wiFiIoT {
 
     //%subcategory="IoT Services"
     //%blockId=wifi_ext_board_generic_http
-    //% block="send HTTP request |method %method|URL:%url|body:%body"
+    //% block="send HTTP request |method %method|url:%url|body:%body"
     //% weight=115     group="HTTP" 
     //% inlineInputMode=external
     export function sendGenericHttp(method: HttpMethod, url: string, body: string): void {
