@@ -58,27 +58,7 @@ namespace wiFiIoT {
         POST
     }
 
-    export enum Mode {
-        //% block="WEB"
-        Web,
-        //% block="APP"
-        App,
-        //% block="IFTTT"
-        ifttt,
-        //% block="ALL"
-        All
-    }
-
-    export enum EspServoPort {
-        //% block="S1"
-        S1,
-        //% block="S2"
-        S2,
-        //% block="S3"
-        S3
-    }
-
-    export enum ESP_360_SERVO_DIR {
+    export enum Esp360ServoDir {
         //% block="clockwise"
         Clockwise,
         //% block="anti-clockwise"
@@ -457,7 +437,7 @@ namespace wiFiIoT {
 
     //% blockId=wifi_ext_board_set_thingspeak
     //% block="send ThingSpeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
-    //% weight=130 group="Thingspeak"
+    //% weight=130 group="ThingSpeak"
     //% expandableArgumentMode="enabled"
     export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
         let command = "(AT+thingspeak?key=";
@@ -485,7 +465,7 @@ namespace wiFiIoT {
     //%subcategory="IoT Services"
     //%connectBlockId=Thingspeak_connect
     //%block="on ThingSpeak uploaded"
-    //% weight=129 group="Thingspeak"
+    //% weight=129 group="ThingSpeak"
     //% draggableParameters=reporter
     //% blockGap=7
     export function onThingspeakConn(handler: (status: string, errorCode: string) => void): void {
@@ -941,7 +921,7 @@ namespace wiFiIoT {
     //% expandableArgumentMode="enabled" group="Servo"
     //% blockGap=7    
 
-    export function ESPServo360(dir1: ESP_360_SERVO_DIR = 0, speed1: number = null, dir2: ESP_360_SERVO_DIR = 0, speed2: number = null, dir3: ESP_360_SERVO_DIR = 0, speed3: number = null,): void {
+    export function ESPServo360(dir1: Esp360ServoDir = 0, speed1: number = null, dir2: Esp360ServoDir = 0, speed2: number = null, dir3: Esp360ServoDir = 0, speed3: number = null,): void {
         let cmd = "(AT+servo_360?";
         if (speed1 != null) {
             let direction1;
