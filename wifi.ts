@@ -609,20 +609,6 @@ namespace wiFiIoT {
     }
 
     /**
-     * Return generic http array
-     */
-
-    //%subcategory="IoT Services"
-    //% blockId="wifi_ext_board_generic_http_array_return" 
-    //% block="HTTP response (string array)"
-    //% weight=110     group="HTTP"
-    //% blockGap=7
-    //% blockHidden=true
-    export function getGenericHttpReturn(): Array<string> {
-        return [""];
-    }
-
-    /**
      * Return generic http string
      */
 
