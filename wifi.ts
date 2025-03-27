@@ -583,6 +583,10 @@ namespace wiFiIoT {
         let jsonObject = JSON.parse(source)
         //Get the count of keys for the For-Loop to run
         let totalKeys = Object.keys(jsonObject).length
+        //when target or source is empty, return empty string
+        if (!target || !source) {
+            return "N/A"
+        }
         // Start work on each keys
         for (let i = 0; i < totalKeys; i++) {
             //Push each key from JSON Object to keys array
