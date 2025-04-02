@@ -608,6 +608,9 @@ namespace wiFiIoT {
         }
         //After input all the data, search the target's key index
         let targetIndex = arrayKeys.indexOf(target)
+        // targetIndex will return -1 when It can not find the target
+        if (targetIndex == -1)
+            return "N/A"
         //Return the value of that key
         return arrayValues[targetIndex]
     }
