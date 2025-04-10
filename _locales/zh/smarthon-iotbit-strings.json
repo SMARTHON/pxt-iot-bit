@@ -54,7 +54,7 @@
   "wiFiIoT.on_WAN_remote_value|block": "当从互联网接收到指令及数值",
   "wiFiIoT.on_WAN_remote|block": "当从互联网接收到指令",
   "wiFiIoT.on_thingspeak_conn|block": "当上传到Thingspeak後",
-  "wiFiIoT.onWifiConnect|block": "当WiFi连接成功後",
+  "wiFiIoT.on_wifi_connect|block": "当WiFi连接成功後",
   "wiFiIoT.on_wifi_create_channel|block": "当加入频道时",
   "wiFiIoT.on_wifi_disconnect|block": "当WiFi断线",
   "wiFiIoT.on_wifi_received_value|block": "当从频道收到讯息及数值",

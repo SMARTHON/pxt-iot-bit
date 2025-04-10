@@ -43,7 +43,7 @@
   "wiFiIoT.httpMethod.POST|block": "POST",
   "wiFiIoT.httpMethod.PUT|block": "PUT",
   "wiFiIoT.initializeWifi|block": "Initialize IoT:bit TX %tx_pin RX %rx_pin",
-  "wiFiIoT.onWifiConnect|block": "WiFi connected?",
+  "wiFiIoT.is_wifi_connect|block": "WiFi connected?",
   "wiFiIoT.mode.App|block": "APP",
   "wiFiIoT.mode.Web|block": "WEB",
   "wiFiIoT.mode.all|block": "ALL",

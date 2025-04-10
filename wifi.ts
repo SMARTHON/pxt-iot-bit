@@ -699,7 +699,7 @@ namespace wiFiIoT {
     //%blockId=wifi_ext_board_get_id
     //%block="device ID"
     //% weight=80
-    export function getDeviceId(): string {
+    export function getDeviceID(): string {
         return deviceId
     }
 
