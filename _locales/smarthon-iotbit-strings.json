@@ -59,7 +59,7 @@
   "wiFiIoT.on_wifi_disconnect|block": "On WiFi disconnected",
   "wiFiIoT.onWifiReceivedValue|block": "On WiFi Receiver received",
   "wiFiIoT.onWifiReceived|block": "On WiFi Receiver received",
-  "wiFiIoT.on_wifi_sender_sent|block": "On Wifi message sent",
+  "wiFiIoT.onWifiSenderSent|block": "On Wifi message sent",
   "wiFiIoT.sendAT|block": "Send AT command %command",
   "wiFiIoT.sendGenericHttp|block": "Send HTTP Request |Method %method|URL:%url|Body:%body",
   "wiFiIoT.onHTTPRecevid|block": "On HTTP received",

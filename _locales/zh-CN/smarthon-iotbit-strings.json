@@ -59,7 +59,7 @@
   "wiFiIoT.onWifiDisconnect|block": "当WiFi断线",
   "wiFiIoT.onWifiReceivedValue|block": "当从频道收到讯息及数值",
   "wiFiIoT.onWifiReceived|block": "当从频道收到讯息",
-  "wiFiIoT.on_wifi_sender_sent|block": "当讯息发送到频道",
+  "wiFiIoT.onWifiSenderSent|block": "当讯息发送到频道",
   "wiFiIoT.sendAT|block": "发送AT指令 %command",
   "wiFiIoT.sendGenericHttp|block": " 发送 HTTP 请求 |Method %method|URL:%url|Body:%body",
   "wiFiIoT.onHTTPRecevid|block": "当接收到HTTP回覆",
