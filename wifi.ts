@@ -388,7 +388,7 @@ namespace wiFiIoT {
     //% block="on WiFi connected"   
     //% weight=133
     //% draggableParameters=reporter
-    export function on_wifi_connect(handler: (ipAddress: string, deviceId: string) => void): void {
+    export function onWifiConnect(handler: (ipAddress: string, deviceId: string) => void): void {
         wifiConn = handler;
     }
 
@@ -402,7 +402,7 @@ namespace wiFiIoT {
     //% block="on WiFi disconnected"   
     //% weight=132
     //% draggableParameters=reporter
-    export function on_wifi_disconnect(handler: (errorCode: string) => void): void {
+    export function onWifiDisconnect(handler: (errorCode: string) => void): void {
         wifiDisConn = handler;
     }
 
@@ -413,7 +413,7 @@ namespace wiFiIoT {
     //% blockId=wifi_ext_board_is_wifi_connect
     //% block="WiFi connected?"   
     //% weight=131
-    export function is_wifi_connect(): boolean {
+    export function isWifiConnect(): boolean {
         if (wifiConnected == "2")
             return true
         else return false
@@ -699,7 +699,7 @@ namespace wiFiIoT {
     //%blockId=wifi_ext_board_get_id
     //%block="device ID"
     //% weight=80
-    export function getDeviceID(): string {
+    export function getDeviceId(): string {
         return deviceId
     }
 
