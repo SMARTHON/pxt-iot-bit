@@ -42,7 +42,7 @@
   "wiFiIoT.httpMethod.GET|block": "GET",
   "wiFiIoT.httpMethod.POST|block": "POST",
   "wiFiIoT.httpMethod.PUT|block": "PUT",
-  "wiFiIoT.initializeWifi|block": "初始化IoT:bit TX %tx_pin RX %rx_pin",
+  "wiFiIoT.initializeWifi|block": "初始化IoT:bit TX %txPin RX %rxPin",
   "wiFiIoT.isWifiConnect|block": "WiFi连接状态",
   "wiFiIoT.mode.App|block": "APP",
   "wiFiIoT.mode.Web|block": "WEB",
