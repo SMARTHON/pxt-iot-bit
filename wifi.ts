@@ -583,15 +583,6 @@ namespace WiFiIoT {
         Blynk_conn = handler;
     }
 	
-    //%subcategory="IoT Services"
-    //%blockId=BlynkRead_connect
-    //%block="Read on Blynk"
-    //% weight=121 group="Blynk"
-    //% draggableParameters=reporter
-    //% blockGap=7
-    export function on_blynkread_conn(handler: (Status: string, Error_code: string) => void): void {
-        BlynkRead_conn = handler;
-    }
 
     // -------------- 4. Others ----------------
 
