@@ -39,6 +39,7 @@ namespace WiFiIoT {
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
     let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
 	let Blynk_conn: (Status: string, Error_code: string) => void = null;
+    let BlynkRead_conn: (Status: string, Error_code: string) => void = null;
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
@@ -412,6 +413,26 @@ namespace WiFiIoT {
                         }
                     }
                 }	
+                else if (label == "11") { //read Blynk
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (BlynkRead_conn != null && response[1] == "0") {
+                        if (OLED_FLAG == true) {
+                            //OLED.writeStringNewLine("Blynk read uploaded")
+                        }
+                        BlynkRead_conn("OK", "0")
+                    }
+                    else if (response[1] == "1") {
+                        if (BlynkRead_conn != null && response[2] != null) {
+                            blynk_error = response[2]
+                            BlynkRead_conn("FAIL", blynk_error)
+                        }
+                        if (OLED_FLAG == true) {
+                            //OLED.writeStringNewLine("Blynk_read_error")
+                            //OLED.writeStringNewLine("fail code:"+blynk_error)
+                        }
+                    }
+
+                }
 					
 
             }
@@ -562,6 +583,15 @@ namespace WiFiIoT {
         Blynk_conn = handler;
     }
 	
+    //%subcategory="IoT Services"
+    //%blockId=BlynkRead_connect
+    //%block="Read on Blynk"
+    //% weight=121 group="Blynk"
+    //% draggableParameters=reporter
+    //% blockGap=7
+    export function on_blynkread_conn(handler: (Status: string, Error_code: string) => void): void {
+        BlynkRead_conn = handler;
+    }
 
     // -------------- 4. Others ----------------
 
