@@ -72,6 +72,8 @@
   "wiFiIoT.wifiListenChannel|block": "WiFi Receiver join channel %channel",
   "wiFiIoT.wifiSendMessageValue|block": "WiFi Sender send channel %channel message %message value %value",
   "wiFiIoT.wifiSendMessage|block": "WiFi Sender send channel %channel message %message",
+
+  
   "wiFiIoT|block": "IoT:bit",
   "{id:category}wiFiIoT": "WiFiIoT",
   "{id:group}Advanced": "Advanced",
