@@ -583,6 +583,37 @@ namespace WiFiIoT {
         Blynk_conn = handler;
     }
 	
+    //%subcategory="IoT Services"
+    //% blockId=read_blynk
+    //% block="read Blynk token* %key|V0 value%V0||V1 value%V1|V2 value%V2|V3 value%V3|V4 value%V4|V5 value%V5|V6 value%V6|V7 value%V7|"
+    //% weight=121 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function readBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
+        let command = "(AT+blynk?key=";
+        if (key == "") { return }
+        else { command = command + key }
+		if (v0 != null) { command = command + "&v0=" + v0 }
+        if (v1 != null) { command = command + "&v1=" + v1 }
+        if (v2 != null) { command = command + "&v2=" + v2 }
+        if (v3 != null) { command = command + "&v3=" + v3 }
+        if (v4 != null) { command = command + "&v4=" + v4 }
+        if (v5 != null) { command = command + "&v5=" + v5 }
+        if (v6 != null) { command = command + "&v6=" + v6 }
+        if (v7 != null) { command = command + "&v7=" + v7 }
+
+        command = command + ")"
+        serial.writeLine(command);
+    }
+
+    //%subcategory="IoT Services"
+    //%blockId=readBlynk_connect
+    //%block="On Blynk Readed"
+    //% weight=120 group="Blynk"
+    //% draggableParameters=reporter
+    //% blockGap=7
+    export function on_readblynk(handler: (Status: string, Error_code: string) => void): void {
+        BlynkRead_conn = handler;
+    }
 
     // -------------- 4. Others ----------------
 
