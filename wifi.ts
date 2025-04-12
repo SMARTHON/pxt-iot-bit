@@ -576,9 +576,8 @@ namespace WiFiIoT {
 	//%subcategory="IoT Services"
     //%blockId=Blynk_connect
     //%block="On Blynk Uploaded"
-    //% weight=118 group="Blynk"
+    //% weight=122 group="Blynk"
     //% draggableParameters=reporter
-    //% blockGap=7
     export function on_blynk_conn(handler: (Status: string, Error_code: string) => void): void {
         Blynk_conn = handler;
     }
@@ -586,7 +585,7 @@ namespace WiFiIoT {
     //%subcategory="IoT Services"
     //% blockId=read_blynk
     //% block="read Blynk token* %key|V0 value%V0||V1 value%V1|V2 value%V2|V3 value%V3|V4 value%V4|V5 value%V5|V6 value%V6|V7 value%V7|"
-    //% weight=113 group="Blynk"
+    //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function readBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
         let command = "(AT+blynk?key=";
@@ -608,9 +607,8 @@ namespace WiFiIoT {
     //%subcategory="IoT Services"
     //%blockId=readBlynk_connect
     //%block="On Blynk Readed"
-    //% weight=118 group="Blynk"
+    //% weight=120 group="Blynk"
     //% draggableParameters=reporter
-    //% blockGap=7
     export function on_readblynk(handler: (Status: string, Error_code: string) => void): void {
         BlynkRead_conn = handler;
     }
