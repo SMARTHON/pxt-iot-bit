@@ -73,7 +73,12 @@
   "wiFiIoT.wifiSendMessageValue|block": "WiFi Sender send channel %channel message %message value %value",
   "wiFiIoT.wifiSendMessage|block": "WiFi Sender send channel %channel message %message",
 
-  
+  "wiFiIoT.OTALatest|block": "update firmware to latest version",
+  "wiFiIoT.OTAVersion|block": "update firmware to version %version ",
+  "wiFiIoT.onOTAProgressing|block": "OTA progress", 
+  "wiFiIoT.onOTAFinish|block": "on OTA update finished",
+  "wiFiIoT.onOTAFailed|block": "on OTA update failed",
+
   "wiFiIoT|block": "IoT:bit",
   "{id:category}wiFiIoT": "WiFiIoT",
   "{id:group}Advanced": "Advanced",

@@ -73,6 +73,11 @@
   "wiFiIoT.wifiSendMessageValue|block": "传送到频道 %channel ,讯息为 %message ,数值为 %value",
   "wiFiIoT.wifiSendMessage|block": "传送到频道 %channel ,讯息为 %message",
 
+  "wiFiIoT.OTALatest|block": "更新系统至最新的版本",
+  "wiFiIoT.OTAVersion|block": "更新系统到版本 %version ",
+  "wiFiIoT.onOTAProgressing|block": "OTA 版本更新进度", 
+  "wiFiIoT.onOTAFinish|block": "OTA更新完成",
+  "wiFiIoT.onOTAFailed|block": "OTA更新失败",
 
   "wiFiIoT|block": "IoT:bit",
   "{id:category}wiFiIoT": "WiFiIoT",
