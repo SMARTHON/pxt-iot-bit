@@ -63,7 +63,7 @@
   "wiFiIoT.sendAT|block": "Send AT command %command",
   "wiFiIoT.sendGenericHttp|block": "Send HTTP Request |Method %method|URL:%url|Body:%body",
   "wiFiIoT.onHTTPRecevid|block": "On HTTP received",
-  "wiFiIoT.getValue|block":"Get value of Key %target from JSON String %source",
+  "wiFiIoT.getValue|block":"Get JSON string %source of key %target value",
   "wiFiIoT.sendIFTTT|block": "Send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3",
   "wiFiIoT.sendThingspeak|block": "Send Thingspeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8",
   "wiFiIoT.sendVersion|block": "firmware version",
