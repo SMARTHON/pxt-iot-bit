@@ -63,7 +63,7 @@
   "wiFiIoT.sendAT|block": "發送AT指令 %command",
   "wiFiIoT.sendGenericHttp|block": " 發送 HTTP 請求 |請求方法 %method|網址:%url|内容:%body",
   "wiFiIoT.onHTTPRecevid|block": "當接收到HTTP回覆",
-  "wiFiIoT.getValue|block":"從JSON %target | 中取得鍵 %source 的數值",
+  "wiFiIoT.getValue|block":"從JSON %source中取得鍵 %target 的數值",
   "wiFiIoT.sendIFTTT|block": "發送到 IFTTT key* %key|事件名稱* %event||數值1 %value1|數值2 %value2|數值3 %value3",
   "wiFiIoT.sendThingspeak|block": "發送到 Thingspeak Key* %key|項目1數值 %field1||項目2數值 %field2|項目3數值 %field3|項目4數值 %field4|項目5數值 %field5|項目6數值 %field6|項目7數值 %field7|項目8數值 %field8",
   "wiFiIoT.sendVersion|block": "韌體版本",
