@@ -61,7 +61,7 @@
   "wiFiIoT.onWifiReceived|block": "当从频道收到讯息",
   "wiFiIoT.onWifiSenderSent|block": "当讯息发送到频道",
   "wiFiIoT.sendAT|block": "发送AT指令 %command",
-  "wiFiIoT.sendGenericHttp|block": " 发送 HTTP 请求 |Method %method|URL:%url|Body:%body",
+  "wiFiIoT.sendGenericHttp|block": " 发送 HTTP 请求 |请求方法 %method|网址:%url|内容:%body",
   "wiFiIoT.onHTTPRecevid|block": "当接收到HTTP回覆",
   "wiFiIoT.getValue|block":"从JSON %source 中取得键 %target 的数值",
   "wiFiIoT.sendIFTTT|block": "发送到 IFTTT key* %key|事件名称* %event||数值1 %value1|数值2 %value2|数值3 %value3",
@@ -73,7 +73,7 @@
   "wiFiIoT.wifiSendMessageValue|block": "传送到频道 %channel ,讯息为 %message ,数值为 %value",
   "wiFiIoT.wifiSendMessage|block": "传送到频道 %channel ,讯息为 %message",
 
-  
+
   "wiFiIoT|block": "IoT:bit",
   "{id:category}wiFiIoT": "WiFiIoT",
   "{id:group}Advanced": "进阶检查",
