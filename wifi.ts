@@ -23,6 +23,8 @@ namespace WiFiIoT {
     let ip = ""
     let array_keys: Array<string> = []
     let array_values: Array<string> = []
+    let token = ""
+    let pin = ""
 
     let connecting_flag = false
     let disconnect_error_code = ""
@@ -584,16 +586,17 @@ namespace WiFiIoT {
 	
     //%subcategory="IoT Services"
     //% blockId=read_blynk
-    //% block="read Blynk token* %key|V0 value%V0"
+    //% block="read Blynk token* %key|Pin %Pin|Loop %loop"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function readBlynk(key: string, v0: string = null): void {
+    export function readBlynk(key: string, Pin: string = null, loop: number): void {
         let command = "(AT+blynk?key=";
         if (key == "") { return }
         else { command = command + key }
-		if (v0 != null) { command = command + "&v0=" + v0 }
+        token = key
+        pin = Pin
+		if (Pin != null) { command = command + "&pin=" + Pin + ")"}
 
-        command = command + ")"
         serial.writeLine(command);
     }
 
