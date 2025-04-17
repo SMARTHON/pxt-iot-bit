@@ -584,10 +584,10 @@ namespace WiFiIoT {
 	
     //%subcategory="IoT Services"
     //% blockId=read_blynk
-    //% block="read Blynk token* %key|V0 value%V0|"
+    //% block="read Blynk token* %key|V0 value%V0"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function readBlynk(key: string, v0: number = null): void {
+    export function readBlynk(key: string, v0: string = null): void {
         let command = "(AT+blynk?key=";
         if (key == "") { return }
         else { command = command + key }
