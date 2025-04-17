@@ -597,9 +597,9 @@ namespace WiFiIoT {
             while (true) {
                 start = control.millis();
                 pause(Math.max(0, loop - (control.millis() - start)));
+                serial.writeLine(command);
             }
         });
-        serial.writeLine(command);
     }
 
     //%subcategory="IoT Services"
