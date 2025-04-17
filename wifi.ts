@@ -419,16 +419,16 @@ namespace WiFiIoT {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk read uploaded")
                         }
-                        BlynkRead_conn("OK", "0")
+                        BlynkRead_conn(response[2],parseInt(response[3]))
                     }
                     else if (response[1] == "1") {
                         if (BlynkRead_conn != null && response[2] != null) {
                             blynk_error = response[2]
-                            BlynkRead_conn("FAIL", blynk_error)
+                            BlynkRead_conn("FAIL", 0)
                         }
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk_read_error")
-                            //OLED.writeStringNewLine("fail code:"+blynk_error)
+                            //OLED.writeStringNewLine("fail code:"+blynk_read_error)
                         }
                     }
 
@@ -587,7 +587,7 @@ namespace WiFiIoT {
     //% block="read Blynk token* %key|V0 value%V0|"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function readBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
+    export function readBlynk(key: string, v0: number = null): void {
         let command = "(AT+blynk?key=";
         if (key == "") { return }
         else { command = command + key }
@@ -602,7 +602,7 @@ namespace WiFiIoT {
     //%block="On Blynk Readed"
     //% weight=120 group="Blynk"
     //% draggableParameters=reporter
-    export function on_readblynk(handler: (Status: string, Error_code: string) => void): void {
+    export function on_readblynk(handler: (Pin: string, Value: number) => void): void {
         BlynkRead_conn = handler;
     }
 
