@@ -586,7 +586,7 @@ namespace WiFiIoT {
 	
     //%subcategory="IoT Services"
     //% blockId=read_blynk
-    //% block="read Blynk token* %key|Pin %Pin|Loop %loop"
+    //% block="read Blynk token* %key|Pin %Pin|every %loop 's times"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function readBlynk(key: string, Pin: string = null, loop: number): void {
