@@ -57,10 +57,6 @@ namespace WiFiIoT {
         POST
 
 
-
-
-
-
     }
     export enum mode {
         //% block="WEB"
@@ -419,7 +415,7 @@ namespace WiFiIoT {
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (BlynkRead_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
-                            //OLED.writeStringNewLine("Blynk read uploaded")
+                            //OLED.writeStringNewLine("Blynk readed")
                         }
                         BlynkRead_conn(response[2],parseInt(response[3]))
                     }
@@ -589,14 +585,20 @@ namespace WiFiIoT {
     //% block="read Blynk token* %key|Pin %Pin|every %loop 's times"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function readBlynk(key: string, Pin: string = null, loop: number): void {
-        let command = "(AT+blynk?key=";
+    export function readBlynk(key: string, Pin: string, loop: number): void {
+        let command = "(AT+BlynkRead?key=";
         if (key == "") { return }
         else { command = command + key }
         token = key
         pin = Pin
 		if (Pin != null) { command = command + "&pin=" + Pin + ")"}
-
+        // control.runInParallel(() => {
+        //     let start = 0;
+        //     while (true) {
+        //         start = control.millis();
+        //         pause(Math.max(0, loop - (control.millis() - start)));
+        //     }
+        // });
         serial.writeLine(command);
     }
 
