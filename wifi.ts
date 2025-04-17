@@ -592,13 +592,13 @@ namespace WiFiIoT {
         token = key
         pin = Pin
 		if (Pin != null) { command = command + "&pin=" + Pin + ")"}
-        // control.runInParallel(() => {
-        //     let start = 0;
-        //     while (true) {
-        //         start = control.millis();
-        //         pause(Math.max(0, loop - (control.millis() - start)));
-        //     }
-        // });
+        control.runInParallel(() => {
+            let start = 0;
+            while (true) {
+                start = control.millis();
+                pause(Math.max(0, loop - (control.millis() - start)));
+            }
+        });
         serial.writeLine(command);
     }
 
