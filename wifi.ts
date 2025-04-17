@@ -573,7 +573,6 @@ namespace wiFiIoT {
     //%subcategory="IoT Services"
     //%jsonBlockId="JSON_extractor"
     //%block="get value of key %target from JSON string %source"
-    //%block="get JSON string %source of key %target value"
     //% weight=107 group="HTTP"
     export function getValue(target: string, source: string): string {
 
