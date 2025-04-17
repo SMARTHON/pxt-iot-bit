@@ -61,7 +61,7 @@
   "wiFiIoT.onWifiReceived|block": "当从频道收到讯息",
   "wiFiIoT.onWifiSenderSent|block": "当讯息发送到频道",
   "wiFiIoT.sendAT|block": "发送AT指令 %command",
-  "wiFiIoT.sendGenericHttp|block": " 发送 HTTP 请求 |请求方法 %method|网址:%url|内容:%body",
+  "wiFiIoT.sendGenericHttp|block": " 发送 HTTP 请求 |请求方法 %method|网址:%url|请求体:%body",
   "wiFiIoT.onHTTPRecevid|block": "当接收到HTTP回覆",
   "wiFiIoT.getValue|block":"从JSON %source 中取得键 %target 的数值",
   "wiFiIoT.sendIFTTT|block": "发送到 IFTTT key* %key|事件名称* %event||数值1 %value1|数值2 %value2|数值3 %value3",
@@ -73,9 +73,9 @@
   "wiFiIoT.wifiSendMessageValue|block": "传送到频道 %channel ,讯息为 %message ,数值为 %value",
   "wiFiIoT.wifiSendMessage|block": "传送到频道 %channel ,讯息为 %message",
 
-  "wiFiIoT.OTALatest|block": "更新系统至最新的版本",
-  "wiFiIoT.OTAVersion|block": "更新系统到版本 %version ",
-  "wiFiIoT.onOTAProgressing|block": "OTA 版本更新进度", 
+  "wiFiIoT.OTALatest|block": "更新韧体至最新的版本",
+  "wiFiIoT.OTAVersion|block": "更新韧体到版本 %version ",
+  "wiFiIoT.onOTAProgressing|block": "OTA版本更新进度", 
   "wiFiIoT.onOTAFinish|block": "OTA更新完成",
   "wiFiIoT.onOTAFailed|block": "OTA更新失败",
 
