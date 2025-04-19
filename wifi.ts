@@ -410,7 +410,7 @@ namespace WiFiIoT {
 
                 else if (label == "10") { //W10 Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (response[1] == "0") {
+                    if (Blynk_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk uploaded")
                         }
@@ -429,12 +429,12 @@ namespace WiFiIoT {
                 }
                 else if (label == "11") { //read Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    Blynk_value = parseInt(response[3])
                     if (BlynkRead_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk readed")
                         }
                         BlynkRead_conn(response[2], parseInt(response[3]))
-                        Blynk_value = parseInt(response[3])
                     }
                     else if (response[1] == "1") {
                         if (BlynkRead_conn != null && response[2] != null) {
