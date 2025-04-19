@@ -25,11 +25,12 @@ namespace WiFiIoT {
     let array_values: Array<string> = []
     let token = ""
     let pin = ""
+    let Blynk_value = 0
 
     let connecting_flag = false
     let disconnect_error_code = ""
     let thingspeak_error = ""
-	let blynk_error = ""
+    let blynk_error = ""
     let NTP_Receive: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void = null;
     let Wifi_Remote_Conn: (channel: string, WifiMessage: string) => void = null;
     let Wifi_Remote_Conn_value: (channel: string, WifiMessage: string, Value: number) => void = null;
@@ -40,15 +41,15 @@ namespace WiFiIoT {
     let WAN_Remote_Conn: (WAN_Command: string) => void = null;
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
     let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
-	let Blynk_conn: (Status: string, Error_code: string) => void = null;
+    let Blynk_conn: (Status: string, Error_code: string) => void = null;
     let BlynkRead_conn: (Pin: string, Value: number) => void = null;
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
     let HTTP_received: (Error_code: string, Data: string) => void = null;
     let HTTP_receive_end = true;
-    let OTA_recevied: (PercentageValue:string) => void = null;
-    let OTA_Finished: ()=>void=null;
+    let OTA_recevied: (PercentageValue: string) => void = null;
+    let OTA_Finished: () => void = null;
     let OTA_Failed: (Message: string) => void = null;
     export enum httpMethod {
         //% block="GET"
@@ -139,10 +140,26 @@ namespace WiFiIoT {
         Toronto = "-5",
         //% block="Warsaw (UTC+1)"
         Warsaw = "1",
-
-
     }
 
+    export enum Blynk_pin_list{
+        //% block="V0"
+        V0 = "0",
+        //% block="V1"
+        V1 = "1",
+        //% block="V2"
+        V2 = "2",
+        //% block="V3"
+        V3 = "3",
+        //% block="V4"
+        V4 = "4",
+        //% block="V5"
+        V5 = "5",
+        //% block="V6"
+        V6 = "6",
+        //% block="V7"
+        V7 = "7",
+    }
     // -------------- 1. Initialization ----------------
     /**
      * Init the iotbit
@@ -380,18 +397,17 @@ namespace WiFiIoT {
                     }
 
                 }
-				else if (label == "9"){     //OTA
+                else if (label == "9") {     //OTA
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (OTA_recevied != null && response[1] == "1") {
                         OTA_recevied(response[2])
                     } else if (OTA_Finished != null && response[1] == "2") {
                         OTA_Finished()
-                    }else if (OTA_Failed != null && response[1] == "3")
-                    {
+                    } else if (OTA_Failed != null && response[1] == "3") {
                         OTA_Failed(response[2])
                     }
                 }
-				
+
                 else if (label == "10") { //W10 Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (Blynk_conn != null && response[1] == "0") {
@@ -410,14 +426,15 @@ namespace WiFiIoT {
                             //OLED.writeStringNewLine("fail code:"+blynk_error)
                         }
                     }
-                }	
+                }
                 else if (label == "11") { //read Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
                     if (BlynkRead_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk readed")
                         }
-                        BlynkRead_conn(response[2],parseInt(response[3]))
+                        BlynkRead_conn(response[2], parseInt(response[3]))
+                        Blynk_value = parseInt(response[3])
                     }
                     else if (response[1] == "1") {
                         if (BlynkRead_conn != null && response[2] != null) {
@@ -431,7 +448,7 @@ namespace WiFiIoT {
                     }
 
                 }
-					
+
 
             }
         })
@@ -549,8 +566,8 @@ namespace WiFiIoT {
     export function on_IFTTT_conn(handler: (Status: string, Error_code: string) => void): void {
         IFTTT_conn = handler;
     }
-	
-	//%subcategory="IoT Services"
+
+    //%subcategory="IoT Services"
     //% blockId=wifi_ext_board_set_blynk
     //% block="Send Blynk token* %key|V0 value%V0||V1 value%V1|V2 value%V2|V3 value%V3|V4 value%V4|V5 value%V5|V6 value%V6|V7 value%V7|"
     //% weight=123 group="Blynk"
@@ -559,7 +576,7 @@ namespace WiFiIoT {
         let command = "(AT+blynk?key=";
         if (key == "") { return }
         else { command = command + key }
-		if (v0 != null) { command = command + "&v0=" + v0 }
+        if (v0 != null) { command = command + "&v0=" + v0 }
         if (v1 != null) { command = command + "&v1=" + v1 }
         if (v2 != null) { command = command + "&v2=" + v2 }
         if (v3 != null) { command = command + "&v3=" + v3 }
@@ -571,7 +588,7 @@ namespace WiFiIoT {
         command = command + ")"
         serial.writeLine(command);
     }
-	//%subcategory="IoT Services"
+    //%subcategory="IoT Services"
     //%blockId=Blynk_connect
     //%block="On Blynk Uploaded"
     //% weight=122 group="Blynk"
@@ -579,19 +596,19 @@ namespace WiFiIoT {
     export function on_blynk_conn(handler: (Status: string, Error_code: string) => void): void {
         Blynk_conn = handler;
     }
-	
+
     //%subcategory="IoT Services"
-    //% blockId=read_blynk
-    //% block="read Blynk token* %key|Pin %Pin|every %loop 's times"
+    //% blockId=read_blynk_loop
+    //% block="read Blynk token* %key|Pin %Blynk_pin_list|every %loop 's times"
     //% weight=121 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function readBlynk(key: string, Pin: string, loop: number): void {
+    export function readBlynk_loop(key: string, Pin: Blynk_pin_list, loop: number): void {
         let command = "(AT+BlynkRead?key=";
         if (key == "") { return }
         else { command = command + key }
         token = key
-        pin = Pin
-		if (Pin != null) { command = command + "&pin=" + Pin + ")"}
+        pin = "v"+Pin
+        if (Pin != null) { command = command + "&pin=" + pin + ")" }
         control.runInParallel(() => {
             let start = 0;
             while (true) {
@@ -603,11 +620,34 @@ namespace WiFiIoT {
     }
 
     //%subcategory="IoT Services"
+    //% blockId=read_blynk_onec
+    //% block="read Blynk token* %key|Pin %Blynk_pin_list"
+    //% weight=120 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function readBlynk_onec(key: string, Pin: Blynk_pin_list): void {
+        let command = "(AT+BlynkRead?key=";
+        if (key == "") { return }
+        else { command = command + key }
+        token = key
+        pin = "v" + Pin
+        if (Pin != null) { command = command + "&pin=" + pin + ")" }
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId=get_Blynk_value
+    //% block="Get Blynk Value %Blynk_pin_list"
+    //% weight=119 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function get_Blynk_value(nPin: Blynk_pin_list): number {
+        return Blynk_value
+    }
+
+    //%subcategory="IoT Services"
     //%blockId=readBlynk_connect
     //%block="On Blynk Readed"
-    //% weight=120 group="Blynk"
+    //% weight=118 group="Blynk"
     //% draggableParameters=reporter
-    export function on_readblynk(handler: (Pin: string, Value: number) => void): void {
+    export function on_readblynk(handler: (pin: string, value: number) => void): void {
         BlynkRead_conn = handler;
     }
 
@@ -991,7 +1031,7 @@ namespace WiFiIoT {
     //%block="Update Firmware to Version %version"
     //% weight=35 group="Configuration" blockHidden=true
     export function OTA_Version(version: string): void {
-        serial.writeLine("(AT+ota?ver="+version+")");
+        serial.writeLine("(AT+ota?ver=" + version + ")");
     }
 
     //%subcategory=ESP
@@ -1015,7 +1055,7 @@ namespace WiFiIoT {
     //%block="On OTA Update Failed"
     //% weight=28 draggableParameters=reporter group="Configuration"
 
-    export function on_OTA_Failed(handler: (Message:string) => void): void {
+    export function on_OTA_Failed(handler: (Message: string) => void): void {
         OTA_Failed = handler;
     }
 }
