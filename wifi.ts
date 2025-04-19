@@ -598,28 +598,6 @@ namespace WiFiIoT {
     }
 
     //%subcategory="IoT Services"
-    //% blockId=read_blynk_loop
-    //% block="read Blynk token* %key|Pin %Blynk_pin_list|every %loop 's times"
-    //% weight=121 group="Blynk"
-    //% expandableArgumentMode="enabled"
-    export function readBlynk_loop(key: string, Pin: Blynk_pin_list, loop: number): void {
-        let command = "(AT+BlynkRead?key=";
-        if (key == "") { return }
-        else { command = command + key }
-        token = key
-        pin = "v"+Pin
-        if (Pin != null) { command = command + "&pin=" + pin + ")" }
-        control.runInParallel(() => {
-            let start = 0;
-            while (true) {
-                start = control.millis();
-                pause(Math.max(0, loop - (control.millis() - start)));
-                serial.writeLine(command);
-            }
-        });
-    }
-
-    //%subcategory="IoT Services"
     //% blockId=read_blynk_onec
     //% block="read Blynk token* %key|Pin %Blynk_pin_list"
     //% weight=120 group="Blynk"
