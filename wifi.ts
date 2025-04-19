@@ -429,11 +429,11 @@ namespace WiFiIoT {
                 }
                 else if (label == "11") { //read Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    Blynk_value = parseInt(response[3])
                     if (BlynkRead_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk readed")
                         }
+                        Blynk_value = parseInt(response[3])
                         BlynkRead_conn(response[2], parseInt(response[3]))
                     }
                     else if (response[1] == "1") {
