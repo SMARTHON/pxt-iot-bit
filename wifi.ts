@@ -631,6 +631,7 @@ namespace WiFiIoT {
         token = key
         pin = "v" + Pin
         if (Pin != null) { command = command + "&pin=" + pin + ")" }
+        serial.writeLine(command);
     }
 
     //%subcategory="IoT Services"
