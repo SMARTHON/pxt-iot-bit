@@ -42,7 +42,7 @@ namespace WiFiIoT {
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
     let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
     let Blynk_conn: (Status: string, Error_code: string) => void = null;
-    let BlynkRead_conn: (Pin: string, Value: number) => void = null;
+    let blynkread_conn: (Pin: string, Value: number) => void = null;
     let IFTTT_conn: (Status: string, Error_code: string) => void = null;
     let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
     let Wifi_sender: (status: string, Error_code: string) => void = null;
@@ -429,17 +429,17 @@ namespace WiFiIoT {
                 }
                 else if (label == "11") { //read Blynk
                     let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
-                    if (BlynkRead_conn != null && response[1] == "0") {
+                    if (blynkread_conn != null && response[1] == "0") {
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk readed")
                         }
                         Blynk_value = parseInt(response[3])
-                        BlynkRead_conn(response[2], parseInt(response[3]))
+                        blynkread_conn(response[2], parseInt(response[3]))
                     }
                     else if (response[1] == "1") {
-                        if (BlynkRead_conn != null && response[2] != null) {
+                        if (blynkread_conn != null && response[2] != null) {
                             blynk_error = response[2]
-                            BlynkRead_conn("FAIL", 0)
+                            blynkread_conn("FAIL", parseInt(response[3]))
                         }
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk_read_error")
@@ -603,7 +603,7 @@ namespace WiFiIoT {
     //% weight=120 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function readBlynk_onec(key: string, Pin: Blynk_pin_list): void {
-        let command = "(AT+BlynkRead?key=";
+        let command = "(AT+blynkread?key=";
         if (key == "") { return }
         else { command = command + key }
         token = key
@@ -627,7 +627,7 @@ namespace WiFiIoT {
     //% weight=118 group="Blynk"
     //% draggableParameters=reporter
     export function on_readblynk(handler: (pin: string, value: number) => void): void {
-        BlynkRead_conn = handler;
+        blynkread_conn = handler;
     }
 
     // -------------- 4. Others ----------------
