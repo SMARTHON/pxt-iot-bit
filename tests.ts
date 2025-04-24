@@ -1,12 +1,12 @@
 smarthonIoTBit.on_wifi_connect(function (IP_Address, Device_ID) {
     basic.showString(Device_ID)
 })
-smarthonIoTBit.on_IFTTT_conn(function (Status, Error_code) {
+smarthonIoTBit.smarthon_iot_bit_on_IFTTT_conn(function (Status, Error_code) {
     basic.showIcon(IconNames.Happy)
 })
 input.onButtonPressed(Button.A, function () {
-    if (smarthonIoTBit.is_wifi_connect()) {
-        smarthonIoTBit.sendThingspeak(
+    if (smarthonIoTBit.smarthon_iot_bit_is_wifi_connect()) {
+        smarthonIoTBit.smarthon_iot_bit_sendThingspeak(
         "CQZ89FEYBJ9CAQ9M",
         1
         )
@@ -22,7 +22,7 @@ smarthonIoTBit.smarthon_iot_bit_on_thingspeak_conn(function (Status, Error_code)
     basic.showIcon(IconNames.Yes)
 })
 input.onButtonPressed(Button.AB, function () {
-    smarthonIoTBit.smarthon_iot_bit_getNTP(smarthonIoTBit.CityList.HongKong)
+    smarthonIoTBit.smarthon_iot_bit_getNTP(smarthonIoTBit.smarthon_iot_bit_CityList.HongKong)
 })
 input.onButtonPressed(Button.B, function () {
     if (smarthonIoTBit.smarthon_iot_bit_is_wifi_connect()) {
