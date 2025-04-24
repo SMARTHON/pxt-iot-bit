@@ -438,8 +438,8 @@ namespace WiFiIoT {
                     }
                     else if (response[1] == "1") {
                         if (blynkread_conn != null && response[2] != null) {
-                            blynk_error = response[2]
-                            blynkread_conn("FAIL", parseInt(response[3]))
+                            //blynk_error = response[2]
+                            //blynkread_conn("FAIL", parseInt(response[3]))
                         }
                         if (OLED_FLAG == true) {
                             //OLED.writeStringNewLine("Blynk_read_error")
