@@ -617,7 +617,7 @@ namespace smarthonIoTBit {
     //% block="Get Blynk Value %Blynk_pin_list"
     //% weight=119 group="Blynk"
     //% expandableArgumentMode="enabled"
-    export function get_Blynk_value(nPin: smarthon_iot_bit_Blynk_pin_list): number {
+    export function smarthon_iot_bit_get_Blynk_value(nPin: smarthon_iot_bit_Blynk_pin_list): number {
         return Blynk_value
     }
 
@@ -626,7 +626,7 @@ namespace smarthonIoTBit {
     //%block="On Blynk Readed"
     //% weight=118 group="Blynk"
     //% draggableParameters=reporter
-    export function on_readblynk(handler: (pin: string, value: number) => void): void {
+    export function smarthon_iot_bit_on_readblynk(handler: (pin: string, value: number) => void): void {
         smarthon_iot_bit_blynkread_conn = handler;
     }
 
@@ -645,7 +645,7 @@ namespace smarthonIoTBit {
     //% block="Send HTTP Request |Method %method|URL:%url|Body:%body"
     //% weight=115	 group="HTTP" 
     //% inlineInputMode=external
-    export function sendGenericHttp(method: smarthon_iot_bit_httpMethod, url: string, body: string): void {
+    export function smarthon_iot_bit_sendGenericHttp(method: smarthon_iot_bit_httpMethod, url: string, body: string): void {
         //httpReturnArray = []
         let temp = ""
         switch (method) {
