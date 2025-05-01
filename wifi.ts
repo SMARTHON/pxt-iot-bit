@@ -32,40 +32,40 @@ namespace smarthonIoTBit {
     let connectingFlag = false
     let disconnectErrorCode = ""
     let thingspeakError = ""
-    let smarthon_iot_bit_ntpReceive: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void = null;
-    let smarthon_iot_bit_wifiRemoteConn: (channel: string, wifiMessage: string) => void = null;
-    let smarthon_iot_bit_wifiRemoteConnValue: (channel: string, wifiMessage: string, value: number) => void = null;
-    let smarthon_iot_bit_wifiConn: (ip: string, id: string) => void = null;
-    let smarthon_iot_bit_wifiDisConn: (error: string) => void = null;
-    let smarthon_iot_bit_lanRemoteConn: (lanCommand: string) => void = null;
-    let smarthon_iot_bit_wanControlConn: (deviceId: string, errorCode: string) => void = null;
-    let smarthon_iot_bit_wanRemoteConn: (wanCommand: string) => void = null;
-    let smarthon_iot_bit_wanRemoteConnValue: (wanCommand: string, value: number) => void;
-    let smarthon_iot_bit_thingspeakConn: (status: string, errorCode: string) => void = null;
-    let smarthon_iot_bit_iftttConn: (status: string, errorCode: string) => void = null;
-    let smarthon_iot_bit_wifiRemoteCreate: (channel: string, errorCode: string) => void = null;
-    let smarthon_iot_bit_wifiSender: (status: string, errorCode: string) => void = null;
-    let smarthon_iot_bit_httpReceived: (errorCode: string, data: string) => void = null;
-    let smarthon_iot_bit_httpReceiveEnd = true;
-    let smarthon_iot_bit_otaReceived: (percentageValue: string) => void = null;
-    let smarthon_iot_bit_otaFinished: () => void = null;
-    let smarthon_iot_bit_otaFailed: (message: string) => void = null;
+    let ntpReceive: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void = null;
+    let wifiRemoteConn: (channel: string, wifiMessage: string) => void = null;
+    let wifiRemoteConnValue: (channel: string, wifiMessage: string, value: number) => void = null;
+    let wifiConn: (ip: string, id: string) => void = null;
+    let wifiDisConn: (error: string) => void = null;
+    let lanRemoteConn: (lanCommand: string) => void = null;
+    let wanControlConn: (deviceId: string, errorCode: string) => void = null;
+    let wanRemoteConn: (wanCommand: string) => void = null;
+    let wanRemoteConnValue: (wanCommand: string, value: number) => void;
+    let thingspeakConn: (status: string, errorCode: string) => void = null;
+    let iftttConn: (status: string, errorCode: string) => void = null;
+    let wifiRemoteCreate: (channel: string, errorCode: string) => void = null;
+    let wifiSender: (status: string, errorCode: string) => void = null;
+    let httpReceived: (errorCode: string, data: string) => void = null;
+    let httpReceiveEnd = true;
+    let otaReceived: (percentageValue: string) => void = null;
+    let otaFinished: () => void = null;
+    let otaFailed: (message: string) => void = null;
 
-    export enum smarthon_iot_bit_HttpMethod {
+    export enum HttpMethod {
         //% block="GET"
         GET,
         //% block="POST"
         POST
     }
 
-    export enum smarthon_iot_bit_Esp360ServoDir {
+    export enum Esp360ServoDir {
         //% block="clockwise"
         Clockwise,
         //% block="anti-clockwise"
         Anticlockwise
     }
 
-    export enum smarthon_iot_bit_CityList {
+    export enum CityList {
         //% block="HongKong (UTC+8)"
         HongKong = "8",
         //% block="Amsterdam (UTC+1)"
@@ -131,11 +131,11 @@ namespace smarthonIoTBit {
      * @param rxPin describe parameter here, eg: SerialPin.P8
      */
 
-    //%blockId=smarthon_iot_bit_wifi_ext_board_initialize_wifi
+    //%blockId=smarthon_iot_bit_initialize_wifi
     //%block="initialize IoT:bit TX %txPin RX %rxPin"
     //% weight=140
 
-    export function smarthon_iot_bit_initializeWifi(txPin: SerialPin, rxPin: SerialPin): void {
+    export function initializeWifi(txPin: SerialPin, rxPin: SerialPin): void {
         serial.redirect(txPin, rxPin, BaudRate.BaudRate115200);
         serial.setTxBufferSize(128)
         serial.setRxBufferSize(128)
@@ -203,9 +203,9 @@ namespace smarthonIoTBit {
                                 //OLED.writeStringNewLine("IP:"+ip)
                             }
 
-                            smarthon_iot_bit_startWebServerWan()
+                            startWebServerWan()
                             basic.pause(500)
-                            if (smarthon_iot_bit_wifiConn && wifiConnected == "2") smarthon_iot_bit_wifiConn(ip, deviceId)
+                            if (wifiConn && wifiConnected == "2") wifiConn(ip, deviceId)
                         }
                     }
                     else if (response[1] == "3") {
@@ -213,7 +213,7 @@ namespace smarthonIoTBit {
                         if (response[2] != null) {
 
                             disconnectErrorCode = response[2]
-                            if (smarthon_iot_bit_wifiDisConn && wifiConnected == "3") smarthon_iot_bit_wifiDisConn(disconnectErrorCode)
+                            if (wifiDisConn && wifiConnected == "3") wifiDisConn(disconnectErrorCode)
                             if (oledFlag == true && connectingFlag == false) {
                                 //OLED.writeStringNewLine("error:"+disconnectErrorCode)
                             }
@@ -222,16 +222,16 @@ namespace smarthonIoTBit {
                 }
                 else if (label == "2") { //W2 Thingspeak
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
-                    if (smarthon_iot_bit_thingspeakConn != null && response[1] == "0") {
+                    if (thingspeakConn != null && response[1] == "0") {
                         if (oledFlag == true) {
                             //OLED.writeStringNewLine("Thingspeak uploaded")
                         }
-                        smarthon_iot_bit_thingspeakConn("OK", "0")
+                        thingspeakConn("OK", "0")
                     }
                     else if (response[1] == "1") {
-                        if (smarthon_iot_bit_thingspeakConn != null && response[2] != null) {
+                        if (thingspeakConn != null && response[2] != null) {
                             thingspeakError = response[2]
-                            smarthon_iot_bit_thingspeakConn("FAIL", thingspeakError)
+                            thingspeakConn("FAIL", thingspeakError)
                         }
                         if (oledFlag == true) {
                             //OLED.writeStringNewLine("Thingspeak upload")
@@ -241,24 +241,24 @@ namespace smarthonIoTBit {
                 }
                 else if (label == "3") { //W3 IFTTT
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
-                    if (smarthon_iot_bit_iftttConn != null && response[1] == "0") {
-                        smarthon_iot_bit_iftttConn("OK", "0")
+                    if (iftttConn != null && response[1] == "0") {
+                        iftttConn("OK", "0")
                     }
                     else if (response[1] == "1") {
-                        if (smarthon_iot_bit_iftttConn != null && response[2] != null) {
-                            smarthon_iot_bit_iftttConn("FAIL", response[2])
+                        if (iftttConn != null && response[2] != null) {
+                            iftttConn("FAIL", response[2])
                         }
                     }
                 }
                 else if (label == "4") { //W4 WAN
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (response[1] == "0") {    //WAN start listen
-                        if (smarthon_iot_bit_wanControlConn != null) {
+                        if (wanControlConn != null) {
                             //wanControlConn(response[2],"0")    //return the channel ID
                         }
                     }
                     else if (response[1] == "1") {
-                        if (smarthon_iot_bit_wanControlConn != null) {
+                        if (wanControlConn != null) {
                             //wanControlConn(response[2],response[3])    //return the error code
                         }
                     }
@@ -266,13 +266,13 @@ namespace smarthonIoTBit {
 
                         if (response[2].includes("$")) {       //with value
                             let pos = response[2].indexOf("$")
-                            if (smarthon_iot_bit_wanRemoteConnValue != null) {
-                                smarthon_iot_bit_wanRemoteConnValue(response[2].substr(0, pos), parseInt(response[2].substr(pos + 1, response[2].length)))
+                            if (wanRemoteConnValue != null) {
+                                wanRemoteConnValue(response[2].substr(0, pos), parseInt(response[2].substr(pos + 1, response[2].length)))
                             }
                         }
                         else {           //without value
-                            if (smarthon_iot_bit_wanRemoteConn != null) {
-                                smarthon_iot_bit_wanRemoteConn(response[2])
+                            if (wanRemoteConn != null) {
+                                wanRemoteConn(response[2])
                             }
                         }
                     }
@@ -280,23 +280,23 @@ namespace smarthonIoTBit {
                 else if (label == "5") {  //W5 WIFI control
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (response[1] == "0") {    //WIFI control start listen
-                        if (smarthon_iot_bit_wifiRemoteCreate != null && response[2] != null) {
-                            smarthon_iot_bit_wifiRemoteCreate(response[2], "0")
+                        if (wifiRemoteCreate != null && response[2] != null) {
+                            wifiRemoteCreate(response[2], "0")
                         }
                     } else if (response[1] == "1") { //WIFI control listen fail
-                        if (smarthon_iot_bit_wifiRemoteCreate != null && response[2] != null && response[3] != null) { //W5 1 ID ERROR
-                            smarthon_iot_bit_wifiRemoteCreate(response[2], response[3])
+                        if (wifiRemoteCreate != null && response[2] != null && response[3] != null) { //W5 1 ID ERROR
+                            wifiRemoteCreate(response[2], response[3])
                         }
                     } else if (response[1] == "2") { //WIFI control get Message
                         if (response[3].includes("$")) {       //with value
                             let pos = response[3].indexOf("$")
-                            if (smarthon_iot_bit_wifiRemoteConnValue != null) {
-                                smarthon_iot_bit_wifiRemoteConnValue(response[2], response[3].substr(0, pos), parseInt(response[3].substr(pos + 1, response[3].length)))
+                            if (wifiRemoteConnValue != null) {
+                                wifiRemoteConnValue(response[2], response[3].substr(0, pos), parseInt(response[3].substr(pos + 1, response[3].length)))
                             }
                         }
                         else {           //without value
-                            if (smarthon_iot_bit_wifiRemoteConn != null) {
-                                smarthon_iot_bit_wifiRemoteConn(response[2], response[3])
+                            if (wifiRemoteConn != null) {
+                                wifiRemoteConn(response[2], response[3])
                             }
                         }
                     }
@@ -304,17 +304,17 @@ namespace smarthonIoTBit {
                 else if (label == "6") {//WiFi Sender
 
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
-                    if (smarthon_iot_bit_wifiSender != null && response[1] == "0") {
-                        smarthon_iot_bit_wifiSender("OK", "0")
-                    } else if (smarthon_iot_bit_wifiSender != null && response[1] == "1") {
-                        smarthon_iot_bit_wifiSender("Fail", response[2])
+                    if (wifiSender != null && response[1] == "0") {
+                        wifiSender("OK", "0")
+                    } else if (wifiSender != null && response[1] == "1") {
+                        wifiSender("Fail", response[2])
                     }
                 }
                 else if (label == "7") {//NTP
 
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
-                    if (smarthon_iot_bit_ntpReceive != null && response[3] != null) {
-                        smarthon_iot_bit_ntpReceive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
+                    if (ntpReceive != null && response[3] != null) {
+                        ntpReceive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
                     }
                 }
                 else if (label == "8") {//HTTP
@@ -322,32 +322,32 @@ namespace smarthonIoTBit {
                     let msg = tempCmd.slice(tempCmd.indexOf(" ") + 1, tempCmd.length)
                     //split the end_Indicator and msg char
                     let response = msg.split('|')
-                    if (smarthon_iot_bit_httpReceived != null && response[1] != null) { //skip if not use
+                    if (httpReceived != null && response[1] != null) { //skip if not use
                         if (response[0] == "2") {
                             httpErrorCode = response[1]
                         }
                         if (response[0] == "0") { //not the end of msg
-                            if (smarthon_iot_bit_httpReceiveEnd == true) { //if is start of msg, reset the msg string
+                            if (httpReceiveEnd == true) { //if is start of msg, reset the msg string
                                 httpReturnString = ""; //reset msg string
                             }
-                            smarthon_iot_bit_httpReceiveEnd = false; // not the end of receive msg
+                            httpReceiveEnd = false; // not the end of receive msg
                             httpReturnString = httpReturnString + response[1] //build the msg string
                         }
                         if (response[0] == "1") {   // it is the end of msg
                             httpReturnString = httpReturnString + response[1] //build the msg string
-                            smarthon_iot_bit_httpReceiveEnd = true;    //indicate it is end
-                            smarthon_iot_bit_httpReceived(httpErrorCode, httpReturnString) //call the handler to return the msg
+                            httpReceiveEnd = true;    //indicate it is end
+                            httpReceived(httpErrorCode, httpReturnString) //call the handler to return the msg
                         }
                     }
                 }
                 else if (label == "9") {     //OTA
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
-                    if (smarthon_iot_bit_otaReceived != null && response[1] == "1") {
-                        smarthon_iot_bit_otaReceived(response[2])
-                    } else if (smarthon_iot_bit_otaFinished != null && response[1] == "2") {
-                        smarthon_iot_bit_otaFinished()
-                    } else if (smarthon_iot_bit_otaFailed != null && response[1] == "3") {
-                        smarthon_iot_bit_otaFailed(response[2])
+                    if (otaReceived != null && response[1] == "1") {
+                        otaReceived(response[2])
+                    } else if (otaFinished != null && response[1] == "2") {
+                        otaFinished()
+                    } else if (otaFailed != null && response[1] == "3") {
+                        otaFailed(response[2])
                     }
                 }
             }
@@ -364,10 +364,10 @@ namespace smarthonIoTBit {
      * @param pwd describe parameter here,
      */
 
-    //% blockId=smarthon_iot_bit_wifi_ext_board_set_wifi
+    //% blockId=smarthon_iot_bit_set_wifi
     //% block="set WiFi to ssid %ssid| pwd %pwd"   
     //% weight=135
-    export function smarthon_iot_bit_setWifi(ssid: string, pwd: string): void {
+    export function setWifi(ssid: string, pwd: string): void {
         serial.writeLine("(AT+wifi?ssid=" + ssid + "&pwd=" + pwd + ")");
         if (oledFlag == true && connectingFlag == false) {
             //OLED.clear()
@@ -384,12 +384,12 @@ namespace smarthonIoTBit {
      * @param deviceId device ID; 
      */
 
-    //% blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_connect
+    //% blockId=smarthon_iot_bit_on_wifi_connect
     //% block="on WiFi connected"   
     //% weight=133
     //% draggableParameters=reporter
-    export function smarthon_iot_bit_onWifiConnect(handler: (ipAddress: string, deviceId: string) => void): void {
-        smarthon_iot_bit_wifiConn = handler;
+    export function onWifiConnect(handler: (ipAddress: string, deviceId: string) => void): void {
+        wifiConn = handler;
     }
 
     /**
@@ -398,22 +398,22 @@ namespace smarthonIoTBit {
      * @param errorCode error code;
      */
 
-    //% blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_disconnect
+    //% blockId=smarthon_iot_bit_on_wifi_disconnect
     //% block="on WiFi disconnected"   
     //% weight=132
     //% draggableParameters=reporter
-    export function smarthon_iot_bit_onWifiDisconnect(handler: (errorCode: string) => void): void {
-        smarthon_iot_bit_wifiDisConn = handler;
+    export function onWifiDisconnect(handler: (errorCode: string) => void): void {
+        wifiDisConn = handler;
     }
 
     /**
      * Is the wifi connected
      */
 
-    //% blockId=smarthon_iot_bit_wifi_ext_board_is_wifi_connect
+    //% blockId=smarthon_iot_bit_is_wifi_connect
     //% block="WiFi connected?"   
     //% weight=131
-    export function smarthon_iot_bit_isWifiConnect(): boolean {
+    export function isWifiConnect(): boolean {
         if (wifiConnected == "2")
             return true
         else return false
@@ -435,11 +435,11 @@ namespace smarthonIoTBit {
      * @param field8 value of field8;
      */
 
-    //% blockId=smarthon_iot_bit_wifi_ext_board_set_thingspeak
+    //% blockId=smarthon_iot_bit_set_thingspeak
     //% block="send ThingSpeak key* %key|field1 value%field1||field2 value%field2|field3 value%field3|field4 value%field4|field5 value%field5|field6 value%field6|field7 value%field7|field8 value%field8"
     //% weight=130 group="ThingSpeak"
     //% expandableArgumentMode="enabled"
-    export function smarthon_iot_bit_sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
+    export function sendThingspeak(key: string, field1: number = null, field2: number = null, field3: number = null, field4: number = null, field5: number = null, field6: number = null, field7: number = null, field8: number = null): void {
         let command = "(AT+thingspeak?key=";
         if (key == "") { return }
         else { command = command + key }
@@ -463,13 +463,13 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //%connectBlockId=Thingspeak_connect
+    //%connectBlockId=smarthon_iot_bit_Thingspeak_connect
     //%block="on ThingSpeak uploaded"
     //% weight=129 group="ThingSpeak"
     //% draggableParameters=reporter
     //% blockGap=7
-    export function smarthon_iot_bit_onThingspeakConn(handler: (status: string, errorCode: string) => void): void {
-        smarthon_iot_bit_thingspeakConn = handler;
+    export function onThingspeakConn(handler: (status: string, errorCode: string) => void): void {
+        thingspeakConn = handler;
     }
 
     /**
@@ -482,12 +482,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //% blockId=smarthon_iot_bit_wifi_ext_board_set_ifttt
+    //% blockId=smarthon_iot_bit_set_ifttt
     //% block="send IFTTT key* %key|event_name* %event||value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
     //% group="IFTTT"
     //% expandableArgumentMode="enabled"    
-    export function smarthon_iot_bit_sendIFTTT(key: string, eventname: string, value1: number = null, value2: number = null, value3: number = null): void {
+    export function sendIFTTT(key: string, eventname: string, value1: number = null, value2: number = null, value3: number = null): void {
         if (value1 != null && value2 != null && value3 != null) {
             serial.writeLine("(AT+ifttt?key=" + key + "&event=" + eventname + "&value1=" + value1 + "&value2=" + value2 + "&value3=" + value3 + ")");
         }
@@ -515,8 +515,8 @@ namespace smarthonIoTBit {
     //% weight=124     group="IFTTT"
     //% draggableParameters=reporter
     //% blockGap=7
-    export function smarthon_iot_bit_onIFTTTConn(handler: (status: string, errorCode: string) => void): void {
-        smarthon_iot_bit_iftttConn = handler;
+    export function onIFTTTConn(handler: (status: string, errorCode: string) => void): void {
+        iftttConn = handler;
     }
 
     // -------------- 4. Others ----------------
@@ -530,18 +530,18 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //%blockId=smarthon_iot_bit_wifi_ext_board_generic_http
+    //%blockId=smarthon_iot_bit_generic_http
     //% block="send HTTP request |method %method|url:%url|body:%body"
     //% weight=115     group="HTTP" 
     //% inlineInputMode=external
-    export function smarthon_iot_bit_sendGenericHttp(method: smarthon_iot_bit_HttpMethod, url: string, body: string): void {
+    export function sendGenericHttp(method: HttpMethod, url: string, body: string): void {
         //httpReturnArray = []
         let temp = ""
         switch (method) {
-            case smarthon_iot_bit_HttpMethod.GET:
+            case HttpMethod.GET:
                 temp = "GET"
                 break
-            case smarthon_iot_bit_HttpMethod.POST:
+            case HttpMethod.POST:
                 temp = "POST"
                 break
         }
@@ -556,13 +556,13 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //% blockId=smarthon_iot_bit_wifi_ext_board_http_receive
+    //% blockId=smarthon_iot_bit_http_receive
     //% block="on HTTP received"     group="HTTP"
     //% weight=108 draggableParameters=reporter
     //% blockGap=20
 
-    export function smarthon_iot_bit_onHTTPRecevid(handler: (httpStatusCode: string, data: string) => void): void {
-        smarthon_iot_bit_httpReceived = handler;
+    export function onHTTPRecevid(handler: (httpStatusCode: string, data: string) => void): void {
+        httpReceived = handler;
     }
 
     /**
@@ -571,10 +571,10 @@ namespace smarthonIoTBit {
      * @param source Source string that to be extract from
      */
     //%subcategory="IoT Services"
-    //%jsonBlockId="JSON_extractor"
+    //%jsonBlockId="smarthon_iot_bit_JSON_extractor"
     //%block="get value of key %target from JSON string %source"
     //% weight=107 group="HTTP"
-    export function smarthon_iot_bit_getValue(target: string, source: string): string {
+    export function getValue(target: string, source: string): string {
 
         //clear the keys & values array
         arrayKeys = []
@@ -620,12 +620,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //% blockId="smarthon_iot_bit_wifi_ext_board_generic_http_return" 
+    //% blockId="smarthon_iot_bit_generic_http_return" 
     //% block="HTTP response (string)"
     //% weight=110     group="HTTP"
     //% blockGap=7
     //% blockHidden=true
-    export function smarthon_iot_bit_getHttpReturn(): string {
+    export function getHttpReturn(): string {
         return httpReturnString;
     }
 
@@ -634,11 +634,11 @@ namespace smarthonIoTBit {
      * @param city name of the city; eg:Hong Kong
     */
     //%subcategory="IoT Services"
-    //% blockId=smarthon_iot_bit_wifi_ext_board_Call_NTP_city
+    //% blockId=smarthon_iot_bit_Call_NTP_city
     //% block="get NTP current time at city %city"   
     //% weight=109
     //% group="Current Time"
-    export function smarthon_iot_bit_getNTP(city: smarthon_iot_bit_CityList): void {
+    export function getNTP(city: CityList): void {
         //serial.writeLine(city);
         serial.writeLine("(AT+ntp?zone=" + city + ")");
     }
@@ -648,11 +648,11 @@ namespace smarthonIoTBit {
     @param zone is the string contain SIGN and NUMBER, eg: "+0"
     */
     //%subcategory="IoT Services"
-    //% blockId=smarthon_iot_bit_wifi_ext_board_Call_NTP_number
+    //% blockId=smarthon_iot_bit_Call_NTP_number
     //% block="get NTP current time at time zone UTC%zone"   
     //% weight=109
     //% group="Current Time"
-    export function smarthon_iot_bit_getNTPNumber(zone: string): void {
+    export function getNTPNumber(zone: string): void {
         serial.writeLine("(AT+ntp?zone=" + zone + ")");
     }
 
@@ -666,13 +666,13 @@ namespace smarthonIoTBit {
     * @param second is the number of second,
     */
     //%subcategory="IoT Services"
-    //% blockId="smarthon_iot_bit_wifi_ext_board_receive_ntp" 
+    //% blockId="smarthon_iot_bit_receive_ntp" 
     //% block="on NTP received"     group="Current Time"
     //% weight=108 draggableParameters=reporter
     //% blockGap=7
 
-    export function smarthon_iot_bit_onNTPReceived(handler: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void): void {
-        smarthon_iot_bit_ntpReceive = handler;
+    export function onNTPReceived(handler: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void): void {
+        ntpReceive = handler;
     }
 
     // -------------- 5. LAN/WAN Repmote ----------------
@@ -682,11 +682,11 @@ namespace smarthonIoTBit {
     */
 
     //%subcategory=Control
-    //%blockId=smarthon_iot_bit_wifi_ext_board_start_server_WAN
+    //%blockId=smarthon_iot_bit_start_server_WAN
     //%block="start WiFi remote control (WAN)"
     //% weight=80  group="Start the control"
     //% blockHidden=true
-    export function smarthon_iot_bit_startWebServerWan(): void {
+    export function startWebServerWan(): void {
         flag = true
         serial.writeLine("(AT+pubnub)")
         wanConnected = true
@@ -696,10 +696,10 @@ namespace smarthonIoTBit {
     Get device id
     */
     //%subcategory=Control
-    //%blockId=smarthon_iot_bit_wifi_ext_board_get_id
+    //%blockId=smarthon_iot_bit_get_id
     //%block="device ID"
     //% weight=80
-    export function smarthon_iot_bit_getDeviceId(): string {
+    export function getDeviceId(): string {
         return deviceId
     }
 
@@ -711,14 +711,14 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Control
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_WAN_connected
+    //%blockId=smarthon_iot_bit_on_WAN_connected
     //%block="on WAN control connected" 
     //% weight=75 group="Start the control"
     //% blockHidden=true
     //% blockGap=7    draggableParameters=reporter
 
-    export function smarthon_iot_bit_onWANControlConnected(handler: (deviceId: string, errorCode: string) => void): void {
-        smarthon_iot_bit_wanControlConn = handler;
+    export function onWANControlConnected(handler: (deviceId: string, errorCode: string) => void): void {
+        wanControlConn = handler;
     }
 
     /**
@@ -728,12 +728,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Control
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_WAN_connect
+    //%blockId=smarthon_iot_bit_on_WAN_connect
     //%block="on WiFi received" 
     //% weight=70 group="Get controlled"
     //% draggableParameters=reporter
-    export function smarthon_iot_bit_onWANRemote(handler: (wanCommand: string) => void): void {
-        smarthon_iot_bit_wanRemoteConn = handler;
+    export function onWANRemote(handler: (wanCommand: string) => void): void {
+        wanRemoteConn = handler;
     }
 
     /**
@@ -744,12 +744,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Control
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_WAN_connect_value
+    //%blockId=smarthon_iot_bit_on_WAN_connect_value
     //%block="on WiFi received" 
     //% weight=65 group="Get controlled"
     //% blockGap=7    draggableParameters=reporter
-    export function smarthon_iot_bit_onWANRemoteValue(handler: (wanCommand: string, value: number) => void): void {
-        smarthon_iot_bit_wanRemoteConnValue = handler;
+    export function onWANRemoteValue(handler: (wanCommand: string, value: number) => void): void {
+        wanRemoteConnValue = handler;
     }
 
     // -------------- 7. Wifi Channel ----------------
@@ -763,7 +763,7 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_wifi_listen_channel
     //%block="WiFi receiver join channel %channel"
     //% weight=20 group="Receiver"
-    export function smarthon_iot_bit_wifiListenChannel(channel: string): void {
+    export function wifiListenChannel(channel: string): void {
         wifiRemote = true
         myChannel = channel
         serial.writeLine("(AT+pubnubreceiver?channel=" + myChannel + ")")
@@ -777,12 +777,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Channel
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_receieved
+    //%blockId=smarthon_iot_bit_on_wifi_receieved
     //%block="on WiFi receiver received"
     //% weight=18 group="Receiver"
     //% draggableParameters=reporter
-    export function smarthon_iot_bit_onWifiReceived(handler: (channel: string, receivedMessage: string) => void): void {
-        smarthon_iot_bit_wifiRemoteConn = handler;
+    export function onWifiReceived(handler: (channel: string, receivedMessage: string) => void): void {
+        wifiRemoteConn = handler;
     }
 
     /**
@@ -794,11 +794,11 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Channel
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_receieved_value
+    //%blockId=smarthon_iot_bit_on_wifi_receieved_value
     //%block="on WiFi receiver received"
     //% weight=17 draggableParameters=reporter group="Receiver"
-    export function smarthon_iot_bit_onWifiReceivedValue(handler: (channel: string, receivedMessage: string, value: number) => void): void {
-        smarthon_iot_bit_wifiRemoteConnValue = handler;
+    export function onWifiReceivedValue(handler: (channel: string, receivedMessage: string, value: number) => void): void {
+        wifiRemoteConnValue = handler;
     }
 
     /**
@@ -812,7 +812,7 @@ namespace smarthonIoTBit {
     //%block="WiFi sender send channel %channel message %message"
     //% weight=15
     //% group="Sender"
-    export function smarthon_iot_bit_wifiSendMessage(channel: string, message: string): void {
+    export function wifiSendMessage(channel: string, message: string): void {
         myChannel = channel
         serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + ")")
     }
@@ -829,7 +829,7 @@ namespace smarthonIoTBit {
     //%block="WiFi sender send channel %channel message %message value %value"
     //% weight=14
     //% group="Sender"
-    export function smarthon_iot_bit_wifiSendMessageValue(channel: string, message: string, value: number): void {
+    export function wifiSendMessageValue(channel: string, message: string, value: number): void {
         myChannel = channel
         serial.writeLine("(AT+pubnubsender?channel=" + myChannel + "&message=" + message + "&value=" + value + ")");
     }
@@ -842,12 +842,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Channel
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_sent
+    //%blockId=smarthon_iot_bit_on_wifi_sent
     //%block="on Wifi message sent"
     //% weight=13 draggableParameters=reporter group="Advanced"
 
-    export function smarthon_iot_bit_onWifiSenderSent(handler: (status: string, errorCode: string) => void): void {
-        smarthon_iot_bit_wifiSender = handler;
+    export function onWifiSenderSent(handler: (status: string, errorCode: string) => void): void {
+        wifiSender = handler;
     }
 
     /**
@@ -858,12 +858,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=Channel
-    //%blockId=smarthon_iot_bit_wifi_ext_board_on_wifi_channel_create
+    //%blockId=smarthon_iot_bit_on_wifi_channel_create
     //%block="on WiFi channel joined" group="Receiver"
     //% weight=19 draggableParameters=reporter group="Advanced"
 
-    export function smarthon_iot_bit_onWifiCreateChannel(handler: (channel: string, errorCode: string) => void): void {
-        smarthon_iot_bit_wifiRemoteCreate = handler;
+    export function onWifiCreateChannel(handler: (channel: string, errorCode: string) => void): void {
+        wifiRemoteCreate = handler;
     }
 
     // -------------- 8.ESP Control ----------------
@@ -884,7 +884,7 @@ namespace smarthonIoTBit {
     //% deg2.min=0 deg2.max=180
     //% deg3.min=0 deg3.max=180
     //% group="Servo"
-    export function smarthon_iot_bit_ESPServo180(deg1: number = null, deg2: number = null, deg3: number = null): void {
+    export function ESPServo180(deg1: number = null, deg2: number = null, deg3: number = null): void {
         let cmd = "(AT+servo_180?";
         if (deg1 != null) { cmd = cmd + "degree1=" + deg1.toString() + "&" }
         if (deg2 != null) { cmd = cmd + "degree2=" + deg2.toString() + "&" }
@@ -914,7 +914,7 @@ namespace smarthonIoTBit {
     //% expandableArgumentMode="enabled" group="Servo"
     //% blockGap=7    
 
-    export function smarthon_iot_bit_ESPServo360(dir1: smarthon_iot_bit_Esp360ServoDir = 0, speed1: number = null, dir2: smarthon_iot_bit_Esp360ServoDir = 0, speed2: number = null, dir3: smarthon_iot_bit_Esp360ServoDir = 0, speed3: number = null,): void {
+    export function ESPServo360(dir1: Esp360ServoDir = 0, speed1: number = null, dir2: Esp360ServoDir = 0, speed2: number = null, dir3: Esp360ServoDir = 0, speed3: number = null,): void {
         let cmd = "(AT+servo_360?";
         if (speed1 != null) {
             let direction1;
@@ -946,11 +946,11 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_version
+    //%blockId=smarthon_iot_bit_version
     //%block="firmware version"
     //% weight=50
     //% group="Configuration" 
-    export function smarthon_iot_bit_sendVersion(): string {
+    export function sendVersion(): string {
         return version
     }
 
@@ -960,10 +960,10 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_at
+    //%blockId=smarthon_iot_bit_at
     //%block="send AT command %command"
     //% weight=25 group="Configuration" 
-    export function smarthon_iot_bit_sendAT(command: string): void {
+    export function sendAT(command: string): void {
         serial.writeLine(command);
         flag = false
     }
@@ -973,10 +973,10 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_OTA_Latest
+    //%blockId=smarthon_iot_bit_OTA_Latest
     //%block="update firmware to latest version"
     //% weight=40 group="Configuration" 
-    export function smarthon_iot_bit_OTALatest(): void {
+    export function OTALatest(): void {
         serial.writeLine("(AT+ota?ver=latest)");
     }
 
@@ -986,10 +986,10 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_OTA_version
+    //%blockId=smarthon_iot_bit_OTA_version
     //%block="update firmware to version %version"
     //% weight=35 group="Configuration" blockHidden=true
-    export function smarthon_iot_bit_OTAVersion(version: string): void {
+    export function OTAVersion(version: string): void {
         serial.writeLine("(AT+ota?ver=" + version + ")");
     }
 
@@ -999,12 +999,12 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_OTA_progress
+    //%blockId=smarthon_iot_bit_OTA_progress
     //%block="OTA progress"
     //% weight=27 draggableParameters=reporter group="Configuration"
 
-    export function smarthon_iot_bit_onOTAProgressing(handler: (percentageValue: string) => void): void {
-        smarthon_iot_bit_otaReceived = handler;
+    export function onOTAProgressing(handler: (percentageValue: string) => void): void {
+        otaReceived = handler;
     }
 
     /**
@@ -1013,16 +1013,16 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_OTA_finish
+    //%blockId=smarthon_iot_bit_OTA_finish
     //%block="on OTA update finished"
     //% weight=29 draggableParameters=reporter group="Configuration"
 
-    export function smarthon_iot_bit_onOTAFinish(handler: () => void): void {
-        smarthon_iot_bit_otaFinished = handler;
+    export function onOTAFinish(handler: () => void): void {
+        otaFinished = handler;
     }
 
     //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_wifi_ext_board_OTA_fail
+    //%blockId=smarthon_iot_bit_OTA_fail
     //%block="on OTA update failed"
     //% weight=28 draggableParameters=reporter group="Configuration"
 
@@ -1032,7 +1032,7 @@ namespace smarthonIoTBit {
      * @param message error messsage;
      */
 
-    export function smarthon_iot_bit_onOTAFailed(handler: (message: string) => void): void {
-        smarthon_iot_bit_otaFailed = handler;
+    export function onOTAFailed(handler: (message: string) => void): void {
+        otaFailed = handler;
     }
 }
