@@ -572,7 +572,7 @@ namespace smarthonIoTBit {
      */
     //%subcategory="IoT Services"
     //%jsonBlockId="smarthon_iot_bit_JSON_extractor"
-    //%block="get value of key %target from JSON string %source"
+    //%block="get value of key %target from | JSON string %source"
     //% weight=107 group="HTTP"
     export function getValue(target: string, source: string): string {
 
