@@ -571,7 +571,7 @@ namespace smarthonIoTBit {
      * @param source Source string that to be extract from
      */
     //%subcategory="IoT Services"
-    //%jsonBlockId="smarthon_iot_bit_JSON_extractor"
+    //%jsonBlockId=smarthon_iot_bit_JSON_extractor
     //%block="get value of key %target from JSON string %source"
     //% weight=107 group="HTTP"
     export function getValue(target: string, source: string): string {
@@ -620,7 +620,7 @@ namespace smarthonIoTBit {
      */
 
     //%subcategory="IoT Services"
-    //% blockId="smarthon_iot_bit_generic_http_return" 
+    //% blockId=smarthon_iot_bit_generic_http_return
     //% block="HTTP response (string)"
     //% weight=110     group="HTTP"
     //% blockGap=7
@@ -666,7 +666,7 @@ namespace smarthonIoTBit {
     * @param second is the number of second,
     */
     //%subcategory="IoT Services"
-    //% blockId="smarthon_iot_bit_receive_ntp" 
+    //% blockId=smarthon_iot_bit_receive_ntp
     //% block="on NTP received"     group="Current Time"
     //% weight=108 draggableParameters=reporter
     //% blockGap=7
