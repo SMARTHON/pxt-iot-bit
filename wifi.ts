@@ -612,14 +612,14 @@ namespace WiFiIoT {
         serial.writeLine(command);
     }
 
-    //%subcategory="IoT Services"
-    //% blockId=get_Blynk_value
-    //% block="Get Blynk Value %Blynk_pin_list"
-    //% weight=119 group="Blynk"
-    //% expandableArgumentMode="enabled"
-    export function get_Blynk_value(nPin: Blynk_pin_list): number {
-        return Blynk_value
-    }
+    // //%subcategory="IoT Services"
+    // //% blockId=get_Blynk_value
+    // //% block="Get Blynk Value %Blynk_pin_list"
+    // //% weight=119 group="Blynk"
+    // //% expandableArgumentMode="enabled"
+    // export function get_Blynk_value(nPin: Blynk_pin_list): number {
+    //     return Blynk_value
+    // }
 
     //%subcategory="IoT Services"
     //%blockId=readBlynk_connect
