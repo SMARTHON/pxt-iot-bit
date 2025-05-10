@@ -10,11 +10,8 @@
     "files": [
         "README.md",
         "wifi.ts",
-        "_locales/zh-TW/smarthon-iotbit-jsdoc-strings.json",
         "_locales/zh-TW/smarthon-iotbit-strings.json",
-        "_locales/zh-CN/smarthon-iotbit-jsdoc-strings.json",
         "_locales/zh-CN/smarthon-iotbit-strings.json",
-        "_locales/zh/smarthon-iotbit-jsdoc-strings.json",
         "_locales/zh/smarthon-iotbit-strings.json"
     ],
     "testFiles": [
