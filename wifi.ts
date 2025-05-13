@@ -483,7 +483,7 @@ namespace smarthonIoTBit {
 
     //%subcategory="IoT Services"
     //% blockId=smarthon_iot_bit_set_ifttt
-    //% block="Send IFTTT event_name* %event||value1 %value1|value2 %value2|value3 %value3"
+    //% block="send IFTTT event_name* %event||value1 %value1|value2 %value2|value3 %value3"
     //% weight=125
     //% group="IFTTT"
     //% expandableArgumentMode="enabled"    
