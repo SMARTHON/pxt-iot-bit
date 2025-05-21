@@ -14,7 +14,7 @@ Configurate the connection between IoT:bit and Micro:bit via Serial protocol<P>
 Default setting for Connection pins on IoT:bit is P16(TX) and P8(RX)<P>
                                                                        
 ```block
-WiFiIoT.initializeWifi(SerialPin.P16, SerialPin.P8)
+smarthonIoTBit.initializeWifi(SerialPin.P16, SerialPin.P8)
 ```
 ### 2. Connect to Wifi Station
 Connect to the specific Wifi Station by SSID and Password<P>
@@ -22,7 +22,7 @@ In example,<BR>
 SSID:Smarthon<BR>
 Password:12345678<BR>
 ```block
-WiFiIoT.setWifi("Smarthon", "12345678")
+smarthonIoTBit.setWifi("Smarthon", "12345678")
 ```
 
 ### 3. Upload data to Thingspeak
@@ -33,7 +33,7 @@ channel API key: abcdefg<BR>
 field1 value:100<BR>
 field2 value:0<BR>
 ```block
-WiFiIoT.sendThingspeak(
+smarthonIoTBit.sendThingspeak(
 "abcdefg",
 100,
 0
@@ -49,7 +49,7 @@ event:email<BR>
 value:10<BR>
 
 ```block
-WiFiIoT.sendIFTTT(
+smarthonIoTBit.sendIFTTT(
 "abcdefg",
 "email",
 10
@@ -61,13 +61,13 @@ The IoT:bit can recevied command via internet<BR>
 Before control the IoT:bit, you need an ID to identify the IoT:bit on the internet.<P>
 Use the getDeviceID to show the ID<BR>
 ```block
-basic.showString(WiFiIoT.getDeviceID())
+basic.showString(smarthonIoTBit.getDeviceID())
 ```
 You are required to set up the callback function to get the command message when the the command was received.<BR>
 The WAN_Command variable can be access and use to make decision.<BR>
 
 ```block
-WiFiIoT.on_WAN_remote(function (WAN_Command) {
+smarthonIoTBit.onWANRemote(function (WAN_Command) {
 	
 })
 ```
@@ -76,20 +76,20 @@ WiFiIoT.on_WAN_remote(function (WAN_Command) {
 Connect to a specifc channel to prepare for listen other user's message<P>
   
 ```block
-WiFiIoT.wifi_listen_channel("abc")
+smarthonIoTBit.WifiListenChannel("abc")
 ```
 
 To listen the message, you are required to set up this callback block to get the variable<P>
   
 ```block
-WiFiIoT.on_wifi_received(function (Channel, receivedMessage) {
+smarthonIoTBit.onWifiReceived(function (Channel, receivedMessage) {
 })
 ```
 
 Sending the message to other user in the specific channel<P>
   
 ```block
-WiFiIoT.wifi_send_message("abc", "hi")
+smarthonIoTBit.WifiSendMessage("abc", "hi")
 ```
 
 
@@ -97,13 +97,13 @@ WiFiIoT.wifi_send_message("abc", "hi")
 Get the NTP time from the internet<P>
   
 ```block
-WiFiIoT.getNTP(WiFiIoT.CityList.HongKong)
+smarthonIoTBit.getNTP(smarthonIoTBit.CityList.HongKong)
 ```
 
 To make use of the time, you are required to set up this callback block to get the variable <P>
   
 ```block
-WiFiIoT.on_NTP_Received(function (Year, Month, Day, Hour, Minute, Second) {
+smarthonIoTBit.onNTPReceived(function (Year, Month, Day, Hour, Minute, Second) {
 })
 ```
 

@@ -631,7 +631,7 @@ namespace smarthonIoTBit {
 
     /** 
     * Select the city in the list to get the locale Time 
-     * @param city name of the city; eg:Hong Kong
+     * @param city name of the city, eg: Hong Kong
     */
     //%subcategory="IoT Services"
     //% blockId=smarthon_iot_bit_Call_NTP_city

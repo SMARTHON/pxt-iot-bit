@@ -11,21 +11,21 @@ Test procedure:
 
 // Connect to wifi.
 // Show device id if connected. 
-wiFiIoT.on_wifi_connect(function (IP_Address, Device_ID) {
+smarthonIoTBit.onWifiConnect(function (IP_Address, Device_ID) {
     basic.showString(Device_ID)
 })
 
 // Connect to IFTTT.
 // Show happy face if connected. 
-wiFiIoT.on_IFTTT_conn(function (Status, Error_code) {
+smarthonIoTBit.onIFTTTConn(function (Status, Error_code) {
     basic.showIcon(IconNames.Happy)
 })
 
 // Send value to IFTTT.
 // When button A is pressed and wifi is connected, send 1 to the IFTTT. 
 input.onButtonPressed(Button.A, function () {
-    if (wiFiIoT.is_wifi_connect()) {
-        wiFiIoT.sendThingspeak(
+    if (smarthonIoTBit.isWifiConnect()) {
+        smarthonIoTBit.sendThingspeak(
         "CQZ89FEYBJ9CAQ9M",
         1
         )
@@ -34,33 +34,33 @@ input.onButtonPressed(Button.A, function () {
 
 // Connect to NTP.
 // Show current year, month, day, hour, minute, second. 
-wiFiIoT.on_NTP_Received(function (Year, Month, Day, Hour, Minute, Second) {
+smarthonIoTBit.onNTPReceived(function (Year, Month, Day, Hour, Minute, Second) {
     basic.showString("" + Year + "," + Month + "," + Day + "|" + Hour + ":" + Minute + ":" + Second)
 })
 
 // Receive WAN command.
 // Show WAN commmand if connected. 
-wiFiIoT.on_WAN_remote(function (WAN_Command) {
+smarthonIoTBit.onWANRemote(function (WAN_Command) {
     basic.showString(WAN_Command)
 })
 
 // Connect to ThingSpeak.
 // Show tick icon when it is connected to ThingSpeak.
-wiFiIoT.on_thingspeak_conn(function (Status, Error_code) {
+smarthonIoTBit.onThingspeakConn(function (Status, Error_code) {
     basic.showIcon(IconNames.Yes)
 })
 
 // When button A+B is pressed.
 // Get NTP timezone of Hong Kong.
 input.onButtonPressed(Button.AB, function () {
-    wiFiIoT.getNTP(wiFiIoT.CityList.HongKong)
+    smarthonIoTBit.getNTP(smarthonIoTBit.CityList.HongKong)
 })
 
 // When button B is pressed.
 // Send IFTTT "hi".
 input.onButtonPressed(Button.B, function () {
-    if (wiFiIoT.is_wifi_connect()) {
-        wiFiIoT.sendIFTTT(
+    if (smarthonIoTBit.isWifiConnect()) {
+        smarthonIoTBit.sendIFTTT(
         "cEiZt5Okq11jhgIRlYm6pF",
         "hi"
         )
@@ -68,5 +68,5 @@ input.onButtonPressed(Button.B, function () {
 })
 
 // Initialize wifi.
-wiFiIoT.initializeWifi(SerialPin.P16, SerialPin.P8)
-wiFiIoT.setWifi("smarthon", "12345678")
+smarthonIoTBit.initializeWifi(SerialPin.P16, SerialPin.P8)
+smarthonIoTBit.setWifi("smarthon", "12345678")
