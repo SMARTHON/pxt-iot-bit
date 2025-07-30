@@ -942,20 +942,14 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_on_wifi_sent
     //%block="On Wifi message sent"
     //% weight=13 draggableParameters=reporter group="Advanced"
-
     export function on_wifi_sender_sent(handler: (Status: string, Error_code: string) => void): void {
         Wifi_sender = handler;
     }
-
-
-
 
     //%subcategory=Channel
     //%blockId=wifi_ext_board_on_wifi_channel_create
     //%block="On WiFi channel joined" group="Receiver"
     //% weight=19 draggableParameters=reporter group="Advanced"
-
-
     export function on_wifi_create_channel(handler: (Channel: string, Error_code: string) => void): void {
         Wifi_Remote_create = handler;
     }
@@ -989,8 +983,6 @@ namespace WiFiIoT {
     //% speed3.min=0 speed3.max=100
     //% expandableArgumentMode="enabled" group="Servo"
     //% blockGap=7	
-
-
     export function ESP_Servo_360(dir1: ESP_360_SERVO_DIR = 0, speed1: number = null, dir2: ESP_360_SERVO_DIR = 0, speed2: number = null, dir3: ESP_360_SERVO_DIR = 0, speed3: number = null,): void {
         let cmd = "(AT+servo_360?";
         if (speed1 != null) {
@@ -1055,7 +1047,6 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_OTA_progress
     //%block="OTA Progress"
     //% weight=27 draggableParameters=reporter group="Configuration"
-
     export function on_OTA_progressing(handler: (PercentageValue: string) => void): void {
         OTA_recevied = handler;
     }
@@ -1063,7 +1054,6 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_OTA_finish
     //%block="On OTA Update Finished"
     //% weight=29 draggableParameters=reporter group="Configuration"
-
     export function on_OTA_Finish(handler: () => void): void {
         OTA_Finished = handler;
     }
@@ -1071,7 +1061,6 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_OTA_fail
     //%block="On OTA Update Failed"
     //% weight=28 draggableParameters=reporter group="Configuration"
-
     export function on_OTA_Failed(handler: (Message: string) => void): void {
         OTA_Failed = handler;
     }
