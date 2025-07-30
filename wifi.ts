@@ -1,3 +1,7 @@
+/**
+ * Sensors blocks
+ */
+//% weight=101 color=#333300  icon="\uf1eb" block="IoT:bit"
 namespace WiFiIoT {
     let flag = true;
     //let httpReturnArray: string[] = []
@@ -142,7 +146,7 @@ namespace WiFiIoT {
         Warsaw = "1",
     }
 
-    export enum Blynk_pin_list{
+    export enum Blynk_pin_list {
         //% block="V0"
         V0 = "0",
         //% block="V1"
@@ -655,12 +659,6 @@ namespace WiFiIoT {
             case httpMethod.POST:
                 temp = "POST"
                 break
-
-
-
-
-
-
         }
         serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + "&body=" + body + ")");
     }
@@ -751,6 +749,46 @@ namespace WiFiIoT {
         return httpReturnString;
 
     }
+    let storedData: number[] = [];
+    let datacount: number = 0;
+    let maxArray: number = 0;
+    //%subcategory="IoT Services"
+    //% blockId="make_data_to_array"
+    //% block="Make data to String |Total Data needed %total_data|Data1:%data1||Data2:%data2|Data3:%data3|Data4:%data4"
+    //% weight=110	 group="HTTP"
+    export function dataToString(total_data: number, data1: number, data2: number, data3: number, data4: number): void {
+        const inputData:number[] = [data1, data2, data3, data4];
+        maxArray = total_data;
+        for(let i = 0;i<4;i++){
+            storedData.push(inputData[i]);
+            datacount++;
+        }
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId="make_array_to_string"
+    //% block="Get String"
+    //% weight=110	 group="HTTP"
+    export function arrayToString(): string {
+        if(storedData.length >= maxArray) return storedData.join(",");
+        return " ";
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId="get_Edge_Impulse_value"
+    //% block="Call Edge Impulse module |URL:%url|Data:%data"
+    //% weight=110	 group="HTTP"
+    export function getEdguImpules(url: string, data: string): void {
+        let cor:string = ""
+        let body:string = ""
+        cor = "http://" + url + "/api/features"
+    //    body = body.slice(0, -1);
+        body = "{" + '"features"' + ":[" + data + "]}"
+        serial.writeLine("(AT+http?method=POST" + "&url=" + cor + "&header=" + "&body=" + body + ")");
+        storedData = []
+        datacount = 0;
+    }
+
     /** 
     Select the city in the list to get the locale Time 
     */
