@@ -72,13 +72,11 @@
   "smarthonIoTBit.wifiListenChannel|block": "加入到頻道 %channel",
   "smarthonIoTBit.wifiSendMessage|block": "傳送到頻道 %channel ,訊息為 %message",
   "smarthonIoTBit.wifiSendMessageValue|block": "傳送到頻道 %channel ,訊息為 %message ,數值為 %value",
-
   "smarthonIoTBit.OTALatest|block": "更新韌體至最新的版本",
   "smarthonIoTBit.OTAVersion|block": "更新韌體到版本 %version ",
   "smarthonIoTBit.onOTAProgressing|block": "OTA版本更新進度", 
   "smarthonIoTBit.onOTAFinish|block": "OTA更新完成",
   "smarthonIoTBit.onOTAFailed|block": "OTA更新失敗",
-
   "smarthonIoTBit|block": "IoT:bit",
   "{id:category}smarthonIoTBit": "smarthonIoTBit",
   "{id:group}Advanced": "進階檢查",

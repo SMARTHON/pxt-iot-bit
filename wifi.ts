@@ -26,12 +26,14 @@ namespace smarthonIoTBit {
     let deviceId = ""
     let wifiTriedNum = 0
     let ip = ""
+
     let arrayKeys: Array<string> = []
     let arrayValues: Array<string> = []
 
     let connectingFlag = false
     let disconnectErrorCode = ""
     let thingspeakError = ""
+	let blynkError = ""
     let ntpReceive: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void = null;
     let wifiRemoteConn: (channel: string, wifiMessage: string) => void = null;
     let wifiRemoteConnValue: (channel: string, wifiMessage: string, value: number) => void = null;
@@ -42,6 +44,8 @@ namespace smarthonIoTBit {
     let wanRemoteConn: (wanCommand: string) => void = null;
     let wanRemoteConnValue: (wanCommand: string, value: number) => void;
     let thingspeakConn: (status: string, errorCode: string) => void = null;
+	let blynkConn: (Status: string, ErrorCode: string) => void = null;
+    let blynkReadConn: (Pin: string, Value: number) => void = null;
     let iftttConn: (status: string, errorCode: string) => void = null;
     let wifiRemoteCreate: (channel: string, errorCode: string) => void = null;
     let wifiSender: (status: string, errorCode: string) => void = null;
@@ -124,6 +128,24 @@ namespace smarthonIoTBit {
         Warsaw = "1",
     }
 
+    export enum BlynkPinList {
+        //% block="V0"
+        V0 = "0",
+        //% block="V1"
+        V1 = "1",
+        //% block="V2"
+        V2 = "2",
+        //% block="V3"
+        V3 = "3",
+        //% block="V4"
+        V4 = "4",
+        //% block="V5"
+        V5 = "5",
+        //% block="V6"
+        V6 = "6",
+        //% block="V7"
+        V7 = "7",
+    }
     // -------------- 1. Initialization ----------------
     /**
      * Init the iotbit
@@ -211,11 +233,11 @@ namespace smarthonIoTBit {
                     else if (response[1] == "3") {
                         wifiConnected = "3"
                         if (response[2] != null) {
-
                             disconnectErrorCode = response[2]
                             if (wifiDisConn && wifiConnected == "3") wifiDisConn(disconnectErrorCode)
                             if (oledFlag == true && connectingFlag == false) {
                                 //OLED.writeStringNewLine("error:"+disconnectErrorCode)
+
                             }
                         }
                     }
@@ -349,6 +371,31 @@ namespace smarthonIoTBit {
                     } else if (otaFailed != null && response[1] == "3") {
                         otaFailed(response[2])
                     }
+                }
+                else if (label == "10") { //W10 Blynk
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (blynkConn != null && response[1] == "0") {
+                        blynkConn("OK", "0")
+                    }
+                    else if (response[1] == "1") {
+                        if (blynkConn != null && response[2] != null) {
+                            blynkError = response[2]
+                            blynkConn("FAIL", blynkError)
+                        }
+                    }
+                }
+                else if (label == "11") { //read Blynk
+                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    if (blynkReadConn != null && response[1] == "0") {
+                        blynkReadConn(response[2], parseInt(response[3]))
+                    }
+                    else if (response[1] == "1") {
+                        if (blynkReadConn != null && response[2] != null) {
+                            //blynkError = response[2]
+                            //blynkread_conn("FAIL", parseInt(response[3]))
+                        }
+                    }
+
                 }
             }
         })
@@ -517,6 +564,58 @@ namespace smarthonIoTBit {
     //% blockGap=7
     export function onIFTTTConn(handler: (status: string, errorCode: string) => void): void {
         iftttConn = handler;
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId=smarthon_iot_bit_send_blynk
+    //% block="Send Blynk token* %key|V0 value%v0||V1 value%v1|V2 value%v2|V3 value%v3|V4 value%v4|V5 value%v5|V6 value%v6|V7 value%v7|"
+    //% weight=123 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function sendBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
+        let command = "(AT+blynk?key=";
+        if (key == "") { return }
+        else { command = command + key }
+        if (v0 != null) { command = command + "&v0=" + v0 }
+        if (v1 != null) { command = command + "&v1=" + v1 }
+        if (v2 != null) { command = command + "&v2=" + v2 }
+        if (v3 != null) { command = command + "&v3=" + v3 }
+        if (v4 != null) { command = command + "&v4=" + v4 }
+        if (v5 != null) { command = command + "&v5=" + v5 }
+        if (v6 != null) { command = command + "&v6=" + v6 }
+        if (v7 != null) { command = command + "&v7=" + v7 }
+
+        command = command + ")"
+        serial.writeLine(command);
+    }
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_on_blynk_connect
+    //%block="On Blynk Uploaded"
+    //% weight=122 group="Blynk"
+    //% draggableParameters=reporter
+    export function onBlynkConn(handler: (Status: string, ErrorCode: string) => void): void {
+        blynkConn = handler;
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId=smarthon_iot_bit_read_blynk
+    //% block="read Blynk token* %key|Pin %Blynk_pin_list"
+    //% weight=120 group="Blynk"
+    //% expandableArgumentMode="enabled"
+    export function readBlynk(key: string, Pin: BlynkPinList): void {
+        let command = "(AT+blynkread?key=";
+        if (key == "") { return }
+        else { command = command + key }
+        if (Pin != null) { command = command + "&pin=v" + Pin + ")" }
+        serial.writeLine(command);
+    }
+
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_readBlynk_connect
+    //%block="On Blynk Readed"
+    //% weight=118 group="Blynk"
+    //% draggableParameters=reporter
+    export function onReadblynk(handler: (pin: string, value: number) => void): void {
+        blynkReadConn = handler;
     }
 
     // -------------- 4. Others ----------------
@@ -716,7 +815,6 @@ namespace smarthonIoTBit {
     //% weight=75 group="Start the control"
     //% blockHidden=true
     //% blockGap=7    draggableParameters=reporter
-
     export function onWANControlConnected(handler: (deviceId: string, errorCode: string) => void): void {
         wanControlConn = handler;
     }
@@ -845,7 +943,6 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_on_wifi_sent
     //%block="on Wifi message sent"
     //% weight=13 draggableParameters=reporter group="Advanced"
-
     export function onWifiSenderSent(handler: (status: string, errorCode: string) => void): void {
         wifiSender = handler;
     }
@@ -856,12 +953,11 @@ namespace smarthonIoTBit {
      * @param channel created channel name;
      * @param errorCode error code;
      */
-
+	 
     //%subcategory=Channel
     //%blockId=smarthon_iot_bit_on_wifi_channel_create
     //%block="on WiFi channel joined" group="Receiver"
     //% weight=19 draggableParameters=reporter group="Advanced"
-
     export function onWifiCreateChannel(handler: (channel: string, errorCode: string) => void): void {
         wifiRemoteCreate = handler;
     }
@@ -913,7 +1009,6 @@ namespace smarthonIoTBit {
     //% speed3.min=0 speed3.max=100
     //% expandableArgumentMode="enabled" group="Servo"
     //% blockGap=7    
-
     export function ESPServo360(dir1: Esp360ServoDir = 0, speed1: number = null, dir2: Esp360ServoDir = 0, speed2: number = null, dir3: Esp360ServoDir = 0, speed3: number = null,): void {
         let cmd = "(AT+servo_360?";
         if (speed1 != null) {
@@ -980,6 +1075,7 @@ namespace smarthonIoTBit {
         serial.writeLine("(AT+ota?ver=latest)");
     }
 
+
     /**
      * Update Firmware to another version
      * @param version version name;
@@ -1002,7 +1098,6 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_OTA_progress
     //%block="OTA progress"
     //% weight=27 draggableParameters=reporter group="Configuration"
-
     export function onOTAProgressing(handler: (percentageValue: string) => void): void {
         otaReceived = handler;
     }
@@ -1016,21 +1111,20 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_OTA_finish
     //%block="on OTA update finished"
     //% weight=29 draggableParameters=reporter group="Configuration"
-
     export function onOTAFinish(handler: () => void): void {
         otaFinished = handler;
     }
-
-    //%subcategory=ESP
-    //%blockId=smarthon_iot_bit_OTA_fail
-    //%block="on OTA update failed"
-    //% weight=28 draggableParameters=reporter group="Configuration"
 
     /**
      * When OTA Updated failed
      * @param handler OTA finished callback;
      * @param message error messsage;
      */
+	 
+    //%subcategory=ESP
+    //%blockId=smarthon_iot_bit_OTA_fail
+    //%block="on OTA update failed"
+    //% weight=28 draggableParameters=reporter group="Configuration"
 
     export function onOTAFailed(handler: (message: string) => void): void {
         otaFailed = handler;

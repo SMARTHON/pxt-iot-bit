@@ -72,13 +72,11 @@
   "smarthonIoTBit.wifiListenChannel|block": "WiFi Receiver join channel %channel",
   "smarthonIoTBit.wifiSendMessageValue|block": "WiFi Sender send channel %channel message %message value %value",
   "smarthonIoTBit.wifiSendMessage|block": "WiFi Sender send channel %channel message %message",
-
   "smarthonIoTBit.OTALatest|block": "update firmware to latest version",
   "smarthonIoTBit.OTAVersion|block": "update firmware to version %version ",
   "smarthonIoTBit.onOTAProgressing|block": "OTA progress", 
   "smarthonIoTBit.onOTAFinish|block": "on OTA update finished",
   "smarthonIoTBit.onOTAFailed|block": "on OTA update failed",
-
   "smarthonIoTBit|block": "IoT:bit",
   "{id:category}smarthonIoTBit": "smarthonIoTBit",
   "{id:group}Advanced": "Advanced",
