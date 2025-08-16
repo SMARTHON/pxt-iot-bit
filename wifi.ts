@@ -568,7 +568,7 @@ namespace smarthonIoTBit {
 
     //%subcategory="IoT Services"
     //% blockId=smarthon_iot_bit_send_blynk
-    //% block="Send Blynk token* %key|V0 value%v0||V1 value%v1|V2 value%v2|V3 value%v3|V4 value%v4|V5 value%v5|V6 value%v6|V7 value%v7|"
+    //% block="send Blynk token* %key|V0 value%v0||V1 value%v1|V2 value%v2|V3 value%v3|V4 value%v4|V5 value%v5|V6 value%v6|V7 value%v7|"
     //% weight=123 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function sendBlynk(key: string, v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
@@ -589,10 +589,10 @@ namespace smarthonIoTBit {
     }
     //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_on_blynk_connect
-    //%block="On Blynk Uploaded"
+    //%block="on Blynk uploaded"
     //% weight=122 group="Blynk"
     //% draggableParameters=reporter
-    export function onBlynkConn(handler: (Status: string, ErrorCode: string) => void): void {
+    export function onBlynkConn(handler: (status: string, errorCode: string) => void): void {
         blynkConn = handler;
     }
 
@@ -611,10 +611,10 @@ namespace smarthonIoTBit {
 
     //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_readBlynk_connect
-    //%block="On Blynk Readed"
+    //%block="on Blynk read"
     //% weight=118 group="Blynk"
     //% draggableParameters=reporter
-    export function onReadblynk(handler: (pin: string, value: number) => void): void {
+    export function onReadBlynk(handler: (pin: string, value: number) => void): void {
         blynkReadConn = handler;
     }
 
