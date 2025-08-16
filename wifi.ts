@@ -6,7 +6,7 @@ namespace WiFiIoT {
     let flag = true;
     //let httpReturnArray: string[] = []
     let httpReturnString: string = ""
-    let http_error_code = ""
+    let http_ErrorCode = ""
     let OLED_FLAG = false;
     let OLED_row_count = 0;
     let temp_cmd = ""
@@ -32,25 +32,25 @@ namespace WiFiIoT {
     let Blynk_value = 0
 
     let connecting_flag = false
-    let disconnect_error_code = ""
+    let disconnect_ErrorCode = ""
     let thingspeak_error = ""
-    let blynk_error = ""
+    let blynkError = ""
     let NTP_Receive: (Year: number, Month: number, Day: number, Hour: number, Minute: number, Second: number) => void = null;
     let Wifi_Remote_Conn: (channel: string, WifiMessage: string) => void = null;
     let Wifi_Remote_Conn_value: (channel: string, WifiMessage: string, Value: number) => void = null;
     let Wifi_Conn: (IP: string, ID: string) => void = null;
     let Wifi_DisConn: (Error: string) => void = null;
     let LAN_Remote_Conn: (LAN_Command: string) => void = null;
-    let WAN_Control_Conn: (Device_ID: string, Error_code: string) => void = null;
+    let WAN_Control_Conn: (Device_ID: string, ErrorCode: string) => void = null;
     let WAN_Remote_Conn: (WAN_Command: string) => void = null;
     let WAN_Remote_Conn_value: (WAN_Command: string, Value: number) => void;
-    let Thingspeak_conn: (Status: string, Error_code: string) => void = null;
+    let Thingspeak_conn: (Status: string, ErrorCode: string) => void = null;
     let blynkConn: (Status: string, ErrorCode: string) => void = null;
     let blynkReadConn: (Pin: string, Value: number) => void = null;
-    let IFTTT_conn: (Status: string, Error_code: string) => void = null;
-    let Wifi_Remote_create: (channel: string, Error_code: string) => void = null;
-    let Wifi_sender: (status: string, Error_code: string) => void = null;
-    let HTTP_received: (Error_code: string, Data: string) => void = null;
+    let IFTTT_conn: (Status: string, ErrorCode: string) => void = null;
+    let Wifi_Remote_create: (channel: string, ErrorCode: string) => void = null;
+    let Wifi_sender: (status: string, ErrorCode: string) => void = null;
+    let HTTP_received: (ErrorCode: string, Data: string) => void = null;
     let HTTP_receive_end = true;
     let OTA_recevied: (PercentageValue: string) => void = null;
     let OTA_Finished: () => void = null;
@@ -267,10 +267,10 @@ namespace WiFiIoT {
                         Wifi_connected = "3"
                         if (response[2] != null) {
 
-                            disconnect_error_code = response[2]
-                            if (Wifi_DisConn && Wifi_connected == "3") Wifi_DisConn(disconnect_error_code)
+                            disconnect_ErrorCode = response[2]
+                            if (Wifi_DisConn && Wifi_connected == "3") Wifi_DisConn(disconnect_ErrorCode)
                             if (OLED_FLAG == true && connecting_flag == false) {
-                                //OLED.writeStringNewLine("error:"+disconnect_error_code)
+                                //OLED.writeStringNewLine("error:"+disconnect_ErrorCode)
                             }
 
                         }
@@ -382,7 +382,7 @@ namespace WiFiIoT {
                     let response = msg.split('|')
                     if (HTTP_received != null && response[1] != null) { //skip if not use
                         if (response[0] == "2") {
-                            http_error_code = response[1]
+                            http_ErrorCode = response[1]
                         }
                         if (response[0] == "0") { //not the end of msg
                             if (HTTP_receive_end == true) { //if is start of msg, reset the msg string
@@ -394,7 +394,7 @@ namespace WiFiIoT {
                         if (response[0] == "1") {   // it is the end of msg
                             httpReturnString = httpReturnString + response[1] //build the msg string
                             HTTP_receive_end = true;    //indicate it is end
-                            HTTP_received(http_error_code, httpReturnString) //call the handler to return the msg
+                            HTTP_received(http_ErrorCode, httpReturnString) //call the handler to return the msg
                         }
 
 
@@ -422,12 +422,12 @@ namespace WiFiIoT {
                     }
                     else if (response[1] == "1") {
                         if (blynkConn != null && response[2] != null) {
-                            blynk_error = response[2]
-                            blynkConn("FAIL", blynk_error)
+                            blynkError = response[2]
+                            blynkConn("FAIL", blynkError)
                         }
                         if (OLED_FLAG == true) {
-                            //OLED.writeStringNewLine("Blynk_error")
-                            //OLED.writeStringNewLine("fail code:"+blynk_error)
+                            //OLED.writeStringNewLine("blynkError")
+                            //OLED.writeStringNewLine("fail code:"+blynkError)
                         }
                     }
                 }
@@ -442,7 +442,7 @@ namespace WiFiIoT {
                     }
                     else if (response[1] == "1") {
                         if (blynkReadConn != null && response[2] != null) {
-                            //blynk_error = response[2]
+                            //blynkError = response[2]
                             //blynkread_conn("FAIL", parseInt(response[3]))
                         }
                         if (OLED_FLAG == true) {
@@ -491,7 +491,7 @@ namespace WiFiIoT {
     //% block="On WiFi disconnected"   
     //% weight=132
     //% draggableParameters=reporter
-    export function on_wifi_disconnect(handler: (Error_code: string) => void): void {
+    export function on_wifi_disconnect(handler: (ErrorCode: string) => void): void {
         Wifi_DisConn = handler;
 
 
@@ -535,7 +535,7 @@ namespace WiFiIoT {
     //% weight=129 group="Thingspeak"
     //% draggableParameters=reporter
     //% blockGap=7
-    export function on_thingspeak_conn(handler: (Status: string, Error_code: string) => void): void {
+    export function on_thingspeak_conn(handler: (Status: string, ErrorCode: string) => void): void {
         Thingspeak_conn = handler;
     }
 
@@ -567,7 +567,7 @@ namespace WiFiIoT {
     //% weight=124	 group="IFTTT"
     //% draggableParameters=reporter
     //% blockGap=7
-    export function on_IFTTT_conn(handler: (Status: string, Error_code: string) => void): void {
+    export function on_IFTTT_conn(handler: (Status: string, ErrorCode: string) => void): void {
         IFTTT_conn = handler;
     }
 
@@ -827,7 +827,7 @@ namespace WiFiIoT {
     //% blockHidden=true
     //% blockGap=7	draggableParameters=reporter
 
-    export function on_WAN_Control_Connected(handler: (Device_ID: string, Error_code: string) => void): void {
+    export function on_WAN_Control_Connected(handler: (Device_ID: string, ErrorCode: string) => void): void {
         WAN_Control_Conn = handler;
     }
 
@@ -903,7 +903,7 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_on_wifi_sent
     //%block="On Wifi message sent"
     //% weight=13 draggableParameters=reporter group="Advanced"
-    export function on_wifi_sender_sent(handler: (Status: string, Error_code: string) => void): void {
+    export function on_wifi_sender_sent(handler: (Status: string, ErrorCode: string) => void): void {
         Wifi_sender = handler;
     }
 
@@ -911,7 +911,7 @@ namespace WiFiIoT {
     //%blockId=wifi_ext_board_on_wifi_channel_create
     //%block="On WiFi channel joined" group="Receiver"
     //% weight=19 draggableParameters=reporter group="Advanced"
-    export function on_wifi_create_channel(handler: (Channel: string, Error_code: string) => void): void {
+    export function on_wifi_create_channel(handler: (Channel: string, ErrorCode: string) => void): void {
         Wifi_Remote_create = handler;
     }
 
