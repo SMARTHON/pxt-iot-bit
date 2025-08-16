@@ -373,7 +373,7 @@ namespace smarthonIoTBit {
                     }
                 }
                 else if (label == "10") { //W10 Blynk
-                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (blynkConn != null && response[1] == "0") {
                         blynkConn("OK", "0")
                     }
@@ -385,7 +385,7 @@ namespace smarthonIoTBit {
                     }
                 }
                 else if (label == "11") { //read Blynk
-                    let response = temp_cmd.slice(1, temp_cmd.length).split(' ')
+                    let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (blynkReadConn != null && response[1] == "0") {
                         blynkReadConn(response[2], parseInt(response[3]))
                     }
