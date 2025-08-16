@@ -644,7 +644,14 @@ namespace smarthonIoTBit {
                 temp = "POST"
                 break
         }
-        serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + "&body=" + body + ")");
+        if (temp == "GET"){
+            serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + ")");
+            return;
+        }
+        else{
+            if (body == "") body = "null";
+            serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + "&body=" + body + ")");
+        }
     }
 
     /**
