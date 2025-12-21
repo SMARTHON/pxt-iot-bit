@@ -1,0 +1,105 @@
+# MAIN CHANGELOG
+v0.9.3 Aug 16, 2025
+Add the blynk read and write function 
+Update get and post method fix
+
+v0.8.3 May 21, 2025
+Merge branch 'pxt_fix2' into master branch
+Update and fix all synatx that required by micro:bit foundation
+
+v0.7.0 Aug 26, 2024
+Update the block of IFTTT fix including TC
+
+v0.6.0 Feb 19, 2023
+Add the OTA function for updating the IoT:bit firmware.
+
+
+## Development CHANGELOG
+v0.6.0.4 Aug 16, 2025
+Fix the issue of Send Blynk Block issue.
+Change some variable name to makecode standard.
+Change the function name of ``Blynk_conn`` to ``blynkReadConn``
+upload edge impulse function
+
+v0.5.22.66 May 10, 2025
+delect usless Json file.
+delect usless file in pxt.json.
+delete the get Blynk value function
+
+v0.5.22.65 May 8, 2025
+remove " in function jsonBlockId and blockId.
+upload the missing language version.
+update the TW and CH translate version.
+update the | of TW version
+update the city name wording.
+skip the blynk get error action function.
+update the translate of init WiFi Pin function wording.
+Fix the translateiong issue in EN, TW and CH language file.
+
+v0.5.70.42 Apr 24, 2025
+reverse function back to version v0.5.70.33
+
+v0.5.70.37 Apr 24, 2025
+change namespacce wording to `smarthon_iot_bit_` to `smarthonIoTBit`.
+update test.ts function wording.
+update all function name wording.
+update the tesing file function wording.
+update the namespace and all function wordings to small letter style.
+
+v0.5.70.33 Apr 24, 2025
+change `BlynkRead` to `blynkRead`
+change `Blynk_Conn` to `blynk_Conn`
+delete the Blynkread loop function
+debug read blynk value function
+
+v0.5.70.32 Apr 19, 2025
+delete the Blynkread loop function
+fix the TW translate function wording issue.
+
+v0.5.70.31 Apr 19, 2025
+Fix the blynk read value function issue.
+
+v0.5.70.20 Apr 17, 2025
+change the read Blynk function value type from number to string.
+delete the extra block name in function.
+fix the translate fiunction wording issue in EN Language file.
+change the function wording `内容` to `请求体` and `系统` to `韧体` in TW and CH language file.
+
+v0.5.70.17 Apr 12, 2025
+update block weighting
+update readblynk function
+
+v0.5.70.12 Apr 12, 2025
+redo the version to v0.5.70.10
+
+v0.5.70.11 Apr 12, 2025
+upload `BlynkRead_conn` function
+
+v0.5.22.53 Apr 12, 2025
+fix the translate cannot show issue in EN, TW and CH language file.
+delete the space in function parameter name in EN, TW and CH language file.
+update translate wording in TW language file.
+update the other missing function adding to translation file in EN, TW and CH language file.
+debug of missing function name in EN, TW and CH language file.
+add OTA function translate wording in EN, TW and CH language file.
+update the TW and CH language file of `init WiFi Pin` wording.
+fix the translate function wording issue in EN, TW and CH language file.
+
+v0.5.22.40 Apr 10, 2025
+some translate wording not the same
+fix the translate wording issue in EN, TW and CH language file.
+change test.ts WiFi wording to wiFi
+
+v0.5.22.36 Apr 10, 2025
+fix the txt issue in EN language file missing `,`
+Change function name WiFi to wiFi
+fix the jsonBlockId function coding issue. to targetIndex will return -1 when It can not find the target and return `N/A`.
+add when target or source is empty, return `N/A` in jsonBlockId function.
+
+
+v0.5.22.32 Mar 27, 2025
+Remove unnecessary function
+All Function parameter names should be camelCase without underlines, cantains only letters and numbers.
+change the capital letter to smart letter in function name.
+quick fix `HttpMethod` to `httpMethod`
+fix wifi.ts coding style issue from microbit
