@@ -59,7 +59,11 @@ namespace smarthonIoTBit {
         //% block="GET"
         GET,
         //% block="POST"
-        POST
+        POST,
+        //% block="PUT"
+        PUT,
+        //% block="DELETE"
+        DELETE
     }
 
     export enum Esp360ServoDir {
@@ -416,6 +420,8 @@ namespace smarthonIoTBit {
     //% weight=135
     export function setWifi(ssid: string, pwd: string): void {
         serial.writeLine("(AT+wifi?ssid=" + ssid + "&pwd=" + pwd + ")");
+        basic.pause(500);
+        serial.writeLine("(AT+server)");
         if (oledFlag == true && connectingFlag == false) {
             //OLED.clear()
             //OLED.writeStringNewLine("WIFI Connecting...")
@@ -642,6 +648,12 @@ namespace smarthonIoTBit {
                 break
             case HttpMethod.POST:
                 temp = "POST"
+                break
+            case HttpMethod.PUT:
+                temp = "PUT"
+                break
+            case HttpMethod.DELETE:
+                temp = "DELETE"
                 break
         }
         if (temp == "GET"){
