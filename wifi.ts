@@ -33,7 +33,7 @@ namespace smarthonIoTBit {
     let connectingFlag = false
     let disconnectErrorCode = ""
     let thingspeakError = ""
-	let blynkError = ""
+    let blynkError = ""
     let ntpReceive: (year: number, month: number, day: number, hour: number, minute: number, second: number) => void = null;
     let wifiRemoteConn: (channel: string, wifiMessage: string) => void = null;
     let wifiRemoteConnValue: (channel: string, wifiMessage: string, value: number) => void = null;
@@ -44,7 +44,7 @@ namespace smarthonIoTBit {
     let wanRemoteConn: (wanCommand: string) => void = null;
     let wanRemoteConnValue: (wanCommand: string, value: number) => void;
     let thingspeakConn: (status: string, errorCode: string) => void = null;
-	let blynkConn: (Status: string, ErrorCode: string) => void = null;
+    let blynkConn: (Status: string, ErrorCode: string) => void = null;
     let blynkReadConn: (Pin: string, Value: number) => void = null;
     let iftttConn: (status: string, errorCode: string) => void = null;
     let wifiRemoteCreate: (channel: string, errorCode: string) => void = null;
@@ -618,6 +618,21 @@ namespace smarthonIoTBit {
         blynkReadConn = handler;
     }
 
+    // -------------- LLM function ------------------
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_text_LLM
+    //% block="text to LLM LLM_name* %LLM_name key %api_key text %text"
+    //% weight=116 group="LLM"
+    //% draggableParameters=reporter
+    export function call_LLM(LLM_name: string, api_key: string, text: string): void {
+        let command = "(AT+llm?model="
+        if (api_key == "" || LLM_name == "") { return }
+        else { command = command + LLM_name + "&key=" + api_key + "&text=" + text}
+        //(AT + llm ? model = bigmodel & key= asasdsad & text=asdsadsad)
+        serial.writeLine(command);
+    }
+
+
     // -------------- 4. Others ----------------
 
 
@@ -644,11 +659,11 @@ namespace smarthonIoTBit {
                 temp = "POST"
                 break
         }
-        if (temp == "GET"){
+        if (temp == "GET") {
             serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + ")");
             return;
         }
-        else{
+        else {
             if (body == "") body = "null";
             serial.writeLine("(AT+http?method=" + temp + "&url=" + url + "&header=" + "&body=" + body + ")");
         }
@@ -960,7 +975,7 @@ namespace smarthonIoTBit {
      * @param channel created channel name;
      * @param errorCode error code;
      */
-	 
+
     //%subcategory=Channel
     //%blockId=smarthon_iot_bit_on_wifi_channel_create
     //%block="on WiFi channel joined" group="Receiver"
@@ -1127,7 +1142,7 @@ namespace smarthonIoTBit {
      * @param handler OTA finished callback;
      * @param message error messsage;
      */
-	 
+
     //%subcategory=ESP
     //%blockId=smarthon_iot_bit_OTA_fail
     //%block="on OTA update failed"
