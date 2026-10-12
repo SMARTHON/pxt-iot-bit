@@ -627,7 +627,7 @@ namespace smarthonIoTBit {
     export function call_LLM(LLM_name: string, api_key: string, text: string): void {
         let command = "(AT+llm?model="
         if (api_key == "" || LLM_name == "") { return }
-        else { command = command + LLM_name + "&key=" + api_key + "&text=" + text}
+        else { command = command + LLM_name + "&key=" + api_key + "&text=" + text + ")"}
         //(AT + llm ? model = bigmodel & key= asasdsad & text=asdsadsad)
         serial.writeLine(command);
     }
