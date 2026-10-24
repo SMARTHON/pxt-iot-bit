@@ -623,15 +623,25 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_text_LLM
     //% block="text to LLM LLM_name* %LLM_name key %api_key text %text"
     //% weight=116 group="LLM"
-    //% draggableParameters=reporter
     export function call_LLM(LLM_name: string, api_key: string, text: string): void {
         let command = "(AT+llm?model="
         if (api_key == "" || LLM_name == "") { return }
-        else { command = command + LLM_name + "&key=" + api_key + "&text=" + text + ")"}
+        else { command = command + LLM_name + "&key=" + api_key + "&text=" + text + ")" }
         //(AT + llm ? model = bigmodel & key= asasdsad & text=asdsadsad)
         serial.writeLine(command);
     }
 
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_text_XiaoZhi
+    //% block="text to XiaoZhi AI* text %text"
+    //% weight=116 group="LLM"
+    export function call_XiaoZhi(text: string): void {
+        let command = "(AT+XiaoZhi?text="
+        if (text == "") { return }
+        else { command = command + text + ")" }
+        //(AT + llm ? model = bigmodel & key= asasdsad & text=asdsadsad)
+        serial.writeLine(command);
+    }
 
     // -------------- 4. Others ----------------
 
