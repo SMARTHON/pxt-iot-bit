@@ -54,6 +54,7 @@ namespace smarthonIoTBit {
     let otaReceived: (percentageValue: string) => void = null;
     let otaFinished: () => void = null;
     let otaFailed: (message: string) => void = null;
+    let readXiaoZhiAI: (message: string) => void = null;
 
     export enum HttpMethod {
         //% block="GET"
@@ -397,6 +398,20 @@ namespace smarthonIoTBit {
                     }
 
                 }
+                else if (label == "12") {
+                    let response = tempCmd.slice(1).trim().split(' ');
+                    let status = response[1];
+                    if (readXiaoZhiAI != null && status == "0") {
+                        let message = response.slice(2).join(' ');
+                        readXiaoZhiAI(message);
+                    }
+                    else if (response[1] == "1") {
+                        if (readXiaoZhiAI != null && response[2] != null) {
+                            //blynkError = response[2]
+                            //blynkread_conn("FAIL", parseInt(response[3]))
+                        }
+                    }
+                }
             }
         })
         basic.pause(500)
@@ -623,7 +638,7 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_text_LLM
     //% block="text to LLM LLM_name* %LLM_name key %api_key text %text"
     //% weight=116 group="LLM"
-    export function call_LLM(LLM_name: string, api_key: string, text: string): void {
+    export function callLLM(LLM_name: string, api_key: string, text: string): void {
         let command = "(AT+llm?model="
         if (api_key == "" || LLM_name == "") { return }
         else { command = command + LLM_name + "&key=" + api_key + "&text=" + text + ")" }
@@ -635,12 +650,21 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_text_XiaoZhi
     //% block="text to XiaoZhi AI* text %text"
     //% weight=116 group="LLM"
-    export function call_XiaoZhi(text: string): void {
+    export function callXiaoZhi(text: string): void {
         let command = "(AT+XiaoZhi?text="
         if (text == "") { return }
         else { command = command + text + ")" }
         //(AT + llm ? model = bigmodel & key= asasdsad & text=asdsadsad)
         serial.writeLine(command);
+    }
+
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_XIAOZHI_AI_Read
+    //%block="on XiaoZhi response"
+    //% weight=118 group="LLM"
+    //% draggableParameters=reporter
+    export function readXiaoZhiAiRead(handler: (response: string) => void): void {
+        readXiaoZhiAI = handler;
     }
 
     // -------------- 4. Others ----------------
