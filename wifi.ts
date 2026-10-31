@@ -54,7 +54,7 @@ namespace smarthonIoTBit {
     let otaReceived: (percentageValue: string) => void = null;
     let otaFinished: () => void = null;
     let otaFailed: (message: string) => void = null;
-    let readXiaoZhiAI: (message: string) => void = null;
+    let readXiaoZhiAI: (message: string, activation: string) => void = null;
 
     export enum HttpMethod {
         //% block="GET"
@@ -401,15 +401,18 @@ namespace smarthonIoTBit {
                 else if (label == "12") {
                     let response = tempCmd.slice(1).trim().split(' ');
                     let status = response[1];
+                    let activation = response[2];
                     if (readXiaoZhiAI != null && status == "0") {
                         let message = response.slice(2).join(' ');
-                        readXiaoZhiAI(message);
+                        readXiaoZhiAI(message,activation);
                     }
                     else if (response[1] == "1") {
                         if (readXiaoZhiAI != null && response[2] != null) {
-                            //blynkError = response[2]
-                            //blynkread_conn("FAIL", parseInt(response[3]))
+
                         }
+                    }
+                    else if (response[1] == "3"){
+                        readXiaoZhiAI(response[1], response[2]);
                     }
                 }
             }
@@ -649,7 +652,7 @@ namespace smarthonIoTBit {
     //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_text_XiaoZhi
     //% block="text to XiaoZhi AI* text %text"
-    //% weight=116 group="LLM"
+    //% weight=114 group="LLM"
     export function callXiaoZhi(text: string): void {
         let command = "(AT+XiaoZhi?text="
         if (text == "") { return }
@@ -659,11 +662,20 @@ namespace smarthonIoTBit {
     }
 
     //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_connect_to_XiaoZhi
+    //% block="connect to XiaoZhi"
+    //% weight=114 group="LLM"
+    export function connectXiaoZhi() :void {
+        let command = "(AT+connectToXiaoZhi)";
+        serial.writeLine(command);
+    }
+
+    //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_XIAOZHI_AI_Read
     //%block="on XiaoZhi response"
-    //% weight=118 group="LLM"
+    //% weight=110 group="LLM"
     //% draggableParameters=reporter
-    export function readXiaoZhiAiRead(handler: (response: string) => void): void {
+    export function readXiaoZhiAiRead(handler: (response: string, activation: string) => void): void {
         readXiaoZhiAI = handler;
     }
 
