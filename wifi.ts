@@ -55,6 +55,8 @@ namespace smarthonIoTBit {
     let otaFinished: () => void = null;
     let otaFailed: (message: string) => void = null;
     let readXiaoZhiAI: (message: string, activation: string) => void = null;
+    let xiaozhiConnected: (connect:string) => void = null;
+    let xiaozhisended: (connect: string) => void = null;
 
     export enum HttpMethod {
         //% block="GET"
@@ -409,10 +411,33 @@ namespace smarthonIoTBit {
                     else if (response[1] == "1") {
                         if (readXiaoZhiAI != null && response[2] != null) {
 
+                        }    
+                    }
+                    else if (response[1] == "2") {
+                        if (response[2] == "1"){
+                         xiaozhiConnected("No WiFi");
+                        }
+                        else if (response[2] == "2") {
+                            xiaozhiConnected("No Connection");
+                        }
+                        else if (response[2] == "3") {
+                            xiaozhiConnected("Connected to XiaoZhi");
                         }
                     }
                     else if (response[1] == "3"){
-                        readXiaoZhiAI(response[1], response[2]);
+                        let message = response.slice(2).join(' ');
+                        readXiaoZhiAI(response[1], message);
+                    }
+                    else if (response[1] == "4") {
+                        if (response[2] == "0") {
+                            xiaozhiConnected("Send OK");
+                        }
+                        else if (response[2] == "1") {
+                            xiaozhiConnected("Send ERROR");
+                        }
+                        else if (response[2] == "2") {
+                            xiaozhiConnected("");
+                        }
                     }
                 }
             }
@@ -677,6 +702,24 @@ namespace smarthonIoTBit {
     //% draggableParameters=reporter
     export function readXiaoZhiAiRead(handler: (response: string, activation: string) => void): void {
         readXiaoZhiAI = handler;
+    }
+
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_XIAOZHI_AI_connected
+    //%block="on XiaoZhi connected"
+    //% weight=106 group="LLM"
+    //% draggableParameters=reporter
+    export function readXiaoZhiAiconnected(handler: (connected: string) => void): void {
+        xiaozhiConnected = handler;
+    }
+
+    //%subcategory="IoT Services"
+    //%blockId=smarthon_iot_bit_XIAOZHI_AI_sended
+    //%block="on XiaoZhi sended"
+    //% weight=106 group="LLM"
+    //% draggableParameters=reporter
+    export function readXiaoZhiAisended(handler: (sended: string) => void): void {
+        xiaozhisended = handler;
     }
 
     // -------------- 4. Others ----------------
