@@ -630,10 +630,42 @@ namespace smarthonIoTBit {
         command = command + ")"
         serial.writeLine(command);
     }
+
+    //%subcategory="IoT Services"
+    //% blockId=smarthon_iot_bit_MQTT_blynk
+    //% block="using MQTT connect to Blynk || name %name | authToken %authToken | templateID %templateID | "
+    //% weight=120 group="Blynk"
+    export function connMQTTBlynk(name: string, authToken: string, templateID:string): void {
+        let command = "(AT+blynk?name=";
+        if (name == "" || authToken == "" || templateID == "") { return }
+        else { command = command + name + "&" + "authToken=" + authToken + "&" + "templateID=" + templateID}
+        command = command + ")"
+        serial.writeLine(command);
+    }
+
+    //%subcategory="IoT Services"
+    //% blockId=smarthon_iot_bit_send_blynk_value
+    //% block="send Blynk V0 value%v0||V1 value%v1|V2 value%v2|V3 value%v3|V4 value%v4|V5 value%v5|V6 value%v6|V7 value%v7|"
+    //% weight=119 group="Blynk"
+    export function sendBlynkValue(v0: number = null, v1: number = null, v2: number = null, v3: number = null, v4: number = null, v5: number = null, v6: number = null, v7: number = null): void {
+        let command = "(AT+blynkValue?";
+        if (v0 != null) { command = command + "v0=" + v0 }
+        if (v1 != null) { command = command + "&v1=" + v1 }
+        if (v2 != null) { command = command + "&v2=" + v2 }
+        if (v3 != null) { command = command + "&v3=" + v3 }
+        if (v4 != null) { command = command + "&v4=" + v4 }
+        if (v5 != null) { command = command + "&v5=" + v5 }
+        if (v6 != null) { command = command + "&v6=" + v6 }
+        if (v7 != null) { command = command + "&v7=" + v7 }
+
+        command = command + ")"
+        serial.writeLine(command);
+    }
+
     //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_on_blynk_connect
     //%block="on Blynk uploaded"
-    //% weight=122 group="Blynk"
+    //% weight=118 group="Blynk"
     //% draggableParameters=reporter
     export function onBlynkConn(handler: (status: string, errorCode: string) => void): void {
         blynkConn = handler;
@@ -642,7 +674,7 @@ namespace smarthonIoTBit {
     //%subcategory="IoT Services"
     //% blockId=smarthon_iot_bit_read_blynk
     //% block="read Blynk token* %key|Pin %Blynk_pin_list"
-    //% weight=120 group="Blynk"
+    //% weight=116 group="Blynk"
     //% expandableArgumentMode="enabled"
     export function readBlynk(key: string, Pin: BlynkPinList): void {
         let command = "(AT+blynkread?key=";
@@ -655,7 +687,7 @@ namespace smarthonIoTBit {
     //%subcategory="IoT Services"
     //%blockId=smarthon_iot_bit_readBlynk_connect
     //%block="on Blynk read"
-    //% weight=118 group="Blynk"
+    //% weight=114 group="Blynk"
     //% draggableParameters=reporter
     export function onReadBlynk(handler: (pin: string, value: number) => void): void {
         blynkReadConn = handler;
