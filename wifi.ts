@@ -55,7 +55,7 @@ namespace smarthonIoTBit {
     let otaFinished: () => void = null;
     let otaFailed: (message: string) => void = null;
     let readXiaoZhiAI: (message: string, activation: string) => void = null;
-    let xiaozhiConnected: (connect:string) => void = null;
+    let xiaozhiConnected: (connect: string) => void = null;
     let xiaozhisended: (connect: string) => void = null;
 
     export enum HttpMethod {
@@ -406,16 +406,16 @@ namespace smarthonIoTBit {
                     let activation = response[2];
                     if (readXiaoZhiAI != null && status == "0") {
                         let message = response.slice(2).join(' ');
-                        readXiaoZhiAI(message,activation);
+                        readXiaoZhiAI(message, activation);
                     }
                     else if (response[1] == "1") {
                         if (readXiaoZhiAI != null && response[2] != null) {
 
-                        }    
+                        }
                     }
                     else if (response[1] == "2") {
-                        if (response[2] == "1"){
-                         xiaozhiConnected("No WiFi");
+                        if (response[2] == "1") {
+                            xiaozhiConnected("No WiFi");
                         }
                         else if (response[2] == "2") {
                             xiaozhiConnected("No Connection");
@@ -424,7 +424,7 @@ namespace smarthonIoTBit {
                             xiaozhiConnected("Connected to XiaoZhi");
                         }
                     }
-                    else if (response[1] == "3"){
+                    else if (response[1] == "3") {
                         let message = response.slice(2).join(' ');
                         readXiaoZhiAI(response[1], message);
                     }
@@ -635,10 +635,10 @@ namespace smarthonIoTBit {
     //% blockId=smarthon_iot_bit_MQTT_blynk
     //% block="using MQTT connect to Blynk || name %name | authToken %authToken | templateID %templateID | "
     //% weight=120 group="Blynk"
-    export function connMQTTBlynk(name: string, authToken: string, templateID:string): void {
+    export function connMQTTBlynk(name: string, authToken: string, templateID: string): void {
         let command = "(AT+blynk?name=";
         if (name == "" || authToken == "" || templateID == "") { return }
-        else { command = command + name + "&" + "authToken=" + authToken + "&" + "templateID=" + templateID}
+        else { command = command + name + "&" + "authToken=" + authToken + "&" + "templateID=" + templateID }
         command = command + ")"
         serial.writeLine(command);
     }
@@ -694,7 +694,7 @@ namespace smarthonIoTBit {
     }
 
     // -------------- LLM function ------------------
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_text_LLM
     //% block="text to LLM LLM_name* %LLM_name key %api_key text %text"
     //% weight=116 group="LLM"
@@ -706,10 +706,10 @@ namespace smarthonIoTBit {
         serial.writeLine(command);
     }
 
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_text_XiaoZhi
     //% block="text to XiaoZhi AI* text %text"
-    //% weight=114 group="LLM"
+    //% weight=114 group="XiaoZhi"
     export function callXiaoZhi(text: string): void {
         let command = "(AT+XiaoZhi?text="
         if (text == "") { return }
@@ -718,37 +718,37 @@ namespace smarthonIoTBit {
         serial.writeLine(command);
     }
 
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_connect_to_XiaoZhi
     //% block="connect to XiaoZhi"
-    //% weight=114 group="LLM"
-    export function connectXiaoZhi() :void {
+    //% weight=114 group="XiaoZhi"
+    export function connectXiaoZhi(): void {
         let command = "(AT+connectToXiaoZhi)";
         serial.writeLine(command);
     }
 
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_XIAOZHI_AI_Read
     //%block="on XiaoZhi response"
-    //% weight=110 group="LLM"
+    //% weight=110 group="XiaoZhi"
     //% draggableParameters=reporter
     export function readXiaoZhiAiRead(handler: (response: string, activation: string) => void): void {
         readXiaoZhiAI = handler;
     }
 
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_XIAOZHI_AI_connected
     //%block="on XiaoZhi connected"
-    //% weight=106 group="LLM"
+    //% weight=106 group="XiaoZhi"
     //% draggableParameters=reporter
     export function readXiaoZhiAiconnected(handler: (connected: string) => void): void {
         xiaozhiConnected = handler;
     }
 
-    //%subcategory="IoT Services"
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_XIAOZHI_AI_sended
     //%block="on XiaoZhi sended"
-    //% weight=106 group="LLM"
+    //% weight=106 group="XiaoZhi"
     //% draggableParameters=reporter
     export function readXiaoZhiAisended(handler: (sended: string) => void): void {
         xiaozhisended = handler;
