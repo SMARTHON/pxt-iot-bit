@@ -55,7 +55,7 @@ namespace smarthonIoTBit {
     let otaFinished: () => void = null;
     let otaFailed: (message: string) => void = null;
     let readXiaoZhiAI: (message: string, activation: string) => void = null;
-    let xiaozhiConnected: (connect: string) => void = null;
+    let xiaozhiConnected: (connect:string) => void = null;
     let xiaozhisended: (connect: string) => void = null;
 
     export enum HttpMethod {
@@ -342,7 +342,7 @@ namespace smarthonIoTBit {
                         ntpReceive(parseInt(response[1]), parseInt(response[2]), parseInt(response[3]), parseInt(response[4]), parseInt(response[5]), parseInt(response[6]))
                     }
                 }
-                else if (label == "8") {//HTTP
+                else if (label == "8") {//W8 HTTP
                     //get the string include end_Indicator and msg char, e.g "0|a" "1|e"
                     let msg = tempCmd.slice(tempCmd.indexOf(" ") + 1, tempCmd.length)
                     //split the end_Indicator and msg char
@@ -365,7 +365,7 @@ namespace smarthonIoTBit {
                         }
                     }
                 }
-                else if (label == "9") {     //OTA
+                else if (label == "9") {     //W9 OTA
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (otaReceived != null && response[1] == "1") {
                         otaReceived(response[2])
@@ -387,7 +387,7 @@ namespace smarthonIoTBit {
                         }
                     }
                 }
-                else if (label == "11") { //read Blynk
+                else if (label == "11") { //W11 read Blynk
                     let response = tempCmd.slice(1, tempCmd.length).split(' ')
                     if (blynkReadConn != null && response[1] == "0") {
                         blynkReadConn(response[2], parseInt(response[3]))
@@ -400,22 +400,22 @@ namespace smarthonIoTBit {
                     }
 
                 }
-                else if (label == "12") {
+                else if (label == "12") { //W12
                     let response = tempCmd.slice(1).trim().split(' ');
                     let status = response[1];
                     let activation = response[2];
                     if (readXiaoZhiAI != null && status == "0") {
                         let message = response.slice(2).join(' ');
-                        readXiaoZhiAI(message, activation);
+                        readXiaoZhiAI(message,activation);
                     }
                     else if (response[1] == "1") {
                         if (readXiaoZhiAI != null && response[2] != null) {
 
-                        }
+                        }    
                     }
                     else if (response[1] == "2") {
-                        if (response[2] == "1") {
-                            xiaozhiConnected("No WiFi");
+                        if (response[2] == "1"){
+                         xiaozhiConnected("No WiFi");
                         }
                         else if (response[2] == "2") {
                             xiaozhiConnected("No Connection");
@@ -424,7 +424,7 @@ namespace smarthonIoTBit {
                             xiaozhiConnected("Connected to XiaoZhi");
                         }
                     }
-                    else if (response[1] == "3") {
+                    else if (response[1] == "3"){
                         let message = response.slice(2).join(' ');
                         readXiaoZhiAI(response[1], message);
                     }
@@ -436,7 +436,7 @@ namespace smarthonIoTBit {
                             xiaozhiConnected("Send ERROR");
                         }
                         else if (response[2] == "2") {
-                            xiaozhiConnected("");
+                            xiaozhiConnected("Start Recording");
                         }
                     }
                 }
@@ -635,10 +635,10 @@ namespace smarthonIoTBit {
     //% blockId=smarthon_iot_bit_MQTT_blynk
     //% block="using MQTT connect to Blynk || name %name | authToken %authToken | templateID %templateID | "
     //% weight=120 group="Blynk"
-    export function connMQTTBlynk(name: string, authToken: string, templateID: string): void {
+    export function connMQTTBlynk(name: string, authToken: string, templateID:string): void {
         let command = "(AT+blynk?name=";
         if (name == "" || authToken == "" || templateID == "") { return }
-        else { command = command + name + "&" + "authToken=" + authToken + "&" + "templateID=" + templateID }
+        else { command = command + name + "&" + "authToken=" + authToken + "&" + "templateID=" + templateID}
         command = command + ")"
         serial.writeLine(command);
     }
@@ -722,7 +722,7 @@ namespace smarthonIoTBit {
     //%blockId=smarthon_iot_bit_connect_to_XiaoZhi
     //% block="connect to XiaoZhi"
     //% weight=114 group="XiaoZhi"
-    export function connectXiaoZhi(): void {
+    export function connectXiaoZhi() :void {
         let command = "(AT+connectToXiaoZhi)";
         serial.writeLine(command);
     }
