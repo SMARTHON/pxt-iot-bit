@@ -56,6 +56,7 @@ namespace smarthonIoTBit {
     let otaFailed: (message: string) => void = null;
     let readXiaoZhiAI: (message: string, activation: string) => void = null;
     let xiaozhiConnected: (connect:string) => void = null;
+    let xiaozhiDisconnect: (connect: string) => void = null;
     let xiaozhisended: (connect: string) => void = null;
 
     export enum HttpMethod {
@@ -418,7 +419,7 @@ namespace smarthonIoTBit {
                          xiaozhiConnected("No WiFi");
                         }
                         else if (response[2] == "2") {
-                            xiaozhiConnected("No Connection");
+                            xiaozhiDisconnect("No Connection");
                         }
                         else if (response[2] == "3") {
                             xiaozhiConnected("Connected to XiaoZhi");
@@ -746,9 +747,18 @@ namespace smarthonIoTBit {
     }
 
     //%subcategory="LLM"
+    //%blockId=smarthon_iot_bit_XIAOZHI_AI_Disconnect
+    //%block="on XiaoZhi Disconnect"
+    //% weight=104 group="XiaoZhi"
+    //% draggableParameters=reporter
+    export function readXiaoZhiAiDisconnect(handler: (connected: string) => void): void {
+        xiaozhiDisconnect = handler;
+    }
+
+    //%subcategory="LLM"
     //%blockId=smarthon_iot_bit_XIAOZHI_AI_sended
     //%block="on XiaoZhi sended"
-    //% weight=106 group="XiaoZhi"
+    //% weight=102 group="XiaoZhi"
     //% draggableParameters=reporter
     export function readXiaoZhiAisended(handler: (sended: string) => void): void {
         xiaozhisended = handler;
